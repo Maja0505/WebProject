@@ -3,16 +3,17 @@ package model;
 public class Comment {
 
 		private Guest guest;
-		//dodaj Apartman i getere i seter i ubaci u konstruktor
+		private Apartment apartment;
 		private String text;
 		private int rate;
 		
 		public Comment() {
 		}
 
-		public Comment(Guest guest, String text, int rate) {
+		public Comment(Guest guest, String text, int rate, Apartment apartment) {
 			super();
 			this.guest = guest;
+			this.apartment = apartment;
 			this.text = text;
 			this.rate = rate;
 		}
@@ -23,6 +24,14 @@ public class Comment {
 
 		public void setGuest(Guest guest) {
 			this.guest = guest;
+		}
+
+		public Apartment getApartment() {
+			return apartment;
+		}
+
+		public void setApartment(Apartment apartment) {
+			this.apartment = apartment;
 		}
 
 		public String getText() {
