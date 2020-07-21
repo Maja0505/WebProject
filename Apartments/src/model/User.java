@@ -1,7 +1,6 @@
 package model;
 
 import enums.Gender;
-import enums.Role;
 
 public class User {
 	
@@ -10,19 +9,17 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private Gender gender;
-	private Role role;
 	
 	public User() {
 	}
 
-	public User(String username, String password, String firstName, String lastName, Gender gender, Role role) {
+	public User(String username, String password, String firstName, String lastName, Gender gender) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
-		this.role = role;
 	}
 
 	public String getUsername() {
@@ -65,14 +62,4 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-	
-	
-	
 }
