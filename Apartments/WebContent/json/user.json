@@ -1,0 +1,4 @@
+[{"username": "maja","password": "maja1234","firstName": "Maja","lastName": "Tomic","gender": "FEMALE"},
+{"username": "nemanja","password": "nemanja1234","firstName": "Nemanja","lastName": "Jevtic","gender": "MALE"},
+{"username": "pera","password": "pera1234","firstName": "Pera","lastName": "Peric","gender": "MALE"},
+{"username": "mika","password": "mika1234","firstName": "Mika","lastName": "Mikic","gender": "MALE"}]
