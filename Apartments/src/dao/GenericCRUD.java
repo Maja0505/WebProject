@@ -2,6 +2,7 @@ package dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,15 +10,19 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+
+import beans.User;
 
 
 
 public class GenericCRUD<E>{
 	
-	public Collection<E> load(String path) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<E> entities = objectMapper.readValue(new File(path), new TypeReference<List<E>>(){});		
-		return (Collection<E>) entities;
+	public List<E> load(String path, Class<E> classType) throws JsonParseException, JsonMappingException, IOException {	
+		ObjectMapper mapper = new ObjectMapper();
+		CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, classType);
+		List<E> entities = mapper.readValue(new File(path), listType);
+		return entities;
 	}
 	
 	

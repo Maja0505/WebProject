@@ -1,8 +1,11 @@
 package service;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -25,15 +28,19 @@ public class UserService {
 	@Context
 	ServletContext ctx; 
 	
+	@PostConstruct
+	public void init() throws JsonParseException, JsonMappingException, IOException {
+		if (ctx.getAttribute("users") == null) {
+	    	String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("users", new UserDAO(contextPath + "json/user.json"));
+		}
+	}
+	
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<User> getAllUsers() throws JsonParseException, JsonMappingException, IOException {
 		UserDAO users = (UserDAO) ctx.getAttribute("users");
-		if(users == null) {
-			users = new UserDAO("C:\\Users\\NEMANJA\\Desktop\\WEB_Project\\Apartments\\WebContent\\json\\user.json");
-			ctx.setAttribute("users", users);
-		}
 		return users.allUsers();
 	}
 	

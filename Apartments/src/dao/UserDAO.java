@@ -3,6 +3,8 @@ package dao;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -12,15 +14,17 @@ import beans.User;
 public class UserDAO{
 
 	private HashMap<String, User> users;
-	private GenericCRUD<User> genericCRUD;
+	private GenericCRUD<User> genericCRUD = new GenericCRUD<User>();;
 	
 	public UserDAO(){
 		super();
 	}
 	
 	public UserDAO(String contexPath) throws JsonParseException, JsonMappingException, IOException{
-		genericCRUD = new GenericCRUD<User>();
-		for (User user : genericCRUD.load(contexPath)) {
+		List<User> array = genericCRUD.load(contexPath, User.class);
+		users = new HashMap<>();
+		
+		for (User user : array) {
 			users.put(user.getUsername(), user);
 		}
 	}
