@@ -2,36 +2,36 @@ package dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
 
 
-
-public class GenericCRUD<T>{
+public class GenericCRUD<E>{
 	
 
 	public GenericCRUD() {
 		super();
 	}
 
+	public List<E> load(String path, Class<E> classType) throws JsonParseException, JsonMappingException, IOException {	
+		ObjectMapper mapper = new ObjectMapper();
+		CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, classType);
+		List<E> entities = mapper.readValue(new File(path), listType);
 
-	public List<T> load(String path) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<T> entities = objectMapper.readValue(new File(path), new TypeReference<List<T>>(){});		
 		return entities;
 	}
 	
+	public void delete(E entity,String path) {}
 	
-	public void delete(T entity,String path) {}
+	public void update(E entity,String path) {}
 	
-	public void update(T entity,String path) {}
-	
-	public void saveAll(Collection<T> entities) {}
+	public void saveAll(Collection<E> entities) {}
 	
 };

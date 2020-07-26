@@ -12,17 +12,18 @@ import beans.User;
 
 public class UserDAO{
 
-	private HashMap<String, User> users = new HashMap<String, User>();
-	private GenericCRUD<User> genericCRUD = new GenericCRUD<User>();
+	private HashMap<String, User> users;
+	private GenericCRUD<User> genericCRUD = new GenericCRUD<User>();;
 	
 	public UserDAO(){
 		super();
 	}
 	
 	public UserDAO(String contexPath) throws JsonParseException, JsonMappingException, IOException{
-		List<User> array = genericCRUD.load(contexPath);
-		for (int i = 0; i < array.size(); i++) {
-			users.put(array.get(i).getUsername(),array.get(i));
+		List<User> array = genericCRUD.load(contexPath, User.class);
+		users = new HashMap<>();
+		for (User user : array) {
+			users.put(user.getUsername(), user);
 		}
 		
 	}
