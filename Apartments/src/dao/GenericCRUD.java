@@ -12,19 +12,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
-public class GenericCRUD<E>{
+
+public class GenericCRUD<T>{
 	
-	public Collection<E> load(String path) throws JsonParseException, JsonMappingException, IOException {
+
+	public GenericCRUD() {
+		super();
+	}
+
+
+	public List<T> load(String path) throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<E> entities = objectMapper.readValue(new File(path), new TypeReference<List<E>>(){});		
-		return (Collection<E>) entities;
+		List<T> entities = objectMapper.readValue(new File(path), new TypeReference<List<T>>(){});		
+		return entities;
 	}
 	
 	
-	public void delete(E entity,String path) {}
+	public void delete(T entity,String path) {}
 	
-	public void update(E entity,String path) {}
+	public void update(T entity,String path) {}
 	
-	public void saveAll(Collection<E> entities) {}
+	public void saveAll(Collection<T> entities) {}
 	
 };

@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.util.Collection;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import beans.User;
 import dao.UserDAO;
 
-@Path("users")
+@Path("/users")
 public class UserService {
 
 	@Context
@@ -25,13 +26,26 @@ public class UserService {
 	@Context
 	ServletContext ctx; 
 	
+	@PostConstruct
+	// ctx polje je null u konstruktoru, mora se pozvati nakon konstruktora (@PostConstruct anotacija)
+	public void init() throws JsonParseException, JsonMappingException, IOException {
+		// Ovaj objekat se instancira više puta u toku rada aplikacije
+		// Inicijalizacija treba da se obavi samo jednom
+		if (ctx.getAttribute("users") == null) {
+	    	String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("users", new UserDAO(contextPath + "/user.json"));
+		}
+	}
+	
+	
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<User> getAllUsers() throws JsonParseException, JsonMappingException, IOException {
 		UserDAO users = (UserDAO) ctx.getAttribute("users");
 		if(users == null) {
-			users = new UserDAO("C:\\Users\\NEMANJA\\Desktop\\WEB_Project\\Apartments\\WebContent\\json\\user.json");
+			users = new UserDAO(ctx.getRealPath("") + "/user.json");
+			System.out.println(ctx.getRealPath("") + "/user.json");
 			ctx.setAttribute("users", users);
 		}
 		return users.allUsers();
