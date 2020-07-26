@@ -1,6 +1,7 @@
 package beans;
 
 import enums.Gender;
+import enums.TypeOfUser;
 
 public class User {
 	
@@ -9,18 +10,25 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private Gender gender;
+	private TypeOfUser typeOfUser;
 	
 	public User() {
 	}
 
-	public User(String username, String password, String firstName, String lastName, Gender gender) {
+
+
+	public User(String username, String password, String firstName, String lastName, Gender gender,
+			TypeOfUser typeOfUser) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
+		this.typeOfUser = typeOfUser;
 	}
+
+
 
 	public String getUsername() {
 		return username;
@@ -61,5 +69,14 @@ public class User {
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+
+	public TypeOfUser getTypeOfUser() {
+		return typeOfUser;
+	}
+
+	public void setTypeOfUser(TypeOfUser typeOfUser) {
+		this.typeOfUser = typeOfUser;
+	}
+	
 
 }

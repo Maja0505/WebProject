@@ -48,11 +48,13 @@ Vue.component("login", {
 				} 
 				if(!password){
 					this.wrong_password = "Password can't be empty";
+					return;
 				}
 				for(user in this.users){
 					if(this.users[user].username == username){
 						if(this.users[user].password == password){
-							//bice redirektovan na neku drugu stranicu
+							this.$root.$emit('loginUser',this.users[user].typeOfUser);
+							this.$router.go(-1)
 							return;
 						}else{
 							this.wrong_password = "Password is not correct!";

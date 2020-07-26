@@ -1,4 +1,4 @@
-const Login = { template: '<login><login>' }
+const Login = { template: '<login></login>' }
 const Registation = { template: '<registration></registration>' }
 const HomePage = { template: '<homePage></homePage>' }
 
