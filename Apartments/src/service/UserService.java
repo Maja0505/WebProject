@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.User;
+import dao.GuestDAO;
+import dao.HostDAO;
 import dao.UserDAO;
 import enums.TypeOfUser;
 
@@ -51,12 +53,28 @@ public class UserService {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(User user) {
+	public Response login(User user) throws JsonParseException, JsonMappingException, IOException {
 		UserDAO userDao = (UserDAO) ctx.getAttribute("users");
 		User loggedUser = userDao.find(user.getUsername(), user.getPassword());
 		if (loggedUser == null) {
 			return Response.status(400).entity("Invalid username and/or password").build();
 		}
+		if(loggedUser.getTypeOfUser().equals(TypeOfUser.GUEST)) {
+			if (ctx.getAttribute("guests") == null) {
+		    	String contextPath = ctx.getRealPath("");
+				ctx.setAttribute("guests", new GuestDAO(contextPath + "json/guest.json",ctx));
+			}
+			GuestDAO guests = (GuestDAO) ctx.getAttribute("guests");
+			loggedUser = guests.find(user.getUsername(), user.getPassword());
+		}else if(loggedUser.getTypeOfUser().equals(TypeOfUser.HOST)) {
+			if (ctx.getAttribute("hosts") == null) {
+		    	String contextPath = ctx.getRealPath("");
+				ctx.setAttribute("hosts", new HostDAO(contextPath + "json/host.json",ctx));
+			}
+			HostDAO hosts = (HostDAO) ctx.getAttribute("hosts");
+			loggedUser = hosts.find(user.getUsername(), user.getPassword());
+		}
+		
 		request.getSession().setAttribute("user", loggedUser);
 		return Response.status(200).build();
 	}
