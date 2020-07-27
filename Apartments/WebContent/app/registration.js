@@ -126,14 +126,19 @@ Vue.component("registration", {
 			            'Content-Type': 'application/json',
 			        }
 			    })
-		          .then(response =>(login))
+		          .then(response =>(this.login()))
 	            
 				},
 			login : function () {
 				 axios
-		          .post('rest/users/login',JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}))
-		          .then(response => (toast('User ' + this.user.firstName + ' successed login!'),
-		        	 this.$router.push('/')  ))
+		          .post('rest/users/login',
+		        		  JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender":this.user.gender,"typeOfUser":'GUEST'}),
+		        		  {
+		        	  headers: {
+				            'Content-Type': 'application/json',
+				        }
+		        		  })
+		          .then(response => (this.$router.push('/')  ))
 				}
 		}
 		
