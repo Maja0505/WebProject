@@ -110,23 +110,31 @@ Vue.component("registration", {
 					}
 				}
 		        
-		        axios({
-	                method: 'POST',
-	                url: 'rest/users/addUser', 
-	                data: JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), 
-	                headers:{'Content-Type': 'application/json; charset=utf-8'}
-	            })
-	            
-	            axios({
-	                method: 'POST',
-	                url: 'rest/guests/addGuest', 
-	                data: JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), 
-	                headers:{'Content-Type': 'application/json; charset=utf-8'}
-	            })   
+    			 axios
+		          .post('rest/guests/addGuest', JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), {
+  			        headers: {
+			            'Content-Type': 'application/json',
+			        }
+			    })
+		          .then(response =>(console.log('aaaaaaa')))
 	            
 	            
-		        
-			}
+	            
+	            	 axios
+		          .post('rest/users/addUser', JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), {
+  			        headers: {
+			            'Content-Type': 'application/json',
+			        }
+			    })
+		          .then(response =>(login))
+	            
+				},
+			login : function () {
+				 axios
+		          .post('rest/users/login',JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}))
+		          .then(response => (toast('User ' + this.user.firstName + ' successed login!'),
+		        	 this.$router.push('/')  ))
+				}
 		}
 		
 });
