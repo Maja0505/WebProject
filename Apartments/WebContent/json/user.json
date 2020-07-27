@@ -1,4 +1,2 @@
-[{"username": "maja","password": "maja1234","firstName": "Maja","lastName": "Tomic","gender": "FEMALE","typeOfUser":"ADMIN"},
-{"username": "nemanja","password": "nemanja1234","firstName": "Nemanja","lastName": "Jevtic","gender": "MALE","typeOfUser":"ADMIN"},
-{"username": "pera","password": "pera1234","firstName": "Pera","lastName": "Peric","gender": "MALE","typeOfUser":"ADMIN"},
-{"username": "mika","password": "mika1234","firstName": "Mika","lastName": "Mikic","gender": "MALE","typeOfUser":"ADMIN"}]
+[{"username":"pera","password":"pera1234","firstName":"Pera","lastName":"Peric","gender":"MALE","typeOfUser":"ADMIN"},
+{"username":"mika","password":"mika1234","firstName":"Mika","lastName":"Mikic","gender":"MALE","typeOfUser":"ADMIN"}]

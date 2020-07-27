@@ -2,6 +2,7 @@ package service;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.User;
 import dao.UserDAO;
+import enums.TypeOfUser;
 
 @Path("/users")
 public class UserService {
@@ -75,4 +77,18 @@ public class UserService {
 		return (User) request.getSession().getAttribute("user");
 	}
 	
+	@POST
+	@Path("/addUser")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addUser(User user) throws JsonParseException, JsonMappingException, IOException {
+		UserDAO userDao = (UserDAO) ctx.getAttribute("users");
+		Collection<User> users = new LinkedList<User>();
+		for(User u : getAllUsers()) {
+			users.add(u);
+		}
+		User newUser = new User(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getGender(), TypeOfUser.GUEST);
+		users.add(newUser);
+		userDao.save(users,newUser);
+	}
 }

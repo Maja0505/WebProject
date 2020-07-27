@@ -20,7 +20,7 @@ Vue.component("homePage", {
 		`	,	mounted () {
 				axios
 		          .get('rest/users/currentUser')
-		          .then(response => (this.user = response.typeOfUser));
+		          .then(response => (response ? this.user = response.typeOfUser : this.user = "UNREGISTRED"));
 				this.$root.$on('loginUser',(text) => {
 					global = text;
 				});
