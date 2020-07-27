@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -51,6 +52,9 @@ public class UserDAO{
 		}
 		return user;
 	}
-	
+	public void save(Collection<User> allUsers,User newUser) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.saveAll(allUsers);
+		users.put(newUser.getUsername(), newUser);
+	}
 	
 }

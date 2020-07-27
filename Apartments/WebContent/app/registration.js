@@ -2,6 +2,7 @@ Vue.component("registration", {
 	data: function () {
 	    return {
 	      user:{},
+	      users:{},
 	      confirmPassword:"",
 	      errorFirstName:"",
 	      errorLastName:"",
@@ -27,9 +28,9 @@ Vue.component("registration", {
 				<tr>
 					<td>Gender:</td>
 					<td>
-					<input type="radio" id="male" name="gender" value="male" v-model="user.gender">
+					<input type="radio" id="male" name="gender" value="MALE" v-model="user.gender">
 					<label for="male">Male</label>
-					<input type="radio" id="female" name="gender" value="female" v-model="user.gender">
+					<input type="radio" id="female" name="gender" value="FEMALE" v-model="user.gender">
 					<label for="female">Female</label>
 					</td>	
 					<td>{{errorGender}}</td>				
@@ -98,6 +99,49 @@ Vue.component("registration", {
 					   this.errorConfirmPassword = "Password and Confirm password doesn't match";
 					}
 				}
+				
+		        axios
+		          .get('rest/users/all')
+		          .then(response => (this.users = response.data))
+				for(u in this.users){	
+					if(this.users[u].username == this.user.username){
+						this.errorUsername = "Username already exists";
+						return;
+					}
+				}
+		        let data = new FormData();
+		        data.append('username',this.user.username);
+		        data.append('password',this.user.password);
+		        data.append('firstName',this.user.firstName);
+		        data.append('lastName',this.user.lastName);
+		        data.append('gender',this.user.gender);
+		        data.append('typeOfUser', 'GUEST');
+		        
+		        
+		        console.log(this.user.firstName);
+		        console.log(user.firstName);
+		        
+		        
+		        this.user['typeOfUser'] = 'GUEST';
+		        
+		        
+		        
+		        
+		        let data2 = JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'});
+		        console.log(data2);
+		        
+		        axios({
+	                method: 'POST',
+	                url: 'rest/users/addUser', 
+	                data: data2, 
+	                headers:{'Content-Type': 'application/json; charset=utf-8'}
+	            })   
+		        
+		        
+		        /*axios
+		          .post('rest/users/addUser',data2)
+		          .then(response => (toast('User ' + this.user.firstName + ' successed register!')))*/
+				
 
 			}
 		}

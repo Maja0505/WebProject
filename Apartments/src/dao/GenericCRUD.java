@@ -2,10 +2,12 @@ package dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,6 +34,9 @@ public class GenericCRUD<E>{
 	
 	public void update(E entity,String path) {}
 	
-	public void saveAll(Collection<E> entities) {}
+	public void saveAll(Collection<E> entities) throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.writeValue(Paths.get("C:\\Users\\tomic\\Desktop\\WEB_Project\\WebProject\\Apartments\\WebContent\\json/user.json").toFile(), entities);
+	}
 	
 };
