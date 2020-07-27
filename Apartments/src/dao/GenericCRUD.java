@@ -34,9 +34,9 @@ public class GenericCRUD<E>{
 	
 	public void update(E entity,String path) {}
 	
-	public void saveAll(Collection<E> entities) throws JsonGenerationException, JsonMappingException, IOException {
+	public void saveAll(Collection<E> entities,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.writeValue(Paths.get("C:\\Users\\tomic\\Desktop\\WEB_Project\\WebProject\\Apartments\\WebContent\\json/user.json").toFile(), entities);
+		mapper.writeValue(Paths.get(path).toFile(), entities);
 	}
 	
 };

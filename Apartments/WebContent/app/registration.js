@@ -109,40 +109,23 @@ Vue.component("registration", {
 						return;
 					}
 				}
-		        let data = new FormData();
-		        data.append('username',this.user.username);
-		        data.append('password',this.user.password);
-		        data.append('firstName',this.user.firstName);
-		        data.append('lastName',this.user.lastName);
-		        data.append('gender',this.user.gender);
-		        data.append('typeOfUser', 'GUEST');
-		        
-		        
-		        console.log(this.user.firstName);
-		        console.log(user.firstName);
-		        
-		        
-		        this.user['typeOfUser'] = 'GUEST';
-		        
-		        
-		        
-		        
-		        let data2 = JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'});
-		        console.log(data2);
 		        
 		        axios({
 	                method: 'POST',
 	                url: 'rest/users/addUser', 
-	                data: data2, 
+	                data: JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), 
+	                headers:{'Content-Type': 'application/json; charset=utf-8'}
+	            })
+	            
+	            axios({
+	                method: 'POST',
+	                url: 'rest/guests/addGuest', 
+	                data: JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), 
 	                headers:{'Content-Type': 'application/json; charset=utf-8'}
 	            })   
+	            
+	            
 		        
-		        
-		        /*axios
-		          .post('rest/users/addUser',data2)
-		          .then(response => (toast('User ' + this.user.firstName + ' successed register!')))*/
-				
-
 			}
 		}
 		
