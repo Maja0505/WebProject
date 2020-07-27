@@ -40,6 +40,17 @@ public class UserDAO{
 	public void setUsers(HashMap<String, User> users) {
 		this.users = users;
 	}
+
+	public User find(String username, String password) {
+		if (!users.containsKey(username)) {
+			return null;
+		}
+		User user = users.get(username);
+		if (!user.getPassword().equals(password)) {
+			return null;
+		}
+		return user;
+	}
 	
 	
 }

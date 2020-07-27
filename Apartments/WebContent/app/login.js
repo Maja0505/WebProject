@@ -14,13 +14,13 @@ Vue.component("login", {
 		              <tr>
 		              	<td>Username: </td>
 		                <td><input type="text" v-model="username"></td>  
-		                <td style="color:Red"><b>{{wrong_username}}</b><td>          
+		                <td style="color:Red"><b>{{wrong_username}}</b></td>          
 		              </tr>
 		              
 		              <tr>
 		              	<td>Password: </td>
 		                <td><input type="password" v-model="password"></td>
-		                <td style="color:Red"><b>{{wrong_password}}</b><td>       
+		                <td style="color:Red"><b>{{wrong_password}}</b></td>       
 		              </tr>
 		              
 		              <tr>
@@ -53,8 +53,11 @@ Vue.component("login", {
 				for(user in this.users){
 					if(this.users[user].username == username){
 						if(this.users[user].password == password){
+							 axios
+					          .post('rest/users/login',this.users[user])
+					          .then(response => (toast('User ' + this.users[user].firstName + ' successed login!')))
 							this.$root.$emit('loginUser',this.users[user].typeOfUser);
-							this.$router.go(-1)
+							this.$router.push('/')
 							return;
 						}else{
 							this.wrong_password = "Password is not correct!";
