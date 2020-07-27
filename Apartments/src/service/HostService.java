@@ -20,16 +20,15 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Apartment;
-import beans.Guest;
-import beans.Reservation;
+import beans.Host;
 import beans.User;
-import dao.GuestDAO;
+import dao.HostDAO;
 import enums.TypeOfUser;
 
+@Path("/hosts")
+public class HostService {
 
-@Path("/guests")
-public class GuestService {
-
+	
 	@Context
 	HttpServletRequest request;
 	@Context
@@ -37,33 +36,34 @@ public class GuestService {
 	
 	@PostConstruct
 	public void init() throws JsonParseException, JsonMappingException, IOException {
-		if (ctx.getAttribute("guests") == null) {
+		if (ctx.getAttribute("hosts") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("guests", new GuestDAO(contextPath + "json/guest.json",ctx));
+			ctx.setAttribute("hosts", new HostDAO(contextPath + "json/host.json",ctx));
 		}
 	}
 	
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<Guest> getAllGuests() throws JsonParseException, JsonMappingException, IOException {
-		GuestDAO guests = (GuestDAO) ctx.getAttribute("guests");
-		return guests.allGuests();
+	public Collection<Host> getAllHosts() throws JsonParseException, JsonMappingException, IOException {
+		HostDAO hosts = (HostDAO) ctx.getAttribute("hosts");
+		return hosts.allHosts();
 	}
 	
 	@POST
-	@Path("/addGuest")
+	@Path("/addHost")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void addUser(User user) throws JsonParseException, JsonMappingException, IOException {
-		GuestDAO GuestDAO = (GuestDAO) ctx.getAttribute("guests");
-		Collection<Guest> guests = new LinkedList<Guest>();
-		for(Guest u : getAllGuests()) {
-			guests.add(u);
+	public void addHost(User user) throws JsonParseException, JsonMappingException, IOException {
+		HostDAO hostDao = (HostDAO) ctx.getAttribute("hosts");
+		Collection<Host> hosts = new LinkedList<Host>();
+		for(Host h : getAllHosts()) {
+			hosts.add(h);
 		}
-		Guest newGuest = new Guest(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
-				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>(),new ArrayList<Reservation>());
-		guests.add(newGuest);
-		GuestDAO.save(guests,newGuest);
+		Host newHost = new Host(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
+				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>());
+		hosts.add(newHost);
+		
+		hostDao.save(hosts,newHost,ctx.getRealPath("") + "json/host.json");
 	}
 }

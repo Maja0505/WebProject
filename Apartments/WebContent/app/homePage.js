@@ -6,16 +6,16 @@ var global = "UNREGISTRED";
 Vue.component("homePage", {
 	data: function () {
 	    return {
-		  user: "UNREGISTRED"
+		  user: null,
 	    }
 },
 		template: ` 
 		<div>
 		<p>
-			<a href="#/login" v-show="user =='UNREGISTRED'">Login</a>
-			<a href="#/registration" v-show="user =='UNREGISTRED'">Registation</a>
-			<a href="#/" v-show="user !='UNREGISTRED'" v-on:click.prevent="logout">Logout</a>
-			<a href="#/" v-show="user !='UNREGISTRED'" v-on:click.prevent="logout">About</a>
+			<a href="#/login" v-show="!user">Login</a>
+			<a href="#/registration" v-show="!user">Registation</a>
+			<a href="#/" v-show="user" v-on:click.prevent="logout">Logout</a>
+			<a href="#/" v-show="user" v-on:click.prevent="logout">About</a>
 			
 		</p>
 		<p>{{user}}</p>
@@ -23,7 +23,7 @@ Vue.component("homePage", {
 		`	,	mounted () {
 				axios
 		          .get('rest/users/currentUser')
-		          .then(response => {response.data ? this.user = response.data.firstName : this.user = "UNREGISTRED" ;		
+		          .then(response => {response.data ? this.user = response.data : this.user = null ;		
 		          });
 				//nekad brlja odradi prvo get pre nego sto odradi post u login.js i onda ne uspe lepo da 
 				//ispise ono sto treba 
@@ -35,7 +35,7 @@ Vue.component("homePage", {
 				logout: function(){
 					axios
 			          .post('rest/users/logout')
-			          .then(response => (toast('User ' + response.data + ' successed logout!')) ,this.user = "UNREGISTRED")
+			          .then(response => (toast('User ' + response.data + ' successed logout!')) ,this.user = null)
 				}
 				}
 });

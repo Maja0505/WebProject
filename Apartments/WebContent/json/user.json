@@ -1,1 +1,5 @@
-[{"username":"pera","password":"pera1234","firstName":"Pera","lastName":"Peric","gender":"MALE","typeOfUser":"ADMIN"},{"username":"ss","password":"11111111","firstName":"ss","lastName":"ss","gender":"MALE","typeOfUser":"GUEST"},{"username":"aaa","password":"aaaaaaaa","firstName":"aaa","lastName":"aaa","gender":"FEMALE","typeOfUser":"GUEST"},{"username":"mika","password":"mika1234","firstName":"Mika","lastName":"Mikic","gender":"MALE","typeOfUser":"ADMIN"},{"username":"mmm","password":"mmmmmmmm","firstName":"mmm","lastName":"mmm","gender":"MALE","typeOfUser":"GUEST"}]
+[{"username":"pera","password":"pera1234","firstName":"Pera","lastName":"Peric","gender":"MALE","typeOfUser":"ADMIN"},
+{"username":"ss","password":"11111111","firstName":"ss","lastName":"ss","gender":"MALE","typeOfUser":"HOST"},
+{"username":"aaa","password":"aaaaaaaa","firstName":"aaa","lastName":"aaa","gender":"FEMALE","typeOfUser":"GUEST"},
+{"username":"mika","password":"mika1234","firstName":"Mika","lastName":"Mikic","gender":"MALE","typeOfUser":"ADMIN"},
+{"username":"mmm","password":"mmmmmmmm","firstName":"mmm","lastName":"mmm","gender":"MALE","typeOfUser":"GUEST"}]

@@ -57,7 +57,7 @@ Vue.component("login", {
 							 axios
 					          .post('rest/users/login',this.users[user])
 					          .then(response => (toast('User ' + this.users[user].firstName + ' successed login!'),
-					        	 this.$router.push('/')  ))
+					        	 this.$router.push('/')))
 							//u slucaju potrebe da ovaj gornji post nece da odradi kako treba tj.
 					        //odradi ga pre get zahteva iz homePage.js potrebna je ova donja linija  
 					        //this.$root.$emit('loginUser',this.users[user].typeOfUser);
