@@ -15,6 +15,8 @@ Vue.component("homePage", {
 			<a href="#/login" v-show="user =='UNREGISTRED'">Login</a>
 			<a href="#/registration" v-show="user =='UNREGISTRED'">Registation</a>
 			<a href="#/" v-show="user !='UNREGISTRED'" v-on:click.prevent="logout">Logout</a>
+			<a href="#/" v-show="user !='UNREGISTRED'" v-on:click.prevent="logout">About</a>
+			
 		</p>
 		<p>{{user}}</p>
 		</div>
