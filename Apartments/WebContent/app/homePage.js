@@ -16,6 +16,7 @@ Vue.component("homePage", {
 			<a href="#/registration" v-show="!user">Registation</a>
 			<a href="#/" v-show="user" v-on:click.prevent="logout">Logout</a>
 			<a href="#/" v-show="user" v-on:click.prevent="logout">About</a>
+			<a href="#/comment" v-show="user">Comment apartment</a>
 			
 		</p>
 		<p>{{user}}</p>
