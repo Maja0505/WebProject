@@ -107,6 +107,6 @@ public class UserService {
 		}
 		User newUser = new User(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getGender(), TypeOfUser.GUEST);
 		users.add(newUser);
-		userDao.save(users,newUser);
+		userDao.save(users,newUser,ctx.getRealPath("") + "json/user.json");
 	}
 }

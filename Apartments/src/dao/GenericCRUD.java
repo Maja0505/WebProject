@@ -26,7 +26,6 @@ public class GenericCRUD<E>{
 		ObjectMapper mapper = new ObjectMapper();
 		CollectionType listType = mapper.getTypeFactory().constructCollectionType(ArrayList.class, classType);
 		List<E> entities = mapper.readValue(new File(path), listType);
-
 		return entities;
 	}
 	

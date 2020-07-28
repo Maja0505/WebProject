@@ -52,8 +52,8 @@ public class UserDAO{
 		}
 		return user;
 	}
-	public void save(Collection<User> allUsers,User newUser) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allUsers,"C:\\Users\\tomic\\Desktop\\WEB_Project\\WebProject\\Apartments\\WebContent\\json/user.json");
+	public void save(Collection<User> allUsers,User newUser,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.saveAll(allUsers,path);
 		users.put(newUser.getUsername(), newUser);
 	}
 	

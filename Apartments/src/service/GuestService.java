@@ -64,6 +64,6 @@ public class GuestService {
 		Guest newGuest = new Guest(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
 				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>(),new ArrayList<Reservation>());
 		guests.add(newGuest);
-		GuestDAO.save(guests,newGuest);
+		GuestDAO.save(guests,newGuest,ctx.getRealPath("") + "json/guest.json");
 	}
 }
