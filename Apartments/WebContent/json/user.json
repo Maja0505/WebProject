@@ -1,1 +1,6 @@
-[{"username":"nene","password":"11111111","firstName":"Nene","lastName":"Jevtic","gender":"MALE","typeOfUser":"GUEST"},{"username":"maja","password":"11111111","firstName":"Maja","lastName":"Tomic","gender":"FEMALE","typeOfUser":"GUEST"}]
+[{"username":"nene","password":"11111111","firstName":"Nene","lastName":"Jevtic","gender":"MALE","typeOfUser":"GUEST"},
+{"username":"maja","password":"11111111","firstName":"Maja","lastName":"Tomic","gender":"FEMALE","typeOfUser":"GUEST"},
+{"username":"pera","password":"11111111","firstName":"Pera","lastName":"Peric","gender":"MALE","typeOfUser":"HOST"},
+{"username":"zika","password":"11111111","firstName":"Zika","lastName":"Zikic","gender":"MALE","typeOfUser":"HOST"},
+{"username":"mika","password":"11111111","firstName":"Mika","lastName":"Mikic","gender":"MALE","typeOfUser":"ADMIN"},
+{"username":"ana","password":"11111111","firstName":"Ana","lastName":"Anic","gender":"FEMALE","typeOfUser":"ADMIN"}]

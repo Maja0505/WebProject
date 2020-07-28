@@ -1,7 +1,4 @@
-/**
- * 
- */
-var global = "UNREGISTRED";
+
 
 Vue.component("homePage", {
 	data: function () {
@@ -20,6 +17,9 @@ Vue.component("homePage", {
 			
 		</p>
 		<p>{{user}}</p>
+		<div v-show="user">
+			<router-view></router-view>
+		</div>
 		</div>
 		`	,	mounted () {
 				axios

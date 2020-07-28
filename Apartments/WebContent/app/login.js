@@ -57,7 +57,7 @@ Vue.component("login", {
 							 axios
 					          .post('rest/users/login',this.users[user])
 					          .then(response => (toast('User ' + this.users[user].firstName + ' successed login!'),
-					        	 this.$router.push('/')))
+					        	 this.whitch_user(this.users[user])))
 							//u slucaju potrebe da ovaj gornji post nece da odradi kako treba tj.
 					        //odradi ga pre get zahteva iz homePage.js potrebna je ova donja linija  
 					        //this.$root.$emit('loginUser',this.users[user].typeOfUser);
@@ -75,6 +75,16 @@ Vue.component("login", {
 					this.wrong_password = "";
 				}
 					
+			},
+			whitch_user : function(user){
+				if(user.typeOfUser == "ADMIN"){
+					this.$router.push('admin');
+				}else if(user.typeOfUser == "GUEST"){
+					this.$router.push('guest');
+				}else{
+					this.$router.push('host');
+				}
 			}
+		
 		}
 });
