@@ -55,7 +55,7 @@ public class GuestService {
 	@Path("/addGuest")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void addUser(User user) throws JsonParseException, JsonMappingException, IOException {
+	public void addGuest(User user) throws JsonParseException, JsonMappingException, IOException {
 		GuestDAO GuestDAO = (GuestDAO) ctx.getAttribute("guests");
 		Collection<Guest> guests = new LinkedList<Guest>();
 		for(Guest u : getAllGuests()) {

@@ -22,7 +22,7 @@ import beans.Comment;
 import dao.CommentDAO;
 
 
-@Path("comments")
+@Path("/comments")
 public class CommentService {
 
 	@Context
