@@ -126,7 +126,7 @@ Vue.component("registration", {
 			            'Content-Type': 'application/json',
 			        }
 			    })
-		          .then(response =>(this.login()))
+		          .then(response => (this.login()))
 	            
 				},
 			login : function () {

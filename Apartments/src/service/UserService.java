@@ -16,6 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -107,6 +108,6 @@ public class UserService {
 		}
 		User newUser = new User(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getGender(), TypeOfUser.GUEST);
 		users.add(newUser);
-		userDao.save(users,newUser,ctx.getRealPath("") + "json/user.json");
+		userDao.save(users,newUser,ctx.getRealPath("")+"json/user.json");
 	}
 }

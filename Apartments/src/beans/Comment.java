@@ -1,16 +1,21 @@
 package beans;
 
-public class Comment {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+public class Comment {
+		@JsonIgnoreProperties({"password","firstName","lastName","gender","typeOfUser","rentedApartments","reservations"})
 		private Guest guest;
+		
+		@JsonIgnoreProperties({"comments","images","host"})
 		private Apartment apartment;
 		private String text;
 		private int rate;
 		
 		public Comment() {
+			super();
 		}
 
-		public Comment(Guest guest, String text, int rate, Apartment apartment) {
+		public Comment(Guest guest,Apartment apartment, String text, int rate) {
 			super();
 			this.guest = guest;
 			this.apartment = apartment;
