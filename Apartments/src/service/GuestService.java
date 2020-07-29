@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -65,5 +67,15 @@ public class GuestService {
 				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>(),new ArrayList<Reservation>());
 		guests.add(newGuest);
 		GuestDAO.save(guests,newGuest,ctx.getRealPath("") + "json/guest.json");
+	}
+	
+	@PUT
+	@Path("/updateGuest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateGuest(Guest guest) throws JsonGenerationException, JsonMappingException, IOException {
+		GuestDAO guestDAO = (GuestDAO) ctx.getAttribute("guests");
+		guestDAO.update(guest, ctx.getRealPath("")+"json/guest.json");
+		request.getSession().setAttribute("user", guest);
 	}
 }

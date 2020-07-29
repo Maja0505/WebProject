@@ -37,12 +37,19 @@ public class HostDAO {
 					hosts.put(host.getUsername(), host);
 					break;
 				}
-			
 			}
-		
-			
 		}
 
+	}
+	
+	public void update(Host host,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		HashMap<String, HostDTO> hostDTO = new HashMap<String, HostDTO>();
+		for(Host h : allHosts()) {
+			hostDTO.put(h.getUsername(), new HostDTO(h.getUsername(),h.getApartmentsForRent()));
+		}
+		HostDTO newHostDTO = new HostDTO(host.getUsername(), host.getApartmentsForRent());
+		genericCRUD.update(hostDTO,newHostDTO, path, host.getUsername());
+		hosts.replace(host.getUsername(), hosts.get(host.getUsername()), host);
 	}
 	
 	public Collection<Host> allHosts(){

@@ -28,6 +28,16 @@ public class UserDAO{
 		}
 		
 	}
+	
+	public void save(Collection<User> allUsers,User newUser,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.saveAll(allUsers,path);
+		users.put(newUser.getUsername(), newUser);
+	}
+	
+	public void update(User user,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.update(users, user, path, user.getUsername());
+		users.replace(user.getUsername(), users.get(user.getUsername()), user);
+	}
 
 	public Collection<User> allUsers(){
 		return users.values();
@@ -52,9 +62,6 @@ public class UserDAO{
 		}
 		return user;
 	}
-	public void save(Collection<User> allUsers,User newUser,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allUsers,path);
-		users.put(newUser.getUsername(), newUser);
-	}
+
 	
 }

@@ -2,7 +2,8 @@ Vue.component("homePage", {
 	data: function () {
 	    return {
 		  user: null,
-		  searchText: ""
+		  searchText: "",
+		  showProfileInfo: false
 	    }
 },
 		template: ` 
@@ -14,7 +15,12 @@ Vue.component("homePage", {
 			<a href="#/" v-show="user" v-on:click.prevent="logout">About</a>
 			<a href="#/comment" v-show="user">Comment apartment</a>
 			
+			
 		</p>
+		<button type="submit" v-show="user" v-on:click="showProfile()">Show profile</button>
+		<div v-if="user" v-show="showProfileInfo">
+			<editProfile></editProfile>
+		</div>
 		<div class="search-container">
 		      <input type="text" placeholder="Search.." name="search" v-model = "searchText">
 		      <button type="submit" v-on:click = "search()">Pretrazi</button>
@@ -54,6 +60,15 @@ Vue.component("homePage", {
 				
 				search: function(){
 					this.$root.$emit('search',this.searchText);
+				},
+				
+				showProfile: function(){
+					if(this.showProfileInfo){
+						this.showProfileInfo = false;
+					}else{
+						this.showProfileInfo = true;
+					}
+					this.$root.$emit('show');
 				}
 			}	
 });

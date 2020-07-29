@@ -1,12 +1,11 @@
 /**
  * 
  */
-var searchText = null
 Vue.component("admin", {
 	data: function () {
 	    return {
 		  users: null,
-		  searchText: null
+		  currentUser:{}
 	    }
 },
 		template: ` 
@@ -20,7 +19,7 @@ Vue.component("admin", {
 				<th>User type</th>
 			</tr>
 			
-			<tr v-for="u in users">
+			<tr v-for="u in users" v-if="currentUser.username != u.username">
 				<td>{{u.firstName }}</td>
 				<td>{{u.lastName }}</td>
 				<td>{{u.username }}</td>
@@ -29,7 +28,6 @@ Vue.component("admin", {
 			</tr>
 		</table>
 		<p>CAO JA SAM ADMIN</p>
-		<p>{{searchText}}</p>
 		</div>
 		`,
 		mounted () {
@@ -37,13 +35,20 @@ Vue.component("admin", {
           .get('rest/users/all')
           .then(response => (this.users = response.data))
          
-          this.$root.$on('search', (text)=>{
-            this.users = this.search(text)})
+        axios
+          .get('rest/users/currentUser')
+          .then(response => (this.currentUser = response.data ))
+          
+          this.$root.$on('search', (text)=>{ axios
+              .get('rest/users/all').then(response => (this.users = response.data,this.users = this.search(text)))
+            })
 		},
 		methods: {
 			search : function(searchText){
 				return this.users.filter(post => {
-			        return post.username.toLowerCase().includes(searchText.toLowerCase())})
+			        return post.username.toLowerCase().includes(searchText.toLowerCase()) || 
+					       post.gender.toLowerCase().includes(searchText.toLowerCase()) ||
+					       post.typeOfUser.toLowerCase().includes(searchText.toLowerCase())})
 			}
 		}
 		

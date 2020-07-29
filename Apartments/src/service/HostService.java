@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -61,9 +63,19 @@ public class HostService {
 			hosts.add(h);
 		}
 		Host newHost = new Host(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
-				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>());
+				user.getGender(), TypeOfUser.HOST,new ArrayList<Apartment>());
 		hosts.add(newHost);
 		
 		hostDao.save(hosts,newHost,ctx.getRealPath("") + "json/host.json");
+	}
+	
+	@PUT
+	@Path("/updateHost")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateHost(Host host) throws JsonGenerationException, JsonMappingException, IOException {
+		HostDAO hostDAO = (HostDAO) ctx.getAttribute("hosts");
+		hostDAO.update(host, ctx.getRealPath("")+"json/host.json");
+		request.getSession().setAttribute("user", host);
 	}
 }

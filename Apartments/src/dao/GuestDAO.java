@@ -47,6 +47,25 @@ public class GuestDAO {
 
 	}
 	
+	public void save(Collection<Guest> allGuests,Guest newGuest,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		Collection<GuestDTO> guestsDTO = new LinkedList<GuestDTO>();
+		for (Guest guest : allGuests) {
+			guestsDTO.add(new GuestDTO(guest.getUsername(),guest.getRentedApartments(),guest.getReservations()));
+		}
+		genericCRUD.saveAll(guestsDTO, path);
+		guests.put(newGuest.getUsername(), newGuest);
+	}
+	
+	public void update(Guest guest,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		HashMap<String, GuestDTO> guestsDTO = new HashMap<String, GuestDTO>();
+		for(Guest g : allGuests()) {
+			guestsDTO.put(g.getUsername(), new GuestDTO(g.getUsername(),g.getRentedApartments(),g.getReservations()));
+		}
+		GuestDTO newGuestDTO = new GuestDTO(guest.getUsername(), guest.getRentedApartments(),guest.getReservations());
+		genericCRUD.update(guestsDTO,newGuestDTO, path, guest.getUsername());
+		guests.replace(guest.getUsername(), guests.get(guest.getUsername()), guest);
+	}
+	
 	public Collection<Guest> allGuests(){
 		return guests.values();
 	}
@@ -70,12 +89,5 @@ public class GuestDAO {
 		}
 		return Guest;
 	}
-	public void save(Collection<Guest> allGuests,Guest newGuest,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		Collection<GuestDTO> guestsDTO = new LinkedList<GuestDTO>();
-		for (Guest guest : allGuests) {
-			guestsDTO.add(new GuestDTO(guest.getUsername(),guest.getRentedApartments(),guest.getReservations()));
-		}
-		genericCRUD.saveAll(guestsDTO, path);
-		guests.put(newGuest.getUsername(), newGuest);
-	}
+
 }
