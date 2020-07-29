@@ -1,9 +1,8 @@
-
-
 Vue.component("homePage", {
 	data: function () {
 	    return {
 		  user: null,
+		  searchText: ""
 	    }
 },
 		template: ` 
@@ -16,16 +15,30 @@ Vue.component("homePage", {
 			<a href="#/comment" v-show="user">Comment apartment</a>
 			
 		</p>
+		<div class="search-container">
+		      <input type="text" placeholder="Search.." name="search" v-model = "searchText">
+		      <button type="submit" v-on:click = "search()">Pretrazi</button>
+		  </div>
 		<p>{{user}}</p>
-		<div v-show="user">
-			<router-view></router-view>
+		<div v-if = "user" v-show="user.typeOfUser == 'ADMIN'">
+			<admin></admin>
 		</div>
+		<div v-if = "user" v-show="user.typeOfUser == 'GUEST'">
+			<guest></guest>
+		</div>
+		<div v-if = "user" v-show="user.typeOfUser == 'HOST'">
+			<host></host>
+		</div>
+
+		
 		</div>
 		`	,	mounted () {
 				axios
 		          .get('rest/users/currentUser')
 		          .then(response => {response.data ? this.user = response.data : this.user = null ;		
 		          });
+				
+				
 				//nekad brlja odradi prvo get pre nego sto odradi post u login.js i onda ne uspe lepo da 
 				//ispise ono sto treba 
 				/*this.$root.$on('loginUser',(text) => {
@@ -37,6 +50,10 @@ Vue.component("homePage", {
 					axios
 			          .post('rest/users/logout')
 			          .then(response => (toast('User ' + response.data + ' successed logout!')) ,this.user = null)
+				},
+				
+				search: function(){
+					this.$root.$emit('search',this.searchText);
 				}
-				}
+			}	
 });

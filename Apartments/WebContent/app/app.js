@@ -5,16 +5,12 @@ const HomePage = { template: '<homePage></homePage>' }
 const Apartment = { template: '<apartment></apartment>' }
 const Amenities = { template: '<amenities></amenities>' }
 const Reservation = { template: '<reservation></reservation>' }
-const Admin = { template: '<admin></admin>' }
-const Guest = { template: '<guest></guest>' }
-const Host = { template: '<host></host>' }
-
 
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-		{ path: '/', component: HomePage , children :[{path:'admin' , component: Admin},{path:'guest' , component: Guest},{path:'host' , component: Host}]},
+		{ path: '/', component: HomePage },
 	    { path: '/login', component: Login },
 	    { path: '/registration', component: Registation },
 	    { path: '/comment', component: Comment },
@@ -30,3 +26,4 @@ var app = new Vue({
 	router,
 	el: '#Apartments'
 });
+
