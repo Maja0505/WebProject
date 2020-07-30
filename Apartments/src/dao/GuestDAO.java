@@ -78,4 +78,11 @@ public class GuestDAO {
 		genericCRUD.saveAll(guestsDTO, path);
 		guests.put(newGuest.getUsername(), newGuest);
 	}
+	public void update(Collection<Guest> allGuests,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		Collection<GuestDTO> guestsDTO = new LinkedList<GuestDTO>();
+		for (Guest guest : allGuests) {
+			guestsDTO.add(new GuestDTO(guest.getUsername(),guest.getRentedApartments(),guest.getReservations()));
+		}
+		genericCRUD.saveAll(guestsDTO, path);
+	}
 }

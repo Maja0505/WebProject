@@ -21,9 +21,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Apartment;
 import beans.Guest;
+import beans.Host;
 import beans.Reservation;
 import beans.User;
 import dao.GuestDAO;
+import dao.HostDAO;
+import dto.GuestApartmentDTO;
+import dto.GuestReservationDTO;
+import dto.HostApartmentDTO;
 import enums.TypeOfUser;
 
 
@@ -65,5 +70,47 @@ public class GuestService {
 				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>(),new ArrayList<Reservation>());
 		guests.add(newGuest);
 		GuestDAO.save(guests,newGuest,ctx.getRealPath("") + "json/guest.json");
+	}
+	
+	@POST
+	@Path("/addReservationToGuest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addReservationToGuest(GuestReservationDTO guestReservationDTO) throws JsonParseException, JsonMappingException, IOException {
+		GuestDAO guestDAO = (GuestDAO) ctx.getAttribute("guests");
+		Collection<Guest> guests = new LinkedList<Guest>();		
+		for(Guest g : getAllGuests()) {
+			if(g.getUsername().equals(guestReservationDTO.guest.getUsername()))
+			{
+				if(g.getReservations() == null) {
+					g.setReservations(new ArrayList<Reservation>());
+				}
+				g.getReservations().add(guestReservationDTO.reservation);
+			}
+			guests.add(g);
+		}
+		
+		guestDAO.update(guests,ctx.getRealPath("") + "json/guest.json");
+	}
+	
+	@POST
+	@Path("/addApartmentToGuest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addApartmentToHost(GuestApartmentDTO guestApartmentDTO) throws JsonParseException, JsonMappingException, IOException {
+		GuestDAO guestDAO = (GuestDAO) ctx.getAttribute("guests");
+		Collection<Guest> guests = new LinkedList<Guest>();		
+		for(Guest g : getAllGuests()) {
+			if(g.getUsername().equals(guestApartmentDTO.guest.getUsername()))
+			{
+				if(g.getRentedApartments() == null) {
+					g.setRentedApartments(new ArrayList<Apartment>());
+				}
+				g.getRentedApartments().add(guestApartmentDTO.apartment);
+			}
+			guests.add(g);
+		}
+		
+		guestDAO.update(guests,ctx.getRealPath("") + "json/guest.json");
 	}
 }

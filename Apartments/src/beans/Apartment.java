@@ -4,16 +4,20 @@ import java.awt.Image;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import enums.StatusOfApartment;
 import enums.TypeOfApartment;
 
 public class Apartment {
+	private int id;
 	private TypeOfApartment typeOfApartment;
 	private int numberOfRooms;
 	private int numberOfGuests;
 	private Location location;
 	private List<Date> dateOfIssue;
 	private List<Date> availabilityByDates;
+	@JsonIgnoreProperties({"password","firstName","lastName","gender","typeOfUser","apartmentsForRent"})
 	private Host host;
 	private List<Comment> comments;
 	private List<Image> images;
@@ -22,17 +26,19 @@ public class Apartment {
 	private Date checkOutTime;
 	private StatusOfApartment statusOfApartment;
 	private List<Amenities> amenities;
+	@JsonIgnoreProperties({"apartment","startDateOfReservation","numberOfNights","fullPrice","reservationMessage","guest","statusOfReservation"})
     private List<Reservation> reservations;
     
 	public Apartment() {
 		
 	}
 
-	public Apartment(TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
+	public Apartment(int id,TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
 			List<Date> dateOfIssue, List<Date> availabilityByDates, Host host, List<Comment> comments,
 			List<Image> images, Double pricePerNight, Date checkInTime, Date checkOutTime,
 			StatusOfApartment statusOfApartment, List<Amenities> amenities, List<Reservation> reservations) {
 		super();
+		this.id = id;
 		this.typeOfApartment = typeOfApartment;
 		this.numberOfRooms = numberOfRooms;
 		this.numberOfGuests = numberOfGuests;
@@ -48,6 +54,14 @@ public class Apartment {
 		this.statusOfApartment = statusOfApartment;
 		this.amenities = amenities;
 		this.reservations = reservations;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public TypeOfApartment getTypeOfApartment() {

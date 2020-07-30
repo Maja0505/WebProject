@@ -4,12 +4,74 @@
 Vue.component("host", {
 	data: function () {
 	    return {
-		  user: null,
+		  users: null,
+		  loggedUser:null,
+	      selectedStudent: {},
+	      myGuests:[],
+	      searchField: "",
+	      reservations:null
 	    }
 },
 		template: ` 
 		<div>
-		<p>CAO JA SAM HOST</p>
+			<table class="myGuests">
+			<tr bgcolor="lightgrey">
+				<th>Username</th>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Gender</th>
+				<th>User type</th>
+			</tr>
+			
+			<tr v-for="u in myGuests">
+				<td>{{u.username }}</td>
+				<td>{{u.firstName }}</td>
+				<td>{{u.lastName }}</td>
+				<td>{{u.gender }}</td>
+				<td>{{u.typeOfUser }}</td>
+			</tr>
+			</table>
 		</div>
 		`	
+		, mounted () {
+			axios
+	          .get('rest/users/all')
+	          .then(response => (this.users = response.data,this.getCurrentUser()))
+	        
+	         
+	    }
+		,methods: {
+			getMyGuests: function(){
+				//for(let apartment in loggedUser.apartmentsForRent){
+	
+					let guests= this.users.filter(user => {
+				        return user.typeOfUser == ("GUEST")})
+
+					for (apartment of this.loggedUser.apartmentsForRent) {
+						for(reservation of this.reservations){
+							if(reservation.apartment.id == apartment.id){
+								let guest = guests.filter(function(g) {
+								return g.username == reservation.guest.username})
+									
+								this.myGuests.push(guest[0]);
+							}
+						}
+}							
+					}
+			,getCurrentUser: function(){
+			     axios
+		          .get('rest/users/currentUser')
+		          .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,this.getAllReservation()))
+	    
+		      
+			},
+			getAllReservation: function(){
+				axios
+		          .get('rest/reservations/all')
+		          .then(response => (this.reservations = response.data,this.getMyGuests()))
+	    
+		      
+			}
+			}
+		
 });

@@ -55,8 +55,8 @@ public class ReservationService {
 		for(Reservation r : getAllReservations()) {
 			reservations.add(r);
 		}
-		Reservation newReservation = new Reservation(reservation.getApartment(),reservation.getStartDateOfReservation(),reservation.getNumberOfNights(),reservation.getFullPrice(),reservation.getReservationMessage(),reservation.getGuest(),reservation.getStatusOfReservation());
-		reservations.add(newReservation);
-		reservationDAO.save(reservations,newReservation,ctx.getRealPath("") + "json/reservation.json");
+	//	Reservation newReservation = new Reservation(reservation.getApartment(),reservation.getStartDateOfReservation(),reservation.getNumberOfNights(),reservation.getFullPrice(),reservation.getReservationMessage(),reservation.getGuest(),reservation.getStatusOfReservation());
+		reservations.add(reservation);
+		reservationDAO.save(reservations,reservation,ctx.getRealPath("") + "json/reservation.json");
 	}
 }

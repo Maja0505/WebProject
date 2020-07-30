@@ -32,6 +32,10 @@ public class ApartmentDAO {
 		apartments.add(newAparmtnet);
 	}
 	
+	public void update(Collection<Apartment> allAparmtents,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.saveAll(allAparmtents,path);
+	}
+	
 	public Collection<Apartment> allAparmtents() {
 		return apartments;
 	}

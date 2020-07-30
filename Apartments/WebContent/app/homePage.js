@@ -13,6 +13,8 @@ Vue.component("homePage", {
 			<a href="#/" v-show="user" v-on:click.prevent="logout">Logout</a>
 			<a href="#/" v-show="user" v-on:click.prevent="logout">About</a>
 			<a href="#/comment" v-show="user">Comment apartment</a>
+			<a href="#/apartment"v-if = "user" v-show="user.typeOfUser == 'HOST'">Add apartment</a>
+
 			
 		</p>
 		<div class="search-container">

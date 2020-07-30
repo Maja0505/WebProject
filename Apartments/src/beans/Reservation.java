@@ -2,24 +2,30 @@ package beans;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import enums.StatusOfReservation;
 
 public class Reservation {
 
+	private String id;
+	@JsonIgnoreProperties({"typeOfApartment","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
 	private Apartment apartment;
 	private Date startDateOfReservation;
 	private int numberOfNights;
 	private double fullPrice;
 	private String reservationMessage;
+    @JsonIgnoreProperties({"password","firstName","lastName","gender","typeOfUser","rentedApartments","reservations"})
 	private Guest guest;
 	private StatusOfReservation statusOfReservation;
 	
 	public Reservation() {
 	}
 
-	public Reservation(Apartment apartment,Date startDateOfReservation, int numberOfNights, double fullPrice, String reservationMessage,
+	public Reservation(String id,Apartment apartment,Date startDateOfReservation, int numberOfNights, double fullPrice, String reservationMessage,
 			Guest guest, StatusOfReservation statusOfReservation) {
 		super();
+		this.id = id;
 		this.apartment = apartment;
 		this.startDateOfReservation = startDateOfReservation;
 		this.numberOfNights = numberOfNights;
@@ -30,6 +36,14 @@ public class Reservation {
 	}
 	
 	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public Apartment getApartment() {
 		return apartment;
