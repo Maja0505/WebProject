@@ -11,24 +11,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Apartment;
 import beans.Guest;
-import beans.Host;
 import beans.Reservation;
 import beans.User;
 import dao.GuestDAO;
-import dao.HostDAO;
 import dto.GuestApartmentDTO;
 import dto.GuestReservationDTO;
-import dto.HostApartmentDTO;
 import enums.TypeOfUser;
 
 
@@ -72,6 +71,7 @@ public class GuestService {
 		GuestDAO.save(guests,newGuest,ctx.getRealPath("") + "json/guest.json");
 	}
 	
+
 	@POST
 	@Path("/addReservationToGuest")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -112,5 +112,16 @@ public class GuestService {
 		}
 		
 		guestDAO.update(guests,ctx.getRealPath("") + "json/guest.json");
+	}
+
+	@PUT
+	@Path("/updateGuest")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateGuest(Guest guest) throws JsonGenerationException, JsonMappingException, IOException {
+		GuestDAO guestDAO = (GuestDAO) ctx.getAttribute("guests");
+		guestDAO.update(guest, ctx.getRealPath("")+"json/guest.json");
+		request.getSession().setAttribute("user", guest);
+
 	}
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -31,7 +32,11 @@ public class GenericCRUD<E>{
 	
 	public void delete(E entity,String path) {}
 	
-	public void update(E entity,String path) {}
+	public void update(HashMap<String,E> entities,E entity,String path,String key) throws JsonGenerationException, JsonMappingException, IOException {
+		entities.replace(key, entities.get(key), entity);
+		Collection<E> entitiesList = entities.values();
+		saveAll(entitiesList, path);
+	}
 	
 	public void saveAll(Collection<E> entities,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
