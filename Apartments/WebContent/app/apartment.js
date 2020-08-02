@@ -93,7 +93,7 @@ Vue.component("apartment", {
 	    }
 		,methods: {
 			add: function() {
-				if(this.allApartments){
+				if(this.allApartments.length != 0){
 					this.length = this.allApartments[this.allApartments.length - 1].id + 1; 
 				}else{
 							this.length = 1;
@@ -101,12 +101,12 @@ Vue.component("apartment", {
 				this.location.address = this.address;
 				this.apartment.location = this.location;
 				this.hostApartment.host = this.loggedUser;
-				this.hostApartment.apartment = {"id":this.length + 1, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":null,"availabilityByDates":null,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":null,"checkOutTime":null,"statusOfApartment":'INACTIVE',"amenities":null,"reservations":null};
+				this.hostApartment.apartment = {"id":this.length, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":null,"availabilityByDates":null,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":null,"checkOutTime":null,"statusOfApartment":'INACTIVE',"amenities":null,"reservations":null};
 
 				console.log(this.apartment);
 				 axios
 		          .post('rest/apartments/addApartment', 
-		        	JSON.stringify({"id":this.length + 1, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":null,"availabilityByDates":null,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":null,"checkOutTime":null,"statusOfApartment":'INACTIVE',"amenities":null,"reservations":null}), {
+		        	JSON.stringify({"id":this.length, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":null,"availabilityByDates":null,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":null,"checkOutTime":null,"statusOfApartment":'INACTIVE',"amenities":null,"reservations":null}), {
  			        headers: {
 			            'Content-Type': 'application/json',
 			        }

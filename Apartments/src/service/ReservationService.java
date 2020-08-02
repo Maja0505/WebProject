@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Reservation;
 import dao.ReservationDAO;
+import enums.StatusOfReservation;
 
 @Path("/reservations")
 public class ReservationService {
@@ -55,7 +56,6 @@ public class ReservationService {
 		for(Reservation r : getAllReservations()) {
 			reservations.add(r);
 		}
-	//	Reservation newReservation = new Reservation(reservation.getApartment(),reservation.getStartDateOfReservation(),reservation.getNumberOfNights(),reservation.getFullPrice(),reservation.getReservationMessage(),reservation.getGuest(),reservation.getStatusOfReservation());
 		reservations.add(reservation);
 		reservationDAO.save(reservations,reservation,ctx.getRealPath("") + "json/reservation.json");
 	}

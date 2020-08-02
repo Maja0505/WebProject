@@ -71,7 +71,7 @@ public class GuestService {
 		GuestDAO.save(guests,newGuest,ctx.getRealPath("") + "json/guest.json");
 	}
 	
-
+/*
 	@POST
 	@Path("/addReservationToGuest")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -112,7 +112,7 @@ public class GuestService {
 		}
 		
 		guestDAO.update(guests,ctx.getRealPath("") + "json/guest.json");
-	}
+	}*/
 
 	@PUT
 	@Path("/updateGuest")

@@ -20,6 +20,7 @@ public class Reservation {
 	private StatusOfReservation statusOfReservation;
 	
 	public Reservation() {
+		super();
 	}
 
 	public Reservation(String id,Apartment apartment,Date startDateOfReservation, int numberOfNights, double fullPrice, String reservationMessage,

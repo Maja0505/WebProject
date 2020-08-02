@@ -26,17 +26,21 @@ Vue.component("homePage", {
 		<div class="search-container">
 		      <input type="text" placeholder="Search.." name="search" v-model = "searchText">
 		      <button type="submit" v-on:click = "search()">Pretrazi</button>
-		  </div>
-		<p>{{user}}</p>
-		<div v-if = "user" v-show="user.typeOfUser == 'ADMIN'">
-			<admin></admin>
 		</div>
-		<div v-if = "user" v-show="user.typeOfUser == 'GUEST'">
-			<guest></guest>
+		<div v-if = "user">
+			<div v-show="user.typeOfUser == 'ADMIN'">
+				<admin></admin>
+			</div>
+			<div v-show="user.typeOfUser == 'GUEST'">
+				<guest></guest>
+			</div>
+			<div  v-show="user.typeOfUser == 'HOST'">
+				<host></host>
+			</div>
 		</div>
-		<div v-if = "user" v-show="user.typeOfUser == 'HOST'">
-			<host></host>
-		</div>
+		
+		
+		
 
 		
 		</div>

@@ -1,2 +1,1 @@
-[{"username":"pera","apartmentsForRent":[]}
-,{"username":"zika","apartmentsForRent":[]}]
+[{"username":"pera","apartmentsForRent":[{"id":1,"typeOfApartment":"ROOM","numberOfRooms":21,"numberOfGuests":2,"location":{"latitude":3.2,"longitude":2.54,"address":{"street":"jhkhj","streetNumber":"hjkhkj","city":"hjkhk","postalCode":"44444"}},"dateOfIssue":null,"availabilityByDates":null,"host":{"username":"pera"},"comments":null,"images":null,"pricePerNight":54.0,"checkInTime":null,"checkOutTime":null,"statusOfApartment":"INACTIVE","amenities":null,"reservations":null}]},{"username":"zika","apartmentsForRent":[]}]

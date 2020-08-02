@@ -4,7 +4,6 @@ const Comment = { template: '<comment></comment>' }
 const HomePage = { template: '<homePage></homePage>' }
 const Apartment = { template: '<apartment></apartment>' }
 const Amenities = { template: '<amenities></amenities>' }
-const Reservation = { template: '<reservation></reservation>' }
 
 
 const router = new VueRouter({
@@ -17,13 +16,11 @@ const router = new VueRouter({
 	    { path: '/apartment' , component: Apartment},
 	    { path: '/location' , component: Location},
 	    { path: '/amenities' , component: Amenities},
-	    { path: '/reservation', component: Reservation}
-	    
 	  ]
 });
 
 var app = new Vue({
 	router,
-	el: '#Apartments'
+	el: '#Apartments',
+	
 });
-
