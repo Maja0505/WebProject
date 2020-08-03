@@ -44,7 +44,7 @@ Vue.component("editProfile", {
 					<td><input type="text" v-model="user.username" v-bind:disabled="true"/></td>
 				</tr>
 				<tr>
-					<td><button v-on:click="change()" v-bind:disabled="mode=='NOT_EDIT_YET'">Change password</button><td>
+					<td><button v-on:click="change()" v-bind:disabled="mode=='NOT_EDIT_YET'">Change password</button></td>
 				</tr>
 				<tr v-if="changePassword">
 					<td>Old password:</td>

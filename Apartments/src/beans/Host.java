@@ -2,14 +2,11 @@ package beans;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import enums.Gender;
 import enums.TypeOfUser;
 
 public class Host extends User {
 	
-	@JsonIgnoreProperties({"typeOfApartment","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
 	private List<Apartment> apartmentsForRent;	
 	
 	public Host() {

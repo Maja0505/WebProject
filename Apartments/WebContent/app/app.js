@@ -7,6 +7,7 @@ const Amenities = { template: '<amenities></amenities>' }
 const Reservation = { template: '<reservation></reservation>' }
 
 
+
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -22,8 +23,10 @@ const router = new VueRouter({
 	  ]
 });
 
+
 var app = new Vue({
 	router,
 	el: '#Apartments'
 });
+
 

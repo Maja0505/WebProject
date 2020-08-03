@@ -5,7 +5,7 @@ Vue.component("host", {
 	data: function () {
 	    return {
 		  users: null,
-		  loggedUser:null,
+		  loggedUser:{},
 	      selectedStudent: {},
 	      myGuests:[],
 	      searchField: "",
