@@ -6,6 +6,7 @@ const Apartment = { template: '<apartment></apartment>' }
 const Amenities = { template: '<amenities></amenities>' }
 
 
+
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
@@ -18,6 +19,7 @@ const router = new VueRouter({
 	    { path: '/amenities' , component: Amenities},
 	  ]
 });
+
 
 var app = new Vue({
 	router,

@@ -10,7 +10,7 @@ import enums.StatusOfApartment;
 import enums.TypeOfApartment;
 
 public class Apartment {
-	private int id;
+	private String id;
 	private TypeOfApartment typeOfApartment;
 	private int numberOfRooms;
 	private int numberOfGuests;
@@ -22,9 +22,9 @@ public class Apartment {
 	@JsonIgnoreProperties({"apartment","guest","rate","text"})
 	private List<Comment> comments;
 	private List<Image> images;
-	private Double pricePerNight;
-	private Date checkInTime;
-	private Date checkOutTime;
+	private int pricePerNight;
+	private String checkInTime;
+	private String checkOutTime;
 	private StatusOfApartment statusOfApartment;
 	private List<Amenities> amenities;
 	@JsonIgnoreProperties({"apartment","startDateOfReservation","numberOfNights","fullPrice","reservationMessage"})
@@ -34,9 +34,9 @@ public class Apartment {
 		
 	}
 
-	public Apartment(int id,TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
+	public Apartment(String id,TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
 			List<Date> dateOfIssue, List<Date> availabilityByDates, Host host, List<Comment> comments,
-			List<Image> images, Double pricePerNight, Date checkInTime, Date checkOutTime,
+			List<Image> images, int pricePerNight, String checkInTime, String checkOutTime,
 			StatusOfApartment statusOfApartment, List<Amenities> amenities, List<Reservation> reservations) {
 		super();
 		this.id = id;
@@ -57,11 +57,11 @@ public class Apartment {
 		this.reservations = reservations;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -137,27 +137,27 @@ public class Apartment {
 		this.images = images;
 	}
 
-	public Double getPricePerNight() {
+	public int getPricePerNight() {
 		return pricePerNight;
 	}
 
-	public void setPricePerNight(Double pricePerNight) {
+	public void setPricePerNight(int pricePerNight) {
 		this.pricePerNight = pricePerNight;
 	}
 
-	public Date getCheckInTime() {
+	public String getCheckInTime() {
 		return checkInTime;
 	}
 
-	public void setCheckInTime(Date checkInTime) {
+	public void setCheckInTime(String checkInTime) {
 		this.checkInTime = checkInTime;
 	}
 
-	public Date getCheckOutTime() {
+	public String getCheckOutTime() {
 		return checkOutTime;
 	}
 
-	public void setCheckOutTime(Date checkOutTime) {
+	public void setCheckOutTime(String checkOutTime) {
 		this.checkOutTime = checkOutTime;
 	}
 
