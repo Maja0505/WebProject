@@ -2,7 +2,7 @@ package dao;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -13,7 +13,7 @@ import beans.Comment;
 
 public class CommentDAO {
 
-	private Collection<Comment> comments;
+	private HashMap<String,Comment> comments;
 	private GenericCRUD<Comment> genericCRUD = new GenericCRUD<Comment>();
 	
 	
@@ -21,29 +21,28 @@ public class CommentDAO {
 	}
 
 	public CommentDAO(String contexPath) throws JsonParseException, JsonMappingException, IOException {
-		comments = new LinkedList<Comment>();
+		comments = new HashMap<String, Comment>();
 		List<Comment> commentsArray = genericCRUD.load(contexPath, Comment.class);
 		for(Comment comment : commentsArray) {
-				comments.add(comment);
+				comments.put(comment.getId(),comment);
 		}
 	}
 	
 	public void save(Collection<Comment> allComments,Comment newComment,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		genericCRUD.saveAll(allComments,path);
-		comments.add(newComment);
+		comments.put(newComment.getId(),newComment);
 	}
 
 
 	public Collection<Comment> allComments() {
-		return comments;
+		return comments.values();
 	}
 	
-
-	public Collection<Comment> getComments() {
+	public HashMap<String, Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(Collection<Comment> comments) {
+	public void setComments(HashMap<String, Comment> comments) {
 		this.comments = comments;
 	}
 

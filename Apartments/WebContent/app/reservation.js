@@ -67,7 +67,6 @@ Vue.component("reservation", {
 								<button type="submit"  v-on:click="bookingApartment()">Booking apartment</button>
 				       		</div>
 				   </div>
-				   <p>{{this.loggedUser}}</p>
 			</div>
 		
 		`,
