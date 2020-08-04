@@ -29,6 +29,7 @@ Vue.component("admin", {
 		</table>
 		
 		<apartmentsForAdmin></apartmentsForAdmin>
+		<reservationsForAdmin></reservationsForAdmin>
 		<p>CAO JA SAM ADMIN</p>
 		</div>
 		`,

@@ -153,7 +153,7 @@ Vue.component("comment", {
 					this.maxId = 1;
 					  }
 				
-				var objComment = {"id":this.maxId,"guest":this.user,"apartment":this.selectedApartment,"text":''+this.comment.text,"rate":this.comment.rate,"isEnable":true};
+				var objComment = {"id":this.maxId,"guest":this.user,"apartment":this.selectedApartment,"text":''+this.comment.text,"rate":this.comment.rate,"enable":true};
 				
 	    	    var stringApartment = JSON.stringify(this.selectedApartment);
 	    	    var objApartment = JSON.parse(stringApartment);

@@ -8,8 +8,9 @@ Vue.component("apartmentsForAdmin", {
 	    	allApartments:null,
 	    	allComments:null,
 	    	showAllApartments:false,
-	    	commentForSelectedApartment:null,
-	    	isAnySelected:false,
+	    	commentsForSelectedApartment:[],
+	    	nothaveAnyComment:true,
+	    	selectedAppartment:null
 	    }
 	},
 	
@@ -31,27 +32,25 @@ Vue.component("apartmentsForAdmin", {
 						<td>{{a.host.username }}</td>
 					</tr>
 				</table>
-				<div v-if="!commentForSelectedApartment && isAnySelected">
+				<div v-if="selectedAppartment && nothaveAnyComment">
 					Selected apartment don't have any comment
 				</div>
-				<div v-if="commentForSelectedApartment">
-					<table>
-						<tr>
-							<td>Apartment : </td>
-							<td>{{commentForSelectedApartment.apartment.id}}</td>
-						</tr>
+				<div v-if="commentsForSelectedApartment">
+							<p v-if="selectedAppartment"><label>Apartment : </label>
+							<label>{{selectedAppartment.id}}</label></p>
+					<table v-for="comment in commentsForSelectedApartment">
 						<tr>
 							<td>Guest : </td>
-							<td>{{commentForSelectedApartment.guest.username}}</td>
+							<td>{{comment.guest.username}}</td>
 						</tr>
 						<tr>
 							<td>Comment : </td>
-							<td>{{commentForSelectedApartment.text}}</td>
+							<td>{{comment.text}}</td>
 						</tr>
 						
 						<tr>
 							<td>Rate : </td>
-							<td>{{commentForSelectedApartment.rate}}</td>
+							<td>{{comment.rate}}</td>
 						</tr>
 					</table>
 				</div>
@@ -61,37 +60,38 @@ Vue.component("apartmentsForAdmin", {
 	
 	mounted(){
 		
-		axios
-	        .get('rest/apartments/all')
-	        .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null))
-	       
-	    axios
-	        .get('rest/comments/all')
-	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null))
 			
 	},
-	
+	 
 	
 	methods : {
 		
 		showApartments : function(){
-			this.commentForSelectedApartment = null;
-			if(this.showAllApartments){
+			this.commentsForSelectedApartment = [];
+			if(!this.showAllApartments)
+				axios
+			        .get('rest/apartments/all')
+			        .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
+				   		 axios
+			     	        .get('rest/comments/all')
+			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null,
+			     	        					this.showAllApartments = true))))
+			else{
 				this.showAllApartments = false;
 				this.isAnySelected = false;
-			}else{
-				this.showAllApartments = true;
-			}
-				
+				this.selectedAppartment = null;
+				this.nothaveAnyComment = true;
+			}		
 		},
 		
 		showCommentForSelectedApartment : function(apartment){
-				this.isAnySelected = true;
-				this.commentForSelectedApartment = null;
+				this.nothaveAnyComment = true;
+				this.selectedAppartment = apartment;
+				this.commentsForSelectedApartment = [];
 				for(let comment of this.allComments){
 					if(comment.apartment.id == apartment.id){
-						this.commentForSelectedApartment = comment;
-						break;
+						this.commentsForSelectedApartment.push(comment);
+						this.nothaveAnyComment = false;
 					}
 				}
 		}

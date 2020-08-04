@@ -2,6 +2,7 @@ package dao;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import beans.Reservation;
 
 public class ReservationDAO {
 
-	private Collection<Reservation> reservations;
+	private HashMap<String,Reservation> reservations;
 	private GenericCRUD<Reservation> genericCRUD = new GenericCRUD<Reservation>();
 	
 	public ReservationDAO() {
@@ -21,28 +22,35 @@ public class ReservationDAO {
 	}
 	
 	public ReservationDAO(String contexPath) throws JsonParseException, JsonMappingException, IOException {
-		reservations = new LinkedList<Reservation>();
+		reservations = new HashMap<String, Reservation>();
 		List<Reservation> reservationArray = genericCRUD.load(contexPath, Reservation.class);
-		for(Reservation a : reservationArray) {
-			reservations.add(a);
+		for(Reservation reservation : reservationArray) {
+			reservations.put(reservation.getId(),reservation);
 		}
-	}
-	
-	public Collection<Reservation> allReservations(){
-		return reservations;
 	}
 	
 	public void save(Collection<Reservation> allReservation,Reservation newReservation,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		genericCRUD.saveAll(allReservation, path);
-		reservations.add(newReservation);
+		reservations.put(newReservation.getId(), newReservation);
 	}
 	
-	public Collection<Reservation> getReservations() {
+	public void update(Reservation newReservation,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.update(reservations, newReservation, path, newReservation.getId());
+		reservations.replace(newReservation.getId(),reservations.get(newReservation.getId()), newReservation);
+	}
+	
+	public Collection<Reservation> allReservations(){
+		return reservations.values();
+	}
+	
+	public HashMap<String, Reservation> getReservations() {
 		return reservations;
 	}
-	public void setReservations(Collection<Reservation> reservations) {
+
+	public void setReservations(HashMap<String, Reservation> reservations) {
 		this.reservations = reservations;
 	}
+
 	public GenericCRUD<Reservation> getGenericCRUD() {
 		return genericCRUD;
 	}

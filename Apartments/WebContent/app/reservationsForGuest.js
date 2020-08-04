@@ -42,22 +42,19 @@ Vue.component("reservationsForGuest", {
 	
 	methods:{
 		showReservations : function(){
-			
+		
+		if(!this.showGuestReservations)	
 			axios
 		        .get('rest/users/currentUser')
 		        .then(response => (response.data ? this.user = response.data : this.user = null,
 	        		axios
 	    	        .get('rest/reservations/all')
 	    	        .then(response => (response.data ? this.allReservations = response.data : this.allReservations = null,
-	    	        		this.filteredAllReservations(),this.show()))))
+	    	        		this.filteredAllReservations(),this.showGuestReservations = true))))
+	    else
+	    	this.showGuestReservations = false;
 		},
 		
-		show : function(){
-			if(this.showGuestReservations){
-				this.showGuestReservations = false
-			}else
-				this.showGuestReservations = true
-		},
 		
 		filteredAllReservations : function(){
 			this.guestReservations = [];
@@ -82,11 +79,9 @@ Vue.component("reservationsForGuest", {
 			if(index > -1){
 				this.guestReservations[index] = this.selectedReservation
 			}
-			/*
-			this.selectedReservation.statusOfReservation = 'WITHDRAWAL';
-			//ostalo je odraditi update u reservation
+			
 			axios
-	        	.put('rest/reservations/updateReservation',this.selectedReservation)*/
+	        	.put('rest/reservations/updateReservation',this.selectedReservation)
 			
 		}
 		
