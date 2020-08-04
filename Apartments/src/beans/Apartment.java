@@ -19,6 +19,7 @@ public class Apartment {
 	private List<Date> availabilityByDates;
 	@JsonIgnoreProperties({"password","firstName","lastName","gender","typeOfUser","apartmentsForRent"})
 	private Host host;
+	@JsonIgnoreProperties({"apartment","guest","rate","text"})
 	private List<Comment> comments;
 	private List<Image> images;
 	private int pricePerNight;
@@ -26,7 +27,7 @@ public class Apartment {
 	private String checkOutTime;
 	private StatusOfApartment statusOfApartment;
 	private List<Amenities> amenities;
-	@JsonIgnoreProperties({"apartment","startDateOfReservation","numberOfNights","fullPrice","reservationMessage","guest","statusOfReservation"})
+	@JsonIgnoreProperties({"apartment","startDateOfReservation","numberOfNights","fullPrice","reservationMessage"})
     private List<Reservation> reservations;
     
 	public Apartment() {

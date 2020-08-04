@@ -56,9 +56,9 @@ public class CommentService {
 		for(Comment c : getAllComments()) {
 			comments.add(c);
 		}
-		Comment newComment = new Comment(comment.getGuest(),comment.getApartment(), comment.getText(),comment.getRate());
-		comments.add(newComment);
-		commentDAO.save(comments,newComment,ctx.getRealPath("") + "json/comment.json");
+		comment.setEnable(true);
+		comments.add(comment);
+		commentDAO.save(comments,comment,ctx.getRealPath("") + "json/comment.json");
 	}
 	
 }

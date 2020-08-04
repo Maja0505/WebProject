@@ -27,6 +27,8 @@ Vue.component("admin", {
 				<td>{{u.typeOfUser}}</td> 
 			</tr>
 		</table>
+		
+		<apartmentsForAdmin></apartmentsForAdmin>
 		<p>CAO JA SAM ADMIN</p>
 		</div>
 		`,
