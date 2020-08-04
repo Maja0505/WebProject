@@ -20,10 +20,6 @@ Vue.component("homePage", {
 		<div v-if="user" v-show="showProfileInfo">
 			<editProfile></editProfile>
 		</div>
-		<div class="search-container">
-		      <input type="text" placeholder="Search.." name="search" v-model = "searchText">
-		      <button type="submit" v-on:click = "search()">Pretrazi</button>
-		</div>
 		<div v-if = "user">
 			<div v-show="user.typeOfUser == 'ADMIN'">
 				<admin></admin>
@@ -36,23 +32,12 @@ Vue.component("homePage", {
 			</div>
 		</div>
 		
-		
-		
-
-		
 		</div>
-		`	,	mounted () {
+		`	,mounted () {
 				axios
 		          .get('rest/users/currentUser')
 		          .then(response => {response.data ? this.user = response.data : this.user = null ;		
 		          });
-				
-				
-				//nekad brlja odradi prvo get pre nego sto odradi post u login.js i onda ne uspe lepo da 
-				//ispise ono sto treba 
-				/*this.$root.$on('loginUser',(text) => {
-					this.user = text;
-				});*/
 			},
 			methods: {
 				logout: function(){
@@ -60,11 +45,7 @@ Vue.component("homePage", {
 			          .post('rest/users/logout')
 			          .then(response => (toast('User ' + response.data + ' successed logout!')) ,this.user = null)
 				},
-				
-				search: function(){
-					this.$root.$emit('search',this.searchText);
-				},
-				
+
 				showProfile: function(){
 					if(this.showProfileInfo){
 						this.showProfileInfo = false;
