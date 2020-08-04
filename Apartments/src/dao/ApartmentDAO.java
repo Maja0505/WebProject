@@ -2,6 +2,7 @@ package dao;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,39 +14,40 @@ import beans.Apartment;
 
 public class ApartmentDAO {
 
-	private Collection<Apartment> apartments;
+	private HashMap<String,Apartment> apartments;
 	private GenericCRUD<Apartment> genericCRUD = new GenericCRUD<Apartment>();
 	
 	public ApartmentDAO() {
 	}
 
 	public ApartmentDAO(String contexPath) throws JsonParseException, JsonMappingException, IOException {
-		apartments = new LinkedList<Apartment>();
+		apartments = new HashMap<String, Apartment>();
 		List<Apartment> aparmtentsArray = genericCRUD.load(contexPath, Apartment.class);
 		for(Apartment apartment : aparmtentsArray) {
-			apartments.add(apartment);
+			apartments.put(String.valueOf( apartment.getId()),apartment);
 		}
 	}
 	
 	public void save(Collection<Apartment> allAparmtents,Apartment newAparmtnet,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		genericCRUD.saveAll(allAparmtents,path);
-		apartments.add(newAparmtnet);
+		apartments.put(String.valueOf(newAparmtnet.getId()),newAparmtnet);
 	}
 	
-	public void update(Collection<Apartment> allAparmtents,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allAparmtents,path);
+	public void update(Apartment apartment,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.update(apartments, apartment, path, String.valueOf(apartment.getId()));
+		apartments.replace(String.valueOf(apartment.getId()), apartments.get(String.valueOf(apartment.getId())), apartment);
 	}
 	
 	public Collection<Apartment> allAparmtents() {
-		return apartments;
+		return apartments.values();
 	}
 	
-	
-	public Collection<Apartment> getApartments() {
+
+	public HashMap<String, Apartment> getApartments() {
 		return apartments;
 	}
 
-	public void setApartments (Collection<Apartment> apartments) {
+	public void setApartments(HashMap<String, Apartment> apartments) {
 		this.apartments = apartments;
 	}
 

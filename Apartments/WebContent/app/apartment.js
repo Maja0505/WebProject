@@ -176,6 +176,7 @@ Vue.component("apartment", {
 				//generisanje id-a apartmana
 			    if(this.allApartments.length != 0){
 					this.id = parseInt(this.allApartments[this.allApartments.length - 1].id) + 1; 
+
 				}else{
 							this.id = 1;
 				}
@@ -205,6 +206,7 @@ Vue.component("apartment", {
 				 
 				 //dodajemo u listu svih apartmana
 				 axios
+
 		          .post('rest/apartments/addApartment',JSON.stringify(objApartment), 
 		        	{
 			       		headers: {
@@ -307,6 +309,3 @@ Vue.component("apartment", {
 	  }
 		
 });
-
-
-

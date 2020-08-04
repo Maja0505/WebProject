@@ -1,1 +1,1 @@
-[]
+[{"id":"1","apartment":{"id":1},"startDateOfReservation":1596438720000,"numberOfNights":5,"fullPrice":270.0,"reservationMessage":"Moze moze","guest":{"username":"maja"},"statusOfReservation":"CREATED"},{"id":"2","apartment":{"id":1},"startDateOfReservation":1597043700000,"numberOfNights":5,"fullPrice":270.0,"reservationMessage":"Neka ipak","guest":{"username":"nene"},"statusOfReservation":"CREATED"}]
