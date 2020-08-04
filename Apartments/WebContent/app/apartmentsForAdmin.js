@@ -11,7 +11,9 @@ Vue.component("apartmentsForAdmin", {
 	    	commentsForSelectedApartment:[],
 	    	nothaveAnyComment:true,
 	    	selectedApartment:null,
-	    	showComment:false
+	    	showComment:false,
+	    	searchText:'',
+	    	currentSortDir:'asc'
 	    }
 	},
 	
@@ -20,14 +22,17 @@ Vue.component("apartmentsForAdmin", {
 			<button type="submit" v-on:click="showApartments()">Show all apartments</button>
 			
 			<div v-show="showAllApartments">
+				<div class="search-container">
+					<input type="text" placeholder="Search apartment by location" v-model = "searchText">
+				</div>
 				<table border = "1" class="allApartments">
 					<tr bgcolor="lightgrey">
 						<th>Location</th>
-						<th>Price Per Night</th>
+						<th v-on:click="sort()">Price Per Night</th>
 						<th>Host</th>
 					</tr>
 					    
-					<tr v-for="a in allApartments"  v-on:click="showCommentForSelectedApartment(a)">
+					<tr v-for="a in search"  v-on:click="showCommentForSelectedApartment(a)">
 						<td>{{a.location.address.city}}</td>
 						<td>{{a.pricePerNight }}</td>
 						<td>{{a.host.username }}</td>
@@ -82,6 +87,7 @@ Vue.component("apartmentsForAdmin", {
 		},
 		
 		showApartments : function(){
+			this.searchText = '';
 			this.commentsForSelectedApartment = [];
 			if(!this.showAllApartments)
 				axios
@@ -110,9 +116,36 @@ Vue.component("apartmentsForAdmin", {
 						this.nothaveAnyComment = false;
 					}
 				}
+		},
+		
+		sort(){
+			if(this.currentSortDir == 'asc'){
+				this.currentSortDir = 'desc';
+			}else
+				this.currentSortDir = 'asc'
+			
+			if(this.allApartments){
+				this.allApartments = this.allApartments.sort((a,b) => {
+			      let modifier = 1;
+			      if(this.currentSortDir === 'desc') modifier = -1;
+			      if(a['pricePerNight'] < b['pricePerNight']) return -1 * modifier;
+			      if(a['pricePerNight'] > b['pricePerNight']) return 1 * modifier;
+			      return 0;
+			    });
+				this.searchText = this.searchText;
+			}
 		}
 		
 		
+	},
+	
+	computed : {
+
+		search(){
+		if(this.allApartments)	
+			return this.allApartments.filter(a => {
+			         return a.location.address.city.toLowerCase().includes(this.searchText.toLowerCase())})
+		}
 	}
 		
 		
