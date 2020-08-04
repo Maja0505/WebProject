@@ -10,20 +10,20 @@ public class Comment {
 		private Apartment apartment;
 		private String text;
 		private int rate;
-		private boolean isEnable;
+		private boolean enable;
 		
 		public Comment() {
 			super();
 		}
 
-		public Comment(String id,Guest guest,Apartment apartment, String text, int rate,boolean isEnable) {
+		public Comment(String id,Guest guest,Apartment apartment, String text, int rate,boolean enable) {
 			super();
 			this.id = id;
 			this.guest = guest;
 			this.apartment = apartment;
 			this.text = text;
 			this.rate = rate;
-			this.isEnable = isEnable;
+			this.enable = enable;
 		}
 
 		public String getId() {
@@ -67,12 +67,13 @@ public class Comment {
 		}
 
 		public boolean isEnable() {
-			return isEnable;
+			return enable;
 		}
 
-		public void setEnable(boolean isEnable) {
-			this.isEnable = isEnable;
+		public void setEnable(boolean enable) {
+			this.enable = enable;
 		}
+
 		
 		
 }
