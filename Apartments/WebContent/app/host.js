@@ -4,74 +4,39 @@
 Vue.component("host", {
 	data: function () {
 	    return {
-		  users: null,
-		  loggedUser:{},
-	      selectedStudent: {},
-	      myGuests:[],
-	      searchField: "",
-	      reservations:null
+	    	showAllReservations:false,
+	    	showAllMyGuests:false
 	    }
 },
 		template: ` 
 		<div>
-			<table class="myGuests">
-			<tr bgcolor="lightgrey">
-				<th>Username</th>
-				<th>First name</th>
-				<th>Last name</th>
-				<th>Gender</th>
-				<th>User type</th>
-			</tr>
-			
-			<tr v-for="u in myGuests">
-				<td>{{u.username }}</td>
-				<td>{{u.firstName }}</td>
-				<td>{{u.lastName }}</td>
-				<td>{{u.gender }}</td>
-				<td>{{u.typeOfUser }}</td>
-			</tr>
-			</table>
+			<button type="submit" v-on:click="showAllGuestsForHost()">Show my guests</button>
+			<showGuestsForHost></showGuestsForHost>
+			<button type="submit" v-on:click="showAllReservationsForHost()">Show all reservations</button>
+			<reservationsForHost></reservationsForHost>
 		</div>
-		`	
-		, mounted () {
-			axios
-	          .get('rest/users/all')
-	          .then(response => (this.users = response.data,this.getCurrentUser()))
-	        
-	         
-	    }
-		,methods: {
-			getMyGuests: function(){
-				//for(let apartment in loggedUser.apartmentsForRent){
-	
-					let guests= this.users.filter(user => {
-				        return user.typeOfUser == ("GUEST")})
-
-					for (apartment of this.loggedUser.apartmentsForRent) {
-						for(reservation of this.reservations){
-							if(reservation.apartment.id == apartment.id){
-								let guest = guests.filter(function(g) {
-								return g.username == reservation.guest.username})
-									
-								this.myGuests.push(guest[0]);
-							}
-						}
-}							
-					}
-			,getCurrentUser: function(){
-			     axios
-		          .get('rest/users/currentUser')
-		          .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,this.getAllReservation()))
-	    
-		      
-			},
-			getAllReservation: function(){
-				axios
-		          .get('rest/reservations/all')
-		          .then(response => (this.reservations = response.data,this.getMyGuests()))
-	    
-		      
-			}
-			}
+		`
+		,
 		
+		methods:{
+			//prikaz svih korisnika koji imaju rezervaciju za apartman prijavljenog hosta(showGuestsForHost)
+			showAllGuestsForHost : function(){
+				if(this.showAllMyGuests){
+					this.showAllMyGuests = false;
+				}else{
+					this.showAllMyGuests = true;
+				}
+				this.$root.$emit('showAllGuestsForHost',this.showAllMyGuests);
+			},
+			//prikaz svih rezervacija prijavljenog hosta(reservationsForHost)
+			showAllReservationsForHost : function(){
+				if(this.showAllReservations){
+					this.showAllReservations = false;
+				}else{
+					this.showAllReservations = true;
+				}
+				this.$root.$emit('showAllReservationsForHost',this.showAllReservations);
+			}
+			
+		}
 });
