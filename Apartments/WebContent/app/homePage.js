@@ -16,6 +16,9 @@ Vue.component("homePage", {
 			<a href="#/apartment"v-if = "user" v-show="user.typeOfUser == 'HOST'">Add apartment</a>
 			
 		</p>
+		<div v-show="!user">
+			<apartmentsForGuestOrUnregistredUser></apartmentsForGuestOrUnregistredUser>
+		</div>
 		<button type="submit" v-show="user" v-on:click="showProfile()">Show profile</button>
 		<div v-if="user" v-show="showProfileInfo">
 			<editProfile></editProfile>

@@ -9,8 +9,7 @@ Vue.component("guest", {
 		},
 		template: `
 		<div>
-			<button type="submit" v-on:click="showApartments()">Show apartments for reservation</button>
-			<reservation></reservation>
+			<apartmentsForGuestOrUnregistredUser></apartmentsForGuestOrUnregistredUser>
 			<button type="submit" v-on:click="showReservations()">Show your reservations</button>
 			<reservationsForGuest></reservationsForGuest>
 			<button onclick="location.href='#/comment'">Comment apartment</button>
