@@ -26,8 +26,6 @@ import beans.Guest;
 import beans.Reservation;
 import beans.User;
 import dao.GuestDAO;
-import dto.GuestApartmentDTO;
-import dto.GuestReservationDTO;
 import enums.TypeOfUser;
 
 

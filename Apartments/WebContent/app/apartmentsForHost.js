@@ -157,23 +157,15 @@ Vue.component("apartmentsForHost", {
 			    }
 			}
 		,openEditForm : function(){
-			if(this.showEditForm){
-				this.$root.$emit('showEditForm',null,false);
-
-			}else{
-				this.$root.$emit('showComment',null,false);
-				this.$root.$emit('showEditForm',this.selectedApartment,true);
-				
-			}
+			this.$root.$emit('showComment',null,false);
+			this.$root.$emit('showEditForm',this.selectedApartment,true);
+			
 
 		},showCommentForApartment: function(){
-			if(this.showComment){
-				this.$root.$emit('showComment',null,false);
-			}else{
-				this.$root.$emit('showEditForm',null,false);
-				this.$root.$emit('showComment',this.selectedApartment,true);
+			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showComment',this.selectedApartment,true);
 				
-			}
+			
 		}
 		
 		

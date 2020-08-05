@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
 import beans.Comment;
 
 public class CommentDAO {
@@ -31,6 +29,11 @@ public class CommentDAO {
 	public void save(Collection<Comment> allComments,Comment newComment,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		genericCRUD.saveAll(allComments,path);
 		comments.put(newComment.getId(),newComment);
+	}
+	
+	public void update(Comment comment,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.update(comments, comment, path, comment.getId());
+		comments.replace(comment.getId(), comments.get(comment.getId()), comment);
 	}
 
 

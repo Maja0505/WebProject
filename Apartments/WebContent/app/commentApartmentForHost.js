@@ -26,7 +26,7 @@ Vue.component("commentApartmentForHost", {
 						<td>{{c.text }}</td>
 						<td>{{c.rate }}</td>
 						<td>{{c.enable}}</td>
-						<td> <input type="checkbox" id="enable" name="enable" v-model="c.enable" @change="update($event)"></td>
+						<td> <input type="checkbox" id="enable" name="enable" v-model="c.enable" @change="update(c)"></td>
 
 					</tr>
 				</table>
@@ -52,8 +52,9 @@ Vue.component("commentApartmentForHost", {
 				this.commentsForSelectedApartment = this.allComment.filter(comment => {
 			        return comment.apartment.id == this.selectedApartment.id})
 			},
-			update:function(){
-				
+			update:function(comment){
+			       axios
+		       	   .put('rest/comments/updateComment',comment)
 			}
 		}
 });

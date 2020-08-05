@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Reservation;
 import dao.ReservationDAO;
-import enums.StatusOfReservation;
 
 @Path("/reservations")
 public class ReservationService {
