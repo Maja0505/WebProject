@@ -40,7 +40,10 @@ Vue.component("apartmentsForHost", {
 							
 						</tr>
 					</table>
+					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
+					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
 					<editApartment></editApartment>
+			    	<commentApartmentForHost></commentApartmentForHost>
 				</div>
 				<div v-show="showInactive">
 					<h3>INACTIVE Apartments</h3>
@@ -63,7 +66,10 @@ Vue.component("apartmentsForHost", {
 							
 						</tr>
 					</table>
+					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
+					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
 					<editApartment></editApartment>
+			    	<commentApartmentForHost></commentApartmentForHost>
 				</div>
 			</div>
 		</div>
@@ -78,7 +84,10 @@ Vue.component("apartmentsForHost", {
 	methods:{
 		selectApartment : function(apartment){
 			this.selectedApartment = apartment;
-			this.$root.$emit('showEditButton',this.selectedApartment,false);
+			//ako ponovo selektujemo da nam se zatvore sve forme
+			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showComment',null,false);
+
 
 		},
 		showActiveForHost: function(){
@@ -88,7 +97,11 @@ Vue.component("apartmentsForHost", {
 				this.showActive = true;
 				this.showInactive = false;
 			}
-			this.$root.$emit('showEditButton',null);
+			
+			//ako menjamo tabelu,selektovani postaje null i sakrivamo forme za edit i comment
+			this.selectedApartment = null;
+			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showComment',null,false);
 
 			axios
 	        .get('rest/users/currentUser')
@@ -107,7 +120,11 @@ Vue.component("apartmentsForHost", {
 				this.showActive = false;
 				this.showInactive = true;
 			}
-			this.$root.$emit('showEditButton',null);
+			
+			//ako menjamo tabelu,selektovani postaje null i sakrivamo forme za edit i comment
+			this.selectedApartment = null;
+			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showComment',null,false);
 
 			axios
 	        .get('rest/users/currentUser')
@@ -139,6 +156,25 @@ Vue.component("apartmentsForHost", {
 			    	}
 			    }
 			}
+		,openEditForm : function(){
+			if(this.showEditForm){
+				this.$root.$emit('showEditForm',null,false);
+
+			}else{
+				this.$root.$emit('showComment',null,false);
+				this.$root.$emit('showEditForm',this.selectedApartment,true);
+				
+			}
+
+		},showCommentForApartment: function(){
+			if(this.showComment){
+				this.$root.$emit('showComment',null,false);
+			}else{
+				this.$root.$emit('showEditForm',null,false);
+				this.$root.$emit('showComment',this.selectedApartment,true);
+				
+			}
+		}
 		
 		
 	}

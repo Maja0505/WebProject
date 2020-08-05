@@ -25,9 +25,6 @@ Vue.component("editApartment", {
 },
 		template: ` 
 		<div>
-			<div v-show="selectedApartment">
-				<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()">Show details of apartment</button>
-			</div>
 			
 			<div v-show="showEditForm" v-if="showEditForm">
 				<table>
@@ -133,19 +130,13 @@ Vue.component("editApartment", {
 		</div>
 		`,
 		mounted () {
-	        this.$root.$on('showEditButton',(text) => {this.selectedApartment = text,this.showEditForm = false});
+	        this.$root.$on('showEditForm',(text,text2) => {this.selectedApartment = text,this.showEditForm = text2,this.getStartEndDate()});
 		},
 		methods:{
-			openEditForm : function(){
+			getStartEndDate : function(){
 				if(this.showEditForm){
-					this.showEditForm = false;
-				}else{
 					this.startDate = this.selectedApartment.dateOfIssue[0];
-					this.endDate = this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1];
-					this.showEditForm = true;
-					
-					
-					
+					this.endDate = this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1];					
 				}
 
 			},
