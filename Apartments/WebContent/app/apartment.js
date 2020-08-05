@@ -19,6 +19,7 @@ Vue.component("apartment", {
 		  id:0,
 		  startDate:null,
 		  endDate:null,
+		  dateOfIssue:[],
 		  errorTypeOfApartment:"",
 		  errorNumberOfRooms:"",
 		  errorNumberOfGuests:"",
@@ -41,7 +42,7 @@ Vue.component("apartment", {
 			<table>
 				<tr>
 					<th>Type of Apartment</th>
-					<td><select name="cars" id="cars"  v-model="apartment.typeOfApartment">
+					<td><select name="type" id="type"  v-model="apartment.typeOfApartment">
 						  <option value="ROOM">ROOM</option>
 						  <option value="WHOLE_APARTMENT">WHOLE APARTMENT</option>
 						</select>
@@ -138,16 +139,23 @@ Vue.component("apartment", {
 
 		`	
 		, mounted () {
-			 axios
-	          .get('rest/apartments/all')
-	          .then(response => (this.allApartments = response.data,this.allApartments = fixDate(response.data)))
+			
 	         axios
 		      .get('rest/users/currentUser')
 		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
 	    }
 		,methods: {
+			getLoggedUser:function(){
+				 axios
+			      .get('rest/users/currentUser')
+			      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
+			},
+			getAllApartments:function(){
+				 axios
+		          .get('rest/apartments/all')
+		          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.getLoggedUser(),this.add(),this.update()))
+			},
 			add: function() {
-				
 				
 				//generisanje id-a apartmana
 			    if(this.allApartments.length != 0){
@@ -162,28 +170,26 @@ Vue.component("apartment", {
 
 				
 				//za generisanje datuma
-				 var dateOfIssue = [];
-				 while( this.startDate < this.endDate ){
-				 
+				 this.dateOfIssue = [];
+				
+				 while( this.startDate <= this.endDate ){
+				   this.dateOfIssue.push(new Date(this.startDate));
 				   this.startDate.setDate(this.startDate.getDate() + 1);
-				
-				  dateOfIssue.push(new Date(this.startDate));
 				 }
+			
+			},
+			update: function(){
+			
 				
+				  objApartment = {"id":''+ this.id, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":this.dateOfIssue,"availabilityByDates":this.dateOfIssue,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":''+this.apartment.checkInTime,"checkOutTime":''+this.apartment.checkOutTime,"statusOfApartment":'INACTIVE',"amenities":[],"reservations":[]}
+					var stringHost = JSON.stringify(this.loggedUser);
+					var objHost = JSON.parse(stringHost);
 				
-				var objApartment = {"id":''+ this.id, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":dateOfIssue,"availabilityByDates":dateOfIssue,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":''+this.apartment.checkInTime,"checkOutTime":''+this.apartment.checkOutTime,"statusOfApartment":'INACTIVE',"amenities":[],"reservations":[]}
-				//var apartmentForRent = JSON.stringify(this.loggedUser.apartmentsForRent)
-					
-				var stringHost = JSON.stringify(this.loggedUser);
-				var objHost = JSON.parse(stringHost);
-				
-				objHost['apartmentsForRent'].push(objApartment);
-				 
+				  objHost['apartmentsForRent'].push(objApartment);
 				 
 				 //dodajemo u listu svih apartmana
 				 axios
-
-		          .post('rest/apartments/addApartment',JSON.stringify(objApartment), 
+			          .post('rest/apartments/addApartment',JSON.stringify(objApartment), 
 		        	{
 			       		headers: {
 			       					'Content-Type': 'application/json',
@@ -199,8 +205,6 @@ Vue.component("apartment", {
 			       					'Content-Type': 'application/json',
 			    				 }
 			    	})
-			      
-			          
 		}
 		, checkForm: function(){
 			
@@ -274,7 +278,7 @@ Vue.component("apartment", {
 			}
 		
 		 if( this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorLongitude == "" && this.errorLatitude == "" && this.errorStreet  == "" && this.errorStreetNumber == "" && this.errorCity == "" && this.errorPostalCode =="" &&    this.errorDateOfIssue == "" && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
-			 this.add();
+			 this.getAllApartments();
 		 }
 		
 		}
