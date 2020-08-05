@@ -8,10 +8,7 @@ Vue.component("apartmentsForAdmin", {
 	    	allApartments:null,
 	    	allComments:null,
 	    	showAllApartments:false,
-	    	commentsForSelectedApartment:[],
-	    	nothaveAnyComment:true,
 	    	selectedApartment:null,
-	    	showComment:false,
 	    	searchText:'',
 	    	currentSortDir:'asc'
 	    }
@@ -32,7 +29,7 @@ Vue.component("apartmentsForAdmin", {
 						<th>Host</th>
 					</tr>
 					    
-					<tr v-for="a in search"  v-on:click="showCommentForSelectedApartment(a)">
+					<tr v-for="a in search"  v-on:click="selectApartment(a)">
 						<td>{{a.location.address.city}}</td>
 						<td>{{a.pricePerNight }}</td>
 						<td>{{a.host.username }}</td>
@@ -41,31 +38,14 @@ Vue.component("apartmentsForAdmin", {
 				
 				<div v-if="selectedApartment">
 					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
-						<button type="submit" v-on:click="editApartment()">Edit</button>
+						<button type="submit" v-on:click="moreInfo()">More info</button>
 						<button type="submit" v-on:click="deleteApartment()">Delete</button>
-						<button type="submit" v-on:click="changeStateOfShowComment()">Comments of apartment</button>
+						<button type="submit" v-on:click="showComments()">Comments of apartment</button>
 					</p>
-					<div v-show="showComment">
-						<div v-if="commentsForSelectedApartment">
-							<table v-for="comment in commentsForSelectedApartment">
-								<tr>
-									<td>Guest : </td>
-									<td>{{comment.guest.username}}</td>
-								</tr>
-								<tr>
-									<td>Comment : </td>
-									<td>{{comment.text}}</td>
-								</tr>
-								<tr>
-									<td>Rate : </td>
-									<td>{{comment.rate}}</td>
-								</tr>
-							</table>
-						</div>
-						<div v-if="selectedApartment && nothaveAnyComment">
-							Selected apartment don't have any comment
-						</div>
-					</div>
+					
+					<editApartment></editApartment>
+					<commentForAdmin></commentForAdmin>
+
 				</div>
 			</div>
 		</div>
@@ -79,11 +59,20 @@ Vue.component("apartmentsForAdmin", {
 	
 	methods : {
 		
-		changeStateOfShowComment: function(){
-			if(!this.showComment){
-				this.showComment = true;
-			}else
-				this.showComment = false;
+		showComments : function(){
+			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showComentForAdmin',this.selectedApartment,true,this.allComments);
+		},
+		
+		moreInfo : function(){
+			this.$root.$emit('showEditForm',this.selectedApartment,true);
+			this.$root.$emit('showComentForAdmin',null,false,null);
+		},
+		
+		selectApartment : function(a){
+			this.selectedApartment = a;
+			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showComentForAdmin',null,false,null);
 		},
 		
 		showApartments : function(){
@@ -99,23 +88,8 @@ Vue.component("apartmentsForAdmin", {
 			     	        					this.showAllApartments = true))))
 			else{
 				this.showAllApartments = false;
-				this.isAnySelected = false;
 				this.selectedApartment = null;
-				this.nothaveAnyComment = true;
 			}		
-		},
-		
-		showCommentForSelectedApartment : function(apartment){
-				this.nothaveAnyComment = true;
-				this.showComment = false;
-				this.selectedApartment = apartment;
-				this.commentsForSelectedApartment = [];
-				for(let comment of this.allComments){
-					if(comment.apartment.id == apartment.id){
-						this.commentsForSelectedApartment.push(comment);
-						this.nothaveAnyComment = false;
-					}
-				}
 		},
 		
 		sort(){
