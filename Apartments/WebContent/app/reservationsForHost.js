@@ -19,6 +19,7 @@ Vue.component("reservationsForHost", {
 	    	selectedReservation:null,
 	    	now: Date.now(),
 	    	endDate: Date.now(),
+	    	showEditButton:false
 	    }
 },
 		template: ` 

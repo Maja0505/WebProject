@@ -5,7 +5,8 @@ Vue.component("host", {
 	data: function () {
 	    return {
 	    	showAllReservations:false,
-	    	showAllMyGuests:false
+	    	showAllMyGuests:false,
+	    	showApartments:false
 	    }
 },
 		template: ` 
@@ -14,6 +15,8 @@ Vue.component("host", {
 			<showGuestsForHost></showGuestsForHost>
 			<button type="submit" v-on:click="showAllReservationsForHost()">Show all reservations</button>
 			<reservationsForHost></reservationsForHost>
+			<button type="submit" v-on:click="showApartmentsForHost()">Show my apartments</button>
+			<apartmentsForHost></apartmentsForHost>
 		</div>
 		`
 		,
@@ -36,6 +39,14 @@ Vue.component("host", {
 					this.showAllReservations = true;
 				}
 				this.$root.$emit('showAllReservationsForHost',this.showAllReservations);
+			},
+			showApartmentsForHost : function(){
+				if(this.showApartments){
+					this.showApartments = false;
+				}else{
+					this.showApartments = true;
+				}
+				this.$root.$emit('showApartments',this.showApartments);
 			}
 			
 		}
