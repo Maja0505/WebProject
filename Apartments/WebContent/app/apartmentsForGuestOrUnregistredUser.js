@@ -9,8 +9,6 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 			currentUser : null,
 			activeApartments : null,
 			selectedApartment : null,
-			showingMode : 'NOTHING',
-			commentsForSelectedApartment : null,
 			allComments : null
 		}
 	},
@@ -40,28 +38,9 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 						</p>
 					</div>
 					
-					<div v-show="showingMode != 'COMMENTS'">
-							<reservation></reservation>
-					</div>
-					<div v-if="showingMode == 'COMMENTS'">
-							<table v-for="comment in commentsForSelectedApartment">
-								<tr>
-									<td>Guest : </td>
-									<td>{{comment.guest.username}}</td>
-								</tr>
-								<tr>
-									<td>Comment : </td>
-									<td>{{comment.text}}</td>
-								</tr>
-								<tr>
-									<td>Rate : </td>
-									<td>{{comment.rate}}</td>
-								</tr>
-							</table>
-							<div v-if="!commentsForSelectedApartment.length">
-								Selected apartment don't have any comment
-							</div>
-					</div>
+					<reservation></reservation>
+					<commentApartmentForGuestOrUnregistredUser></commentApartmentForGuestOrUnregistredUser>
+
 				</div>
 			</div>
 	`,
@@ -88,8 +67,6 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 				this.showAllApartments = false;
 				this.activeApartments = null;
 				this.selectedApartment = null;
-				this.showingMode = 'NOTHING';
-				this.commentsForSelectedApartment = null;
 			}
 				
 		},
@@ -105,29 +82,19 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		
 		selectApartment : function(apartment){
 			this.selectedApartment = apartment;
-			this.$root.$emit('showReservationPart',null);
-			this.showingMode = 'NOTHING';
-			this.getCommentsOfApartment();
+			this.$root.$emit('showReservationPart',null,false);
+			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',null,false,null);
+			
 		},
 		
 		reservation : function(){
-			if(this.showingMode != 'RESERVATION'){
-				this.$root.$emit('showReservationPart',this.selectedApartment);
-				this.showingMode = 'RESERVATION';
-			}
-		},
-		
-		getCommentsOfApartment : function(){
-			this.commentsForSelectedApartment = [];
-			for(let comment of this.allComments){
-				if(comment.apartment.id == this.selectedApartment.id){
-					this.commentsForSelectedApartment.push(comment);
-				}
-			}
+			this.$root.$emit('showReservationPart',this.selectedApartment,true);
+			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',null,false,null);
 		},
 		
 		showComments : function(){
-			this.showingMode = 'COMMENTS';
+			this.$root.$emit('showReservationPart',null,false);
+			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',this.selectedApartment,true,this.allComments);
 		}
 		
 	}
