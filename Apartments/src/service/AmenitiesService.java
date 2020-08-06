@@ -10,19 +10,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Amenities;
+import beans.Comment;
 import dao.AmenitiesDAO;
+import dao.CommentDAO;
 
 @Path("/amenities")
-public class AmneitiesService {
+public class AmenitiesService {
 
 	
 	@Context
@@ -60,5 +64,12 @@ public class AmneitiesService {
 		amenities.add(newAmenitie);
 		amenitiesDAO.save(amenities,newAmenitie,ctx.getRealPath("") + "json/amenitie.json");
 	}
-	
+	@PUT
+	@Path("/updateAmenitie")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateAmenitie(Amenities amenitie) throws JsonGenerationException, JsonMappingException, IOException {
+		AmenitiesDAO amenitiesDAO = (AmenitiesDAO) ctx.getAttribute("amenities");
+		amenitiesDAO.update(amenitie, ctx.getRealPath("")+"json/amenitie.json");
+	}
 }

@@ -172,9 +172,22 @@ Vue.component("apartment", {
 				//za generisanje datuma
 				 this.dateOfIssue = [];
 				
-				 while( this.startDate <= this.endDate ){
-				   this.dateOfIssue.push(new Date(this.startDate));
-				   this.startDate.setDate(this.startDate.getDate() + 1);
+				 var startYear = this.startDate.getYear() + 1900;
+				 var startMonth = this.startDate.getMonth();
+				 var startDay = this.startDate.getDate();
+				 
+				 var newStartDate = new Date(startYear,startMonth,startDay,0,0,0);
+				 
+				 var endYear = this.endDate.getYear() + 1900;
+				 var endMonth = this.endDate.getMonth();
+				 var endDay = this.endDate.getDate();
+				 
+				 var newEndDate = new Date(endYear,endMonth,endDay,0,0,0);
+				 
+				
+				 while( newStartDate <= newEndDate){
+				   this.dateOfIssue.push(new Date(newStartDate));
+				   newStartDate.setDate(newStartDate.getDate() + 1);
 				 }
 			
 			},

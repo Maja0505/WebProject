@@ -49,6 +49,12 @@ public class AmenitiesDAO {
 	public void setGenericCRUD(GenericCRUD<Amenities> genericCRUD) {
 		this.genericCRUD = genericCRUD;
 	}
+
+	public void update(Amenities amenitie, String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.update(amenities, amenitie, path, amenitie.getId());
+		amenities.replace(amenitie.getId(), amenities.get(amenitie.getId()), amenitie);
+		
+	}
 	
 	
 }
