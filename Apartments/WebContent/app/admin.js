@@ -13,6 +13,7 @@ Vue.component("admin", {
 			<usersForAdmin></usersForAdmin>
 			<apartmentsForAdmin></apartmentsForAdmin>
 			<reservationsForAdmin></reservationsForAdmin>
+			<amenities></amenities>
 			<p>CAO JA SAM ADMIN</p>
 		</div>
 		`,

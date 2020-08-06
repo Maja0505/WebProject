@@ -264,7 +264,8 @@ Vue.component("editApartment", {
 				 this.generateDateOfIssue();
 			 }
 			
-			},generateDateOfIssue: function(){
+			},
+			generateDateOfIssue: function(){
 				
 				if(this.selectedApartment.dateOfIssue[0] != this.startDate ||  this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1] != this.endDate){
 					this.selectedApartment.dateOfIssue = [];
