@@ -100,8 +100,8 @@ Vue.component("reservationsForHost", {
 						this.hostReservations[index] = this.selectedReservation;
 					}
 					
-					/*axios
-			        	.put('rest/reservations/updateReservation',this.selectedReservation)*/
+					axios
+			        	.put('rest/reservations/updateReservation',this.selectedReservation)
 					
 				},
 				cancelReservation: function(reservation){
@@ -112,8 +112,8 @@ Vue.component("reservationsForHost", {
 					if(index > -1){
 						this.hostReservations[index] = this.selectedReservation;
 					}
-					/*axios
-		        	.put('rest/reservations/updateReservation',this.selectedReservation)*/
+					axios
+		        	.put('rest/reservations/updateReservation',this.selectedReservation)
 				},
 				completeReservation: function(reservation){
 					this.selectedReservation = reservation;
@@ -123,8 +123,8 @@ Vue.component("reservationsForHost", {
 					if(index > -1){
 						this.hostReservations[index] = this.selectedReservation;
 					}
-					/*axios
-		        	.put('rest/reservations/updateReservation',this.selectedReservation)*/
+					axios
+		        	.put('rest/reservations/updateReservation',this.selectedReservation)
 				},isFinished: function(reservation){
 					let date = reservation.startDateOfReservation;
 
