@@ -47,14 +47,17 @@ Vue.component("showGuestsForHost", {
 					for (apartment of this.loggedUser.apartmentsForRent) {
 						for(reservation of this.reservations){
 							if(reservation.apartment.id == apartment.id){
+								//iz rezervacije pronalazimo gosta,ukoliko je vise puta rezervisao samo jednom ga ispisujemo
 								let guest = guests.filter(function(g) {
 								return g.username == reservation.guest.username})
-									
-								this.myGuests.push(guest[0]);
+								if(this.myGuests.indexOf(guest[0]) == -1){
+									this.myGuests.push(guest[0]);
+
+								}	
 							}
 						}
-}							
-					}
+					}							
+				}
 			,getCurrentUser: function(){
 			     axios
 		          .get('rest/users/currentUser')

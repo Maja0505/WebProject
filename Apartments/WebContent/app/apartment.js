@@ -176,13 +176,13 @@ Vue.component("apartment", {
 				 var startMonth = this.startDate.getMonth();
 				 var startDay = this.startDate.getDate();
 				 
-				 var newStartDate = new Date(startYear,startMonth,startDay,0,0,0);
+				 var newStartDate = new Date(startYear,startMonth,startDay,0,0,0,0);
 				 
 				 var endYear = this.endDate.getYear() + 1900;
 				 var endMonth = this.endDate.getMonth();
 				 var endDay = this.endDate.getDate();
 				 
-				 var newEndDate = new Date(endYear,endMonth,endDay,0,0,0);
+				 var newEndDate = new Date(endYear,endMonth,endDay,0,0,0,0);
 				 
 				
 				 while( newStartDate <= newEndDate){

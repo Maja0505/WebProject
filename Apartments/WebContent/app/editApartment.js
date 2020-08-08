@@ -5,6 +5,8 @@ Vue.component("editApartment", {
 	    	showEditForm:false,
 	    	startDate:null,
 	    	endDate:null,
+	    	allAmenities:null,
+	    	viewAmenitiesForm:false,
 	    	backup:[],
 	    	mode: "NOT_EDIT_YET",
 			  errorTypeOfApartment:"",
@@ -122,17 +124,74 @@ Vue.component("editApartment", {
 						
 							</script>
 					</tr>
+					<tr><td align='center' colspan='3'><button v-on:click="viewAmenities()" v-bind:disabled="mode=='EDITING'">View amenities</button></td></tr>
 				</table>
-				<button v-on:click="edit()" v-bind:disabled="mode=='EDITING'">Edit</button>
-			<button v-on:click="checkForm()" v-bind:disabled="mode=='NOT_EDIT_YET'">Confirm</button>
-			<button v-on:click="cancel()" v-bind:disabled="mode=='NOT_EDIT_YET'">Cancel</button>
+				<div v-show="viewAmenitiesForm">
+					<table class="allAmenities">
+						<tr><th>Name</th><th>In my apartment</th></tr>
+						
+						<tr  v-for="a in allAmenities">
+							<th>{{a.name}}</th>
+							<th><input type="checkbox" :checked="isInApartmentList(a)" @click="onChange(a,$event)"></th>
+						</tr>
+					</table>
+				</div>
+			<button v-on:click="edit()" v-bind:disabled="(mode=='EDITING' || mode=='AMENITIES')">Edit</button>
+			<button v-on:click="checkForm()" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">Confirm</button>
+			<button v-on:click="cancel()" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">Cancel</button>
 			</div>
+			
 		</div>
 		`,
 		mounted () {
 	        this.$root.$on('showEditForm',(text,text2) => {this.selectedApartment = text,this.showEditForm = text2,this.getStartEndDate()});
 		},
 		methods:{
+			isInApartmentList:function(amenitie){
+				let amenitieExist = this.selectedApartment.amenities.filter(function(a) {
+						return a.name == amenitie.name});
+				if(amenitieExist.length != 0){
+					return true;
+				}
+				return false;
+			},
+			onChange:function(amenitie,event){
+				  if (event.target.checked){
+					  var stringApartment = JSON.stringify(this.selectedApartment);
+						 var objApartment = JSON.parse(stringApartment);
+						 objApartment['amenities'].push(amenitie);
+						
+				  }else{
+					  var stringApartment = JSON.stringify(this.selectedApartment);
+						 var objApartment = JSON.parse(stringApartment);
+						 let i = this.selectedApartment.amenities.map(item => item.id).indexOf(amenitie.id)
+						 objApartment['amenities'].splice(i, 1);
+
+				  }
+				  
+				
+				 axios
+			         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
+			       		  {
+		 		        	headers: {
+		 		        		'Content-Type': 'application/json',
+				        			}
+		        	  }).then(response=>{ this.selectedApartment = objApartment})
+				
+			},
+			viewAmenities : function(){
+				if(this.viewAmenitiesForm){
+					this.viewAmenitiesForm = false
+					this.mode="NOT_EDIT_YET"
+				}else{
+					this.mode="AMENITIES"
+					this.viewAmenitiesForm = true
+					 axios
+			          .get('rest/amenities/all')
+			          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
+
+				}
+			},
 			getStartEndDate : function(){
 				if(this.showEditForm){
 					this.startDate = this.selectedApartment.dateOfIssue[0];
@@ -270,11 +329,27 @@ Vue.component("editApartment", {
 				if(this.selectedApartment.dateOfIssue[0] != this.startDate ||  this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1] != this.endDate){
 					this.selectedApartment.dateOfIssue = [];
 					this.selectedApartment.availabilityByDates = [];
-					while( this.startDate <= this.endDate ){
-						   this.selectedApartment.dateOfIssue.push(new Date(this.startDate));
-						   this.selectedApartment.availabilityByDates.push(new Date(this.startDate));
-						   this.startDate.setDate(this.startDate.getDate() + 1);
-						 }
+					
+					 var startYear = this.startDate.getYear() + 1900;
+					 var startMonth = this.startDate.getMonth();
+					 var startDay = this.startDate.getDate();
+					 
+					 //kako bismo dobili samo datum bez time dela
+					 var newStartDate = new Date(startYear,startMonth,startDay,0,0,0,0);
+					 
+					 var endYear = this.endDate.getYear() + 1900;
+					 var endMonth = this.endDate.getMonth();
+					 var endDay = this.endDate.getDate();
+					 
+					 var newEndDate = new Date(endYear,endMonth,endDay,0,0,0,0);
+					 
+					
+					 while( newStartDate <= newEndDate){
+						   this.selectedApartment.dateOfIssue.push(new Date(newStartDate));
+						   this.selectedApartment.availabilityByDates.push(new Date(newStartDate));
+						   newStartDate.setDate(newStartDate.getDate() + 1);
+					 }
+				
 				}
 				this.confirm();
 				
