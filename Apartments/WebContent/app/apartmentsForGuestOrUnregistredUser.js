@@ -46,10 +46,11 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	`,
 	
 	mounted () {
-	          axios
-		         .get('rest/users/currentUser')
-		          	.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
-	    },
+          axios
+	         .get('rest/users/currentUser')
+	          	.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
+	      this.$root.$on('loadApartmentForGuest',(text)=>{this.showAllApartments = text})
+	},
 
 	
 	methods : {
@@ -82,18 +83,18 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		
 		selectApartment : function(apartment){
 			this.selectedApartment = apartment;
-			this.$root.$emit('showReservationPart',null,false);
-			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',null,false,null);
+			this.$root.$emit('showReservationPart',{},false);
+			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',{},false,[]);
 			
 		},
 		
 		reservation : function(){
 			this.$root.$emit('showReservationPart',this.selectedApartment,true);
-			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',null,false,null);
+			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',{},false,[]);
 		},
 		
 		showComments : function(){
-			this.$root.$emit('showReservationPart',null,false);
+			this.$root.$emit('showReservationPart',{},false);
 			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',this.selectedApartment,true,this.allComments);
 		}
 		

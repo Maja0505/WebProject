@@ -29,8 +29,10 @@ Vue.component('commentApartmentForGuestOrUnregistredUser',{
 					</tr>
 				</table>
 			</div>
-			<div v-if="!commentsForSelectedApartment.length">
-				Selected apartment don't have any comment
+			<div v-if="commentsForSelectedApartment">
+				<div v-if="!commentsForSelectedApartment.length">
+					Selected apartment don't have any comment
+				</div>
 			</div>
 		</div>
 	

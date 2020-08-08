@@ -8,21 +8,24 @@ Vue.component("reservation", {
 		  loggedUser:null,
 		  selectedApartment: null,
 		  maxId:0,
-		  reservation:{}
+		  disableDates:{},
+		  reservation:{},
+		  showReservationForm : false,
+		  error: ''
 	    }
 	},
 	
 	template: `
 	
 			<div>
-					<div v-if="selectedApartment">
+					<div v-if="showReservationForm">
 				   		<p>Izabrali ste <b>{{selectedApartment.id}}</b> apartman na lokacijom <b>{{selectedApartment.location.address.city}}</b> , cena
 				   		po noci je <b>{{selectedApartment.pricePerNight}}</b> i domacin je
 				   		 <b>{{selectedApartment.host.username }}</b></p>
 				   		<table>	
 				   			<tr>
 				   				<td>Datum pocetka rezervacije: </td>
-				   				<td><vuejs-datepicker v-model="reservation.startDateOfReservation" format="dd.MM.yyyy"></vuejs-datepicker></td>
+				   				<td><vuejs-datepicker v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates"></vuejs-datepicker></td>
 				   			</tr>
 				   			<tr>
 				   				<td>Broj nocenja: </td>
@@ -37,6 +40,7 @@ Vue.component("reservation", {
 				   				<td>{{reservation.numberOfNIghts * selectedApartment.pricePerNight}}</td>
 				   			</tr>
 				   		</table>
+				   		<p>{{error}}</p>
 						<button type="submit"  v-on:click="bookingApartment()">Booking apartment</button>
 		       		</div>
 			</div>
@@ -53,12 +57,39 @@ Vue.component("reservation", {
 		          .then(response =>  (response.data ? this.allReservations = response.data : this.allReservations = null))
 		      
 
-			  this.$root.$on('showReservationPart',(text)=>{this.selectedApartment = text,
-				  this.reservation = {}});
+			  this.$root.$on('showReservationPart',(text1,text2)=>{this.selectedApartment = text1,
+				  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates()});
+			  
 	    },
 	
 		methods: {
 	    	
+			generateDisableDates : function(){
+				
+				this.disableDates = {
+					to: new Date(),	
+					from :	new Date(this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1]),
+					dates: this.getDisableDates(),
+					ranges: [
+						{
+							from: new Date(),
+							to: new Date(this.selectedApartment.dateOfIssue[0]),
+						}
+					]
+				}
+				
+			},
+			
+			getDisableDates : function(){
+				let disableDates = [];
+				for(let d of this.selectedApartment.dateOfIssue){
+					if(this.selectedApartment.availabilityByDates.indexOf(d) == -1){
+						disableDates.push(new Date(d));
+					}
+				}
+				return disableDates;
+			},
+			
 	    	stopKeydown : function(event){
 	    		 event.preventDefault();
 	    	},
@@ -70,10 +101,41 @@ Vue.component("reservation", {
 				}else{
 					this.maxId = 1;
 					  }
-	    		
+	    	   
 	    	   var objReservation = {"id":this.maxId, "apartment": this.selectedApartment,"startDateOfReservation":this.reservation.startDateOfReservation,
 	    		   "numberOfNights":this.reservation.numberOfNIghts,"fullPrice":this.reservation.numberOfNIghts * this.selectedApartment.pricePerNight,
 	    		   "reservationMessage":''+this.reservation.reservationMessage,"guest":this.loggedUser,"statusOfReservation":"CREATED"};
+	    	   
+	    	   var selectedDate = this.reservation.startDateOfReservation;
+	    	   var yyyy = selectedDate.getYear() + 1900;
+	    	   var mm = selectedDate.getMonth();
+	    	   var dd = selectedDate.getDate();
+	    	   
+	    	   var selectedDateNew = new Date(yyyy,mm,dd,0,0,0,0);
+	    	  
+	    	   var reservationOk = true;
+	    	   
+	    	   for(let i = 0;i < this.reservation.numberOfNIghts;i++){
+	    		   selectedDateNew.setDate(selectedDateNew.getDate() + i);
+	    		   var a = selectedDateNew.getTime();
+	    		   let index = this.selectedApartment.availabilityByDates.indexOf(a);
+	    		   if(index == -1){
+	    			   reservationOk = false;
+	    			   break;
+	    		   }
+	    	   }
+	    	   
+	    	   if(!reservationOk){
+	    		   this.error = 'Can not do reservation for ' + this.reservation.numberOfNIghts + ' nights';
+	    		   return;
+	    	   }else{
+	    		   for(let i = 0;i < this.reservation.numberOfNIghts;i++){
+	    			   selectedDateNew.setDate(selectedDateNew.getDate() + i);
+		    		   var a = selectedDateNew.getTime();
+		    		   let index = this.selectedApartment.availabilityByDates.indexOf(a);
+		    		   this.selectedApartment.availabilityByDates.splice(index,1);
+	    		   }
+	    	   }
 	    	   
 	    	   var stringGuest = JSON.stringify(this.loggedUser);
 	    	   var stringApartment = JSON.stringify(this.selectedApartment);
@@ -109,9 +171,11 @@ Vue.component("reservation", {
  			        		'Content-Type': 'application/json',
  			        			}
 	        		  })
-	        
-	    	  }
 	
+	           this.$root.$emit('loadApartmentForGuest',false)
+     	       toast('Za apartman iz grada ' + this.selectedApartment.location.address.city + ' uspesno ostavljena rezervacija !')
+     	       		
+	    	}
 		},
 		
 		components: {
