@@ -1,8 +1,9 @@
 package service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -54,7 +55,7 @@ public class ApartmentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addApartment(Apartment apartment) throws JsonParseException, JsonMappingException, IOException {
 		ApartmentDAO apartmentDAO = (ApartmentDAO) ctx.getAttribute("apartments");
-		Collection<Apartment> apartments = new LinkedList<Apartment>();
+		List<Apartment> apartments = new ArrayList<Apartment>();
 		for(Apartment a : getAllApartments()) {
 			apartments.add(a);
 		}

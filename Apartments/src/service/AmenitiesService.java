@@ -1,8 +1,9 @@
 package service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -21,9 +22,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import beans.Amenities;
-import beans.Comment;
 import dao.AmenitiesDAO;
-import dao.CommentDAO;
 
 @Path("/amenities")
 public class AmenitiesService {
@@ -56,7 +55,7 @@ public class AmenitiesService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addAmenitie(Amenities amenitie) throws JsonParseException, JsonMappingException, IOException {
 		AmenitiesDAO amenitiesDAO = (AmenitiesDAO) ctx.getAttribute("amenities");
-		Collection<Amenities> amenities = new LinkedList<Amenities>();
+		List<Amenities> amenities = new ArrayList<Amenities>();
 		for(Amenities a : getAllAmenities()) {
 			amenities.add(a);
 		}

@@ -3,7 +3,7 @@ package service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -59,7 +59,7 @@ public class GuestService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addGuest(User user) throws JsonParseException, JsonMappingException, IOException {
 		GuestDAO GuestDAO = (GuestDAO) ctx.getAttribute("guests");
-		Collection<Guest> guests = new LinkedList<Guest>();
+		List<Guest> guests = new ArrayList<Guest>();
 		for(Guest u : getAllGuests()) {
 			guests.add(u);
 		}

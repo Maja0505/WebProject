@@ -1,8 +1,9 @@
 package service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -52,7 +53,7 @@ public class LocationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addLocation(Location location) throws JsonParseException, JsonMappingException, IOException {
 		LocationDAO locationDAO = (LocationDAO) ctx.getAttribute("locations");
-		Collection<Location> locations = new LinkedList<Location>();
+		List<Location> locations = new ArrayList<Location>();
 		for(Location l : getAllLocations()) {
 			locations.add(l);
 		}

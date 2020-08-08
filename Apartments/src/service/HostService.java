@@ -3,7 +3,7 @@ package service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -25,7 +25,6 @@ import beans.Apartment;
 import beans.Host;
 import beans.User;
 import dao.HostDAO;
-import dto.HostApartmentDTO;
 import enums.TypeOfUser;
 
 @Path("/hosts")
@@ -59,7 +58,7 @@ public class HostService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addHost(User user) throws JsonParseException, JsonMappingException, IOException {
 		HostDAO hostDao = (HostDAO) ctx.getAttribute("hosts");
-		Collection<Host> hosts = new LinkedList<Host>();
+		List<Host> hosts = new ArrayList<Host>();
 		for(Host h : getAllHosts()) {
 			hosts.add(h);
 		}
@@ -70,27 +69,6 @@ public class HostService {
 		hostDao.save(hosts,newHost,ctx.getRealPath("") + "json/host.json");
 	}
 	
-
-	@POST
-	@Path("/addApartmentToHost")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void addApartmentToHost(HostApartmentDTO hostApartmentDTO) throws JsonParseException, JsonMappingException, IOException {
-		HostDAO hostDao = (HostDAO) ctx.getAttribute("hosts");
-		Collection<Host> hosts = new LinkedList<Host>();		
-		for(Host h : getAllHosts()) {
-			if(h.getUsername().equals(hostApartmentDTO.host.getUsername()))
-			{
-				if(h.getApartmentsForRent() == null) {
-					h.setApartmentsForRent(new ArrayList<Apartment>());
-				}
-				h.getApartmentsForRent().add(hostApartmentDTO.apartment);
-			}
-			hosts.add(h);
-		}
-		
-		hostDao.update(hosts,ctx.getRealPath("") + "json/host.json");
-	}
 
 	@PUT
 	@Path("/updateHost")

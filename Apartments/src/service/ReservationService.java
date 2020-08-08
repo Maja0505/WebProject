@@ -1,8 +1,9 @@
 package service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -53,7 +54,7 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addReservation(Reservation reservation) throws JsonParseException, JsonMappingException, IOException {
 		ReservationDAO reservationDAO = (ReservationDAO) ctx.getAttribute("reservations");
-		Collection<Reservation> reservations = new LinkedList<Reservation>();
+		List<Reservation> reservations = new ArrayList<Reservation>();
 		for(Reservation r : getAllReservations()) {
 			reservations.add(r);
 		}
