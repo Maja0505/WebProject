@@ -18,6 +18,7 @@ public class Reservation {
     @JsonIgnoreProperties({"password","firstName","lastName","gender","typeOfUser","rentedApartments","reservations"})
 	private Guest guest;
 	private StatusOfReservation statusOfReservation;
+	private int flag;
 	
 	public Reservation() {
 		super();
@@ -34,6 +35,7 @@ public class Reservation {
 		this.reservationMessage = reservationMessage;
 		this.guest = guest;
 		this.statusOfReservation = statusOfReservation;
+		this.flag = 0;
 	}
 	
 	
@@ -100,6 +102,14 @@ public class Reservation {
 
 	public void setStatusOfReservation(StatusOfReservation statusOfReservation) {
 		this.statusOfReservation = statusOfReservation;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 	
 	

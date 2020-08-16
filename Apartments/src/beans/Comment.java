@@ -11,6 +11,7 @@ public class Comment {
 		private String text;
 		private int rate;
 		private boolean enable;
+		private int flag;
 		
 		public Comment() {
 			super();
@@ -24,6 +25,7 @@ public class Comment {
 			this.text = text;
 			this.rate = rate;
 			this.enable = enable;
+			this.flag = 0;
 		}
 
 		public String getId() {
@@ -72,6 +74,14 @@ public class Comment {
 
 		public void setEnable(boolean enable) {
 			this.enable = enable;
+		}
+
+		public int getFlag() {
+			return flag;
+		}
+
+		public void setFlag(int flag) {
+			this.flag = flag;
 		}
 
 		
