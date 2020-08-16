@@ -3,7 +3,7 @@ package beans;
 public class Amenities {
 	private String id;
 	private String name;
-	
+	private int flag;
 	public Amenities() {
 		
 	}
@@ -12,6 +12,7 @@ public class Amenities {
 		super();
 		this.id = id;
 		this.name = name;
+		this.flag  = 0;
 	}
 
 	public String getId() {
@@ -30,6 +31,13 @@ public class Amenities {
 		this.name = name;
 	}
 	
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
 	
 	
 }

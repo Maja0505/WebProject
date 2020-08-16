@@ -29,6 +29,7 @@ public class Apartment {
 	private List<Amenities> amenities;
 	@JsonIgnoreProperties({"apartment","startDateOfReservation","numberOfNights","fullPrice","reservationMessage"})
     private List<Reservation> reservations;
+	private int flag;
     
 	public Apartment() {
 		
@@ -55,6 +56,7 @@ public class Apartment {
 		this.statusOfApartment = statusOfApartment;
 		this.amenities = amenities;
 		this.reservations = reservations;
+		this.flag = 0;
 	}
 
 	public String getId() {
@@ -183,6 +185,14 @@ public class Apartment {
 
 	public void setReservations(List<Reservation> reservations) {
 		this.reservations = reservations;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 	
 	
