@@ -7,7 +7,7 @@ Vue.component("reservation", {
 		  allReservations: null,
 		  loggedUser:null,
 		  selectedApartment: null,
-		  maxId:0,
+		  maxId:-1,
 		  disableDates:{},
 		  reservation:{},
 		  showReservationForm : false,
@@ -58,12 +58,20 @@ Vue.component("reservation", {
 		      
 
 			  this.$root.$on('showReservationPart',(text1,text2)=>{this.selectedApartment = text1,
-				  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates()});
+				  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates(),this.findMaxId()});
 			  
 	    },
 	
 		methods: {
 	    	
+			findMaxId : function(){
+				for(res of this.allReservations){
+	    			if(parseInt(res.id) > this.maxId){
+	    				this.maxId = parseInt(res.id);
+	    			}
+	    		}
+			},
+			
 			generateDisableDates : function(){
 				
 				this.disableDates = {
@@ -96,12 +104,14 @@ Vue.component("reservation", {
 	    	
 	    	bookingApartment: function(){
 	    		
-	    		if(this.allReservations.length != 0){
+	    		this.maxId++;
+	    		
+	    	/*	if(this.allReservations.length != 0){
 					this.maxId = parseInt(this.allReservations[this.allReservations.length - 1].id) + 1;
 				}else{
 					this.maxId = 1;
-					  }
-	    	   
+					  }*/
+	    	     
 	    	   var objReservation = {"id":this.maxId, "apartment": this.selectedApartment,"startDateOfReservation":this.reservation.startDateOfReservation,
 	    		   "numberOfNights":this.reservation.numberOfNIghts,"fullPrice":this.reservation.numberOfNIghts * this.selectedApartment.pricePerNight,
 	    		   "reservationMessage":''+this.reservation.reservationMessage,"guest":this.loggedUser,"statusOfReservation":"CREATED"};
