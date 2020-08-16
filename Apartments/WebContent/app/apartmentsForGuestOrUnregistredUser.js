@@ -49,7 +49,7 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
           axios
 	         .get('rest/users/currentUser')
 	          	.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
-	      this.$root.$on('loadApartmentForGuest',(text)=>{this.showAllApartments = text})
+	      this.$root.$on('loadApartmentForGuest',(text)=>{this.showAllApartments = text, this.selectedApartment = null})
 	},
 
 	
