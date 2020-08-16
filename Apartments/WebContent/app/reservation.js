@@ -7,7 +7,7 @@ Vue.component("reservation", {
 		  allReservations: null,
 		  loggedUser:null,
 		  selectedApartment: null,
-		  maxId:-1,
+		  maxId:0,
 		  disableDates:{},
 		  reservation:{},
 		  showReservationForm : false,
@@ -105,12 +105,6 @@ Vue.component("reservation", {
 	    	bookingApartment: function(){
 	    		
 	    		this.maxId++;
-	    		
-	    	/*	if(this.allReservations.length != 0){
-					this.maxId = parseInt(this.allReservations[this.allReservations.length - 1].id) + 1;
-				}else{
-					this.maxId = 1;
-					  }*/
 	    	     
 	    	   var objReservation = {"id":this.maxId, "apartment": this.selectedApartment,"startDateOfReservation":this.reservation.startDateOfReservation,
 	    		   "numberOfNights":this.reservation.numberOfNIghts,"fullPrice":this.reservation.numberOfNIghts * this.selectedApartment.pricePerNight,
@@ -121,11 +115,12 @@ Vue.component("reservation", {
 	    	   var mm = selectedDate.getMonth();
 	    	   var dd = selectedDate.getDate();
 	    	   
-	    	   var selectedDateNew = new Date(yyyy,mm,dd,0,0,0,0);
+	    	   
 	    	  
 	    	   var reservationOk = true;
 	    	   
 	    	   for(let i = 0;i < this.reservation.numberOfNIghts;i++){
+	    		   var selectedDateNew = new Date(yyyy,mm,dd,0,0,0,0);
 	    		   selectedDateNew.setDate(selectedDateNew.getDate() + i);
 	    		   var a = selectedDateNew.getTime();
 	    		   let index = this.selectedApartment.availabilityByDates.indexOf(a);
@@ -140,6 +135,7 @@ Vue.component("reservation", {
 	    		   return;
 	    	   }else{
 	    		   for(let i = 0;i < this.reservation.numberOfNIghts;i++){
+	    			   var selectedDateNew = new Date(yyyy,mm,dd,0,0,0,0);
 	    			   selectedDateNew.setDate(selectedDateNew.getDate() + i);
 		    		   var a = selectedDateNew.getTime();
 		    		   let index = this.selectedApartment.availabilityByDates.indexOf(a);
@@ -184,7 +180,6 @@ Vue.component("reservation", {
 	
 	           this.$root.$emit('loadApartmentForGuest',false)
      	       toast('Za apartman iz grada ' + this.selectedApartment.location.address.city + ' uspesno ostavljena rezervacija !')
-     	       		
 	    	}
 		},
 		

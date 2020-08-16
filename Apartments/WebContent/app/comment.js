@@ -145,13 +145,19 @@ Vue.component("comment", {
 		          
 			},
 			
+			findMaxId : function(){
+				for(let res of this.allComments){
+	    			if(parseInt(res.id) > this.maxId){
+	    				this.maxId = parseInt(res.id);
+	    			}
+	    		}
+			},
+			
 			postComment: function(){
 				
-				if(this.allComments.length != 0){
-					this.maxId = parseInt(this.allComments[this.allComments.length - 1].id) + 1;
-				}else{
-					this.maxId = 1;
-					  }
+				this.findMaxId();
+				
+				this.maxId++;
 				
 				var objComment = {"id":this.maxId,"guest":this.user,"apartment":this.selectedApartment,"text":''+this.comment.text,"rate":this.comment.rate,"enable":true};
 				
