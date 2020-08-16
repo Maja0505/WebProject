@@ -16,7 +16,7 @@ Vue.component("apartment", {
 		  apartment:{},
 		  allApartments:null,
 		  loggedUser:null,
-		  id:0,
+		  maxId:0,
 		  startDate:null,
 		  endDate:null,
 		  dateOfIssue:[],
@@ -158,12 +158,12 @@ Vue.component("apartment", {
 			add: function() {
 				
 				//generisanje id-a apartmana
-			    if(this.allApartments.length != 0){
-					this.id = parseInt(this.allApartments[this.allApartments.length - 1].id) + 1; 
-
-				}else{
-							this.id = 1;
-				}
+				for(res of this.allApartments){
+	    			if(parseInt(res.id) > this.maxId){
+	    				this.maxId = parseInt(res.id);
+	    			}
+	    		}
+				this.maxId++;
 			    //moramo napraviti za odabir lokacije(tada ovo brisem)
 				this.location.address = this.address;
 				this.apartment.location = this.location;
@@ -194,7 +194,7 @@ Vue.component("apartment", {
 			update: function(){
 			
 				
-				  objApartment = {"id":''+ this.id, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":this.dateOfIssue,"availabilityByDates":this.dateOfIssue,"host":this.loggedUser,"comments": null,"images":null,"pricePerNight":this.apartment.pricePerNight,"checkInTime":''+this.apartment.checkInTime,"checkOutTime":''+this.apartment.checkOutTime,"statusOfApartment":'INACTIVE',"amenities":[],"reservations":[]}
+				  objApartment = {"id":''+ this.maxId, "typeOfApartment": this.apartment.typeOfApartment,"numberOfRooms":''+ this.apartment.numberOfRooms,"numberOfGuests":''+ this.apartment.numberOfGuests,"location":this.apartment.location,"dateOfIssue":this.dateOfIssue,"availabilityByDates":this.dateOfIssue,"host":this.loggedUser,"comments": [],"images":[],"pricePerNight":this.apartment.pricePerNight,"checkInTime":''+this.apartment.checkInTime,"checkOutTime":''+this.apartment.checkOutTime,"statusOfApartment":'INACTIVE',"amenities":[],"reservations":[]}
 					var stringHost = JSON.stringify(this.loggedUser);
 					var objHost = JSON.parse(stringHost);
 				

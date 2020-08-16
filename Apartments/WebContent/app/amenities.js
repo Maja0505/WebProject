@@ -5,7 +5,7 @@ Vue.component("amenities", {
 	    	showAmenities:false,
 	    	allAmenitites:null,
 	    	name:null,
-	    	id:null,
+	    	maxId:0,
 	    	errorAmenitie:'',
 	    	errorAmenitieEdit:'',
 	    	selectedAmenitie:null,
@@ -62,7 +62,7 @@ Vue.component("amenities", {
 		getAllAmenities:function(){
 			axios
 	        .get('rest/amenities/all')
-	        .then(response => (response.data ? this.allAmenitites = response.data : this.allAmenitites = null))
+	        .then(response => (response.data ? this.allAmenitites = response.data : this.allAmenitites = null,this.findMaxId()))
 		},
 		showAllAmenities: function(){
 			if(this.showAmenities){
@@ -73,18 +73,25 @@ Vue.component("amenities", {
 			
 			this.getAllAmenities();
 			
-		},addAmenitieToList: function(){
+		},
+		findMaxId : function(){
+			for(amenities of this.allAmenitites){
+    			if(parseInt(amenities.id) > this.maxId){
+    				this.maxId = parseInt(amenities.id);
+    			}
+    		}
+		},
+		addAmenitieToList: function(){
 			
 			this.errorAmenitie = '';
-    		if(this.allAmenitites){
-    			this.id = parseInt(this.allAmenitites[this.allAmenitites.length - 1].id) + 1;
+				this.maxId++;
     			if(this.name){
     				var sameName= this.allAmenitites.filter(amenitie => {
         		        return amenitie.name == this.name})
         		    if(sameName.length != 0){
         		    	this.errorAmenitie = this.name + " already exists";
         		    	this.name = null;
-        		    	this.id = null;
+        		    	this.maxId = 0;
         		    }
     				
     				
@@ -92,13 +99,11 @@ Vue.component("amenities", {
     				this.errorAmenitie = "Can't be empty";
     			}
     			
-    		}else{
-				this.id = 1;
-				  }
+    		
 			
     		if(this.errorAmenitie == ''){
     			axios
-		          .post('rest/amenities/addAmenitie', JSON.stringify({"id":''+this.id,"name":''+ this.name}),
+		          .post('rest/amenities/addAmenitie', JSON.stringify({"id":''+this.maxId,"name":''+ this.name}),
 		        	{
 				        headers: 
 				        {
@@ -128,7 +133,7 @@ Vue.component("amenities", {
         		    if(sameName.length > 1){
         		    	this.errorAmenitieEdit = this.selectedAmenitie.name + " already exists";
         		    	this.name = null;
-        		    	this.id = null;
+        		    	this.maxId = 0;
         		    }
     				
     				
