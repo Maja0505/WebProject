@@ -94,39 +94,20 @@ Vue.component("registration", {
 				if(!this.errorFirstName && !this.errorLastName && !this.errorGender && !this.errorUsername && !this.errorPassword && !this.errorConfirmPassword){
 					if(user.password.length < 8){
 						this.errorPassword = "Your password must contain at least 8 characters ";
+						return;
 					}
 					if(user.password != confirmPassword){
 					   this.errorConfirmPassword = "Password and Confirm password doesn't match";
+					   return;
 					}
 				}
 				
-		        axios
-		          .get('rest/users/all')
-		          .then(response => (this.users = response.data))
-				for(u in this.users){	
-					if(this.users[u].username == this.user.username){
-						this.errorUsername = "Username already exists";
-						return;
-					}
+				if(user.lastName && user.lastName && user.gender && user.username && user.password && confirmPassword){
+					axios
+			          .get('rest/users/all')
+			          .then(response => (this.users = response.data,
+			        		  this.userExists()))
 				}
-		        
-    			 axios
-		          .post('rest/guests/addGuest', JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), {
-  			        headers: {
-			            'Content-Type': 'application/json',
-			        }
-			    })
-		          .then(response =>(console.log('aaaaaaa')))
-	            
-	            
-	            
-	            	 axios
-		          .post('rest/users/addUser', JSON.stringify({"username":''+ user.username, "password":''+ user.password,"firstName":''+ user.firstName,"lastName":''+ user.lastName,"gender":user.gender,"typeOfUser":'GUEST'}), {
-  			        headers: {
-			            'Content-Type': 'application/json',
-			        }
-			    })
-		          .then(response => (this.login()))
 	            
 				},
 			login : function () {
@@ -139,7 +120,38 @@ Vue.component("registration", {
 				        }
 		        		  })
 		          .then(response => (this.$router.push('/')  ))
-				}
+				},
+				
+			userExists : function(){
+				 let addUser = true;
+				 for(u in this.users){	
+						if(this.users[u].username == this.user.username){
+							this.errorUsername = "Username already exists";
+							addUser = false;
+							return;
+						}
+					}
+				if(addUser){
+					this.addUser();
+				} 
+			},
+			
+			addUser : function(){
+				 axios
+		          .post('rest/guests/addGuest', JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'GUEST'}), {
+				        headers: {
+			            'Content-Type': 'application/json',
+			        }
+			    })
+	           
+	           	 axios
+		          .post('rest/users/addUser', JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'GUEST'}), {
+				        headers: {
+			            'Content-Type': 'application/json',
+			        }
+			    })
+		          .then(response => (this.login()))
+			}	
 		}
 		
 });
