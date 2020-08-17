@@ -108,7 +108,7 @@ public class UserService {
 		for(User u : getAllUsers()) {
 			users.add(u);
 		}
-		User newUser = new User(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getGender(), TypeOfUser.GUEST);
+		User newUser = new User(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getGender(), user.getTypeOfUser());
 		users.add(newUser);
 		userDao.save(users,newUser,ctx.getRealPath("")+"json/user.json");
 	}
