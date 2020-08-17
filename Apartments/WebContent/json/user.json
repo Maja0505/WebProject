@@ -1,1 +1,1 @@
-[{"username":"mika","password":"11111111","firstName":"Mika","lastName":"Mikic","gender":"MALE","typeOfUser":"ADMIN"}]
+[{"username":"mika","password":"11111111","firstName":"Mika","lastName":"Mikic","gender":"MALE","typeOfUser":"ADMIN","flag":0},{"username":"maja","password":"11111111","firstName":"Maja","lastName":"Tomic","gender":"FEMALE","typeOfUser":"HOST","flag":0},{"username":"nemanja","password":"11111111","firstName":"Nemanja","lastName":"Jevtic","gender":"MALE","typeOfUser":"GUEST","flag":0}]

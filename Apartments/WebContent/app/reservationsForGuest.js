@@ -20,12 +20,14 @@ Vue.component("reservationsForGuest", {
 						<th>Apartment id</th>
 						<th>Guest username</th>
 						<th>Status of reservation</th>
+						<th v-on:click="sort()">Full price</th>
 						<th>Change status</th>
 					</tr>
 					<tr v-for="g in guestReservations"  v-on:click="selectReservation(g)">
 						<td>{{g.apartment.id}}</td>
 						<td>{{g.guest.username }}</td>
 						<td>{{g.statusOfReservation }}</td>
+						<td>{{g.fullPrice}}</td>
 						<td><button v-on:click="changeState(g)" v-bind:disabled="(g.statusOfReservation != 'ACCEPTED' && g.statusOfReservation != 'CREATED')">Change</button></td>
 					</tr>
 				</table>
@@ -83,6 +85,23 @@ Vue.component("reservationsForGuest", {
 			axios
 	        	.put('rest/reservations/updateReservation',this.selectedReservation)
 			
+		},
+		sort(){
+			if(this.currentSortDir == 'asc'){
+				this.currentSortDir = 'desc';
+			}else
+				this.currentSortDir = 'asc'
+			
+			if(this.guestReservations){
+				this.guestReservations = this.guestReservations.sort((a,b) => {
+			      let modifier = 1;
+			      if(this.currentSortDir === 'desc') modifier = -1;
+			      if(a['fullPrice'] < b['fullPrice']) return -1 * modifier;
+			      if(a['fullPrice'] > b['fullPrice']) return 1 * modifier;
+			      return 0;
+			    });
+				this.searchText = this.searchText;
+			}
 		}
 		
 	}

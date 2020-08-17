@@ -7,12 +7,17 @@ Vue.component("showGuestsForHost", {
 	      myGuests:[],
 	      searchField: "",
 	      reservations:null,
-	      showAllMyGuests:false
+	      showAllMyGuests:false,
+	  	  searchText:''
 	    }
 },
 		template: ` 
 		<div>
 			<div v-show="showAllMyGuests">
+				<div class="search-container">
+			  		<p>Pretraga</p>
+					<input type="text" placeholder="Search guest" v-model = "searchText">
+				</div>
 				<label>My guests</label>
 				<table class="myGuests">
 				<tr bgcolor="lightgrey">
@@ -23,7 +28,7 @@ Vue.component("showGuestsForHost", {
 					<th>User type</th>
 				</tr>
 				
-				<tr v-for="u in myGuests">
+				<tr v-for="u in search">
 					<td>{{u.username }}</td>
 					<td>{{u.firstName }}</td>
 					<td>{{u.lastName }}</td>
@@ -79,6 +84,14 @@ Vue.component("showGuestsForHost", {
 				axios
 		          .get('rest/users/all')
 		          .then(response => (this.users = response.data,this.getCurrentUser()))
+			}
+		},
+		computed : {
+
+			search(){
+			if(this.myGuests)	
+				return this.myGuests.filter(a => {
+				         return a.username.toLowerCase().includes(this.searchText.toLowerCase()) || a.gender.toLowerCase().includes(this.searchText.toLowerCase()) })
 			}
 		}
 		

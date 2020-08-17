@@ -176,7 +176,8 @@ Vue.component("editApartment", {
 		 		        	headers: {
 		 		        		'Content-Type': 'application/json',
 				        			}
-		        	  }).then(response=>{ this.selectedApartment = objApartment})
+		        	  }).then(response=>{ this.selectedApartment = objApartment,this.$root.$emit('refreshTable','');
+})
 				
 			},
 			viewAmenities : function(){

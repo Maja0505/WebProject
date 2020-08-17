@@ -113,7 +113,7 @@ Vue.component("apartment", {
 
 				</tr>
 				<tr>
-						<th>Check In Time OD:</th>
+						<th>Check In Time:</th>
 						<td><input type="time" format="dd:HH" v-model="apartment.checkInTime"></td>
 						<td>{{errorCheckInTime}}</td>
 
