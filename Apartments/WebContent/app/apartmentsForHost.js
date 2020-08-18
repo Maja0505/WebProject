@@ -65,28 +65,31 @@ Vue.component("apartmentsForHost", {
 					</div>
 					<h3>ACTIVE Apartments</h3>
 					<label v-show="activeApartmentsForHost.length == 0">Apartments with status ACTIVE doesn't exist</label>
+
 					<table v-show="activeApartmentsForHost.length != 0" border = "1" class="table table-hover">
-						<thead>
-							<tr bgcolor="lightblue">
-								<th @click="sort('id')">ID</th>
-								<th @click="sort('location')">Location</th>
-								<th @click="sort('pricePerNight')">Price Per Night</th>
-								<th @click="sort('hostName')">Host</th>
-								<th @click="sort('status')">Status</th>
-							</tr>
-						</thead>
-					    <tbody>
-							<tr v-for="a in searchActive"  v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'ACTIVE'">
-								<td>{{a.id}}</td>
-								<td>{{a.location.address.city}}</td>
-								<td>{{a.pricePerNight }}</td>
-								<td>{{a.host.username }}</td>
-								<td>{{a.statusOfApartment}}</td>
-								
-							</tr>
-						</tbody>
+					  <thead>
+						<tr bgcolor="lightgrey">
+							<th @click="sort('id')">ID</th>
+							<th @click="sort('location')">Location</th>
+							<th @click="sort('pricePerNight')">Price Per Night</th>
+							<th @click="sort('hostName')">Host</th>
+							<th @click="sort('status')">Status</th>
+						</tr>
+					</thead>
+					<tbody>  
+						<tr v-for="a in searchActive" v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'ACTIVE' && a.flag==0">
+							<td>{{a.id}}</td>
+							<td>{{a.location.address.city}}</td>
+							<td>{{a.pricePerNight }}</td>
+							<td>{{a.host.username }}</td>
+							<td>{{a.statusOfApartment}}</td>
+							
+						</tr>
+					</tbody>
+
 					</table>
 					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
+				    <button style="background-color:MediumSeaGreen;" v-on:click="deleteApartment()" v-show="selectedApartment">Delete</button>
 					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
 					<editApartment></editApartment>
 			    	<commentApartmentForHost></commentApartmentForHost>
@@ -120,29 +123,31 @@ Vue.component("apartmentsForHost", {
 					</div>
 					<h3>INACTIVE Apartments</h3>
 					<label v-show="inactiveApartmentsForHost.length == 0">Apartments with status INACTIVE doesn't exist</label>
+
 					<table v-show="inactiveApartmentsForHost.length != 0" border = "1" class="table table-hover">
-						<thead>
-							<tr bgcolor="lightblue">
-								<th @click="sort('id')">ID</th>
-								<th @click="sort('location')">Location</th>
-								<th @click="sort('pricePerNight')">Price Per Night</th>
-								<th @click="sort('hostName')">Host</th>
-								<th @click="sort('status')">Status</th>
-							</tr>
-						</thead>
-						
-					    <tbody>
-							<tr v-for="a in searchInactive"  v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'INACTIVE'">
-								<td>{{a.id}}</td>
-								<td>{{a.location.address.city}}</td>
-								<td>{{a.pricePerNight }}</td>
-								<td>{{a.host.username }}</td>
-								<td>{{a.statusOfApartment}}</td>
-								
-							</tr>
-					   </tbody>
+					<thead>
+						<tr bgcolor="lightgrey">
+							<th @click="sort('id')">ID</th>
+							<th @click="sort('location')">Location</th>
+							<th @click="sort('pricePerNight')">Price Per Night</th>
+							<th @click="sort('hostName')">Host</th>
+							<th @click="sort('status')">Status</th>
+						</tr>
+					</thead>
+					 <tbody>    
+						<tr v-for="a in searchInactive" v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'INACTIVE' && a.flag==0">
+							<td>{{a.id}}</td>
+							<td>{{a.location.address.city}}</td>
+							<td>{{a.pricePerNight }}</td>
+							<td>{{a.host.username }}</td>
+							<td>{{a.statusOfApartment}}</td>
+							
+						</tr>
+					 </tbody>
+
 					</table>
 					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
+					<button style="background-color:MediumSeaGreen;" v-on:click="deleteApartment()" v-show="selectedApartment">Delete</button>
 					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
 					<editApartment></editApartment>
 			    	<commentApartmentForHost></commentApartmentForHost>
@@ -188,8 +193,30 @@ Vue.component("apartmentsForHost", {
 
 
 		        
-			},
+			}, 
 	methods:{
+		
+		deleteApartment : function(){
+			this.$root.$emit('showEditForm',{},false);
+			this.$root.$emit('showComent',{},false);
+			
+			for(let apartment of this.allApartments){
+				if(apartment.id == this.selectedApartment.id){
+					apartment.flag = 1;
+					break;
+				}
+			}
+			
+			this.selectedApartment.flag = 1;
+			this.updateApartment(this.selectedApartment);
+			this.selectedApartment = null;
+		},
+		
+		updateApartment : function(newApartment){
+			axios
+	          .put('rest/apartments/updateApartment',newApartment)
+		},
+		
 		selectApartment : function(apartment){
 			this.selectedApartment = apartment;
 			//ako ponovo selektujemo da nam se zatvore sve forme

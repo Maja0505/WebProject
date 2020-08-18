@@ -77,6 +77,7 @@ Vue.component("apartmentsForAdmin", {
 						</tr>
 					</thead>
 					    
+<<<<<<< HEAD
 					<tbody>
 						<tr v-for="a in search"  v-on:click="selectApartment(a)">
 							<td>{{a.location.address.city}}</td>
@@ -84,6 +85,13 @@ Vue.component("apartmentsForAdmin", {
 							<td>{{a.host.username }}</td>
 						</tr>
 					</tbody>
+=======
+					<tr v-for="a in search" v-if="a.flag==0" v-on:click="selectApartment(a)">
+						<td>{{a.location.address.city}}</td>
+						<td>{{a.pricePerNight }}</td>
+						<td>{{a.host.username }}</td>
+					</tr>
+>>>>>>> branch 'master' of https://github.com/Maja0505/WebProject.git
 				</table>
 				
 				<div v-if="selectedApartment">
@@ -95,7 +103,6 @@ Vue.component("apartmentsForAdmin", {
 					
 					<editApartment></editApartment>
 					<commentForAdmin></commentForAdmin>
-
 				</div>
 			</div>
 		</div>
@@ -138,20 +145,36 @@ Vue.component("apartmentsForAdmin", {
 	
 	methods : {
 		
+		deleteApartment : function(){
+			this.$root.$emit('showEditForm',{},false);
+			this.$root.$emit('showComentForAdmin',{},false,[]);
+			
+			for(let apartment of this.allApartments){
+				if(apartment.id == this.selectedApartment.id){
+					apartment.flag = 1;
+					break;
+				}
+			}
+			
+			this.selectedApartment.flag = 1;
+			this.updateApartment(this.selectedApartment);
+			this.selectedApartment = null;
+		},
+		
 		showComments : function(){
-			this.$root.$emit('showEditForm',null,false);
+			this.$root.$emit('showEditForm',{},false);
 			this.$root.$emit('showComentForAdmin',this.selectedApartment,true,this.allComments);
 		},
 		
 		moreInfo : function(){
 			this.$root.$emit('showEditForm',this.selectedApartment,true);
-			this.$root.$emit('showComentForAdmin',null,false,null);
+			this.$root.$emit('showComentForAdmin',{},false,[]);
 		},
 		
 		selectApartment : function(a){
 			this.selectedApartment = a;
-			this.$root.$emit('showEditForm',null,false);
-			this.$root.$emit('showComentForAdmin',null,false,null);
+			this.$root.$emit('showEditForm',{},false);
+			this.$root.$emit('showComentForAdmin',{},false,[]);
 		},
 		
 		showApartments : function(){
@@ -171,6 +194,11 @@ Vue.component("apartmentsForAdmin", {
 			}		
 		},
 		
+		updateApartment : function(newApartment){
+			axios
+	          .put('rest/apartments/updateApartment',newApartment)
+		},
+		
 		sort(){
 			if(this.currentSortDir == 'asc'){
 				this.currentSortDir = 'desc';
@@ -188,6 +216,7 @@ Vue.component("apartmentsForAdmin", {
 				this.searchText = this.searchText;
 			}
 		},
+
 		filterByPrice: function(a){
 			if(this.searchPriceFrom != '')
 				return a.pricePerNight >= parseInt(this.searchPriceFrom) && a.pricePerNight<=parseInt(this.searchPriceTo)
@@ -358,8 +387,7 @@ Vue.component("apartmentsForAdmin", {
 			}
 			return false
 		}
-		
-		
+				
 	},
 	
 	computed : {
