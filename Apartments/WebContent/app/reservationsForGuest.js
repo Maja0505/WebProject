@@ -15,14 +15,17 @@ Vue.component("reservationsForGuest", {
 	template: `
 		<div>
 			<div v-show="showGuestReservations">
-				<table border = "1" class="guestReservations">
-					<tr bgcolor="lightgrey">
+				<table class="table table-hover">
+				<thead>
+					<tr bgcolor="lightblue">
 						<th>Apartment id</th>
 						<th>Guest username</th>
 						<th>Status of reservation</th>
 						<th v-on:click="sort()">Full price</th>
 						<th>Change status</th>
 					</tr>
+				</thead>
+				<tbody>
 					<tr v-for="g in guestReservations"  v-on:click="selectReservation(g)">
 						<td>{{g.apartment.id}}</td>
 						<td>{{g.guest.username }}</td>
@@ -30,6 +33,7 @@ Vue.component("reservationsForGuest", {
 						<td>{{g.fullPrice}}</td>
 						<td><button v-on:click="changeState(g)" v-bind:disabled="(g.statusOfReservation != 'ACCEPTED' && g.statusOfReservation != 'CREATED')">Change</button></td>
 					</tr>
+				</tbody>
 				</table>
 			</div>
 		</div>

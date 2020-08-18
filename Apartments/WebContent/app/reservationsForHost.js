@@ -51,8 +51,9 @@ Vue.component("reservationsForHost", {
 				<input type="checkbox" id="completed" name="completed" value="COMPLETED" v-model="isCompleted">
 				<label>COMPLETED</label><br>
 			</div>
-			 <table border = "1" class="guestReservations">
-					<tr bgcolor="lightgrey">
+			 <table border = "1"  class="table table-hover">
+			 		<thead>
+					<tr bgcolor="lightblue">
 						<th>Apartment id</th>
 						<th>Guest username</th>
 						<th>Start date</th>
@@ -62,6 +63,8 @@ Vue.component("reservationsForHost", {
 						<th>Change status</th>
 						<th>Complete</th>
 					</tr>
+					</thead>
+					<tbody>
 					<tr v-for="g in search"  v-on:click="selectReservation(g)">
 						<td>{{g.apartment.id}}</td>
 						<td>{{g.guest.username }}</td>
@@ -78,6 +81,7 @@ Vue.component("reservationsForHost", {
 							<label  v-show = "(g.statusOfReservation == 'ACCEPTED' && !isFinished(g))">Reservation isn't finished</label>
 						</td>
 					</tr>
+					</tbody>
 				</table>
 			</div>		
 		</div>

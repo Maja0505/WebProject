@@ -19,7 +19,12 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		   	searchLocation:'',
 		   	searchNumberOfRoomsFrom:'',
 	    	searchNumberOfRoomsTo:'',
-	    	searchNumberOfGuests:''
+	    	searchNumberOfGuests:'',
+	    	showFiltersForm:false,
+	    	allAmenities:[],
+	    	isRoom:false,
+	    	isWholeApartment:false,
+	    	checkedAmenities:[]
 		}
 	},
 
@@ -29,21 +34,45 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 				
 				<div v-if="showAllApartments">
 					<searchApartments></searchApartments>
-					<table border = "1" class="activeApartments">
-						<tr bgcolor="lightgrey">
-							<th @click="sort('id')">ID</th>
-							<th @click="sort('location')">Location</th>
-							<th @click="sort('pricePerNight')">Price Per Night</th>
-							<th @click="sort('hostName')">Host</th>
-							<th @click="sort('status')">Status</th>
-						</tr>
-						<tr v-for="a in searchActive"  v-on:click="selectApartment(a)">
-							<td>{{a.id}}</td>
-							<td>{{a.location.address.city}}</td>
-							<td>{{a.pricePerNight }}</td>
-							<td>{{a.host.username }}</td>
-							<td>{{a.statusOfApartment}}</td>
-						</tr>
+					<button v-on:click="showFilters()" v-if="currentUser">Filters</button>
+					<div v-show="showFiltersForm">
+						
+						<p>TYPE OF APARTMENT</p>
+						<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
+						<label>ROOM</label><br> 
+						<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
+						<label>WHOLE_APARTMENT</label><br>
+						
+						<p>AMENITIES</p>
+						<table>
+							<tr><td>Name</td><td>Checked</td></tr>
+							
+							<tr  v-for="a in allAmenities">
+								<td><input type="checkbox"  @click="onChange(a,$event)"></td>
+								<td>{{a.name}}</td>
+							</tr>
+						</table>
+						
+					</div>
+					<table border = "1"  class="table table-hover">
+						<thead>
+							<tr bgcolor="lightblue">
+								<th @click="sort('id')">ID</th>
+								<th @click="sort('location')">Location</th>
+								<th @click="sort('pricePerNight')">Price Per Night</th>
+								<th @click="sort('hostName')">Host</th>
+								<th @click="sort('status')">Status</th>
+							</tr>
+					    </thead>
+					    <tbody>
+							<tr v-for="a in searchActive"  v-on:click="selectApartment(a)">
+								<td>{{a.id}}</td>
+								<td>{{a.location.address.city}}</td>
+								<td>{{a.pricePerNight }}</td>
+								<td>{{a.host.username }}</td>
+								<td>{{a.statusOfApartment}}</td>
+							</tr>
+						</tbody>
 					</table>
 					
 					<div v-if="selectedApartment">
@@ -88,6 +117,8 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	    	this.searchNumberOfGuests=searchNumberOfGuests
 
 	    	});
+	      this.$root.$on('refreshCurrentUser',()=>{this.currentUser = null})
+
 	},
 
 	
@@ -197,6 +228,90 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	  
 						}else
 							return true
+			},
+			filterByRoomType:function(a){
+				if(this.isRoom || this.isWholeApartment)
+				{
+					if(this.isRoom){
+						if(a.typeOfApartment === 'ROOM'){
+							return true
+						}else{
+							return false
+						}
+
+					}else{
+						return false
+					}
+
+				}else{
+					return true
+				}
+			},
+			filterByWholeApartmentType:function(a){
+				if(this.isRoom || this.isWholeApartment)
+				{
+					if(this.isWholeApartment){
+						if(a.typeOfApartment === 'WHOLE_APARTMENT'){
+							return true
+						}else{
+							return false
+						}
+
+					}else{
+						return false
+					}
+
+				}else{
+					return true
+				}
+			},
+			showFilters: function(){
+				if(this.showFiltersForm){
+					this.showFiltersForm = false;
+				}else{
+					this.showFiltersForm = true;
+					axios
+			          .get('rest/amenities/all')
+			          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
+			          
+				}
+			},
+			onChange:function(amenitie,event){
+				  if (event.target.checked){
+					  this.checkedAmenities.push(amenitie.name);
+						
+				  }else{
+					  
+					  let i = this.checkedAmenities.indexOf(amenitie.name)
+						  this.checkedAmenities.splice(i, 1);
+
+				  }
+				
+			},
+			filterByAmenites:function(amenitiesList){
+				if(this.checkedAmenities.length != 0){
+					list = []
+					for(amenitie of this.checkedAmenities){
+						isExist = this.isInAmenitieList(amenitie,amenitiesList)
+						list.push(isExist);
+					}
+					if (list.includes(true)){
+						return true
+					}else{
+						return false
+					}
+				}else{
+					return true
+				}
+
+			},
+			isInAmenitieList:function(amenitie,amenitiesList){
+				for(a of amenitiesList){
+					if(a.name == amenitie){
+						return true;
+					}
+				}
+				return false
 			}
 		
 	},
@@ -204,7 +319,7 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		searchActive(){
 			if(this.activeApartments)	
 				return this.activeApartments.filter(a => {
-				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a)})
+				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 			}
 		}
 })

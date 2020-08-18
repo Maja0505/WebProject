@@ -22,13 +22,16 @@ Vue.component("comment", {
 				<button type="submit" v-on:click="showAll()" >Show your apartments</button>
 				
 				<div v-show="showAllApartments">
-					<table border = "1" class="apartmentsOfMyReservations">
-						<tr bgcolor="lightgrey">
+					<table class="table table-hover">
+					  <thead>
+						<tr bgcolor="lightblue">
 							<th>Location</th>
 							<th>Price Per Night</th>
 							<th>Host</th>
 							<th>Reservation</th>
 						</tr>
+					</thead>
+					<tbody>
 						<tr v-for="a in apartmentsOfMyReservations"   v-on:click="selectApartment(a)">
 							<td>{{a.location.address.city}}</td>
 							<td>{{a.pricePerNight }}</td>
@@ -40,6 +43,7 @@ Vue.component("comment", {
 								</div>
 							</td>
 						</tr>
+					</tbody>
 					</table>
 				</div>
 				

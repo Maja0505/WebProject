@@ -23,16 +23,20 @@ Vue.component("amenities", {
 			<input type="text" v-model="name"></intput><button v-on:click="addAmenitieToList()">Add</button>
 			<p style="color:red">{{errorAmenitie}}</p>
 			<br>
-				<table class="allAmenitites" border='1'>
+				<table  class="table table-hover">
+				<thead>
 					<tr>
 					<th>Amenities</th>
 					</tr>
+				</thead>
+				<tbody>
 					<tr v-show="!allAmenitites" >
 						<td>List is empty</td>
 					</tr>
 					<tr v-for="a in allAmenitites" v-show="allAmenitites" v-on:click="selectAmenitie(a)">
 						<td>{{a.name}}</td>
 					</tr>
+				</tbody>
 				</table>
 				<br>
 				<p v-if="selectedAmenitie">Selected amenitie: {{selectedAmenitie.name}}</p>

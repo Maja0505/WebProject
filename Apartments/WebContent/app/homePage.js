@@ -44,6 +44,7 @@ Vue.component("homePage", {
 			},
 			methods: {
 				logout: function(){
+					this.$root.$emit('refreshCurrentUser');
 					axios
 			          .post('rest/users/logout')
 			          .then(response => (toast('User ' + response.data + ' successed logout!')) ,this.user = null)

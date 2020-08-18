@@ -19,22 +19,26 @@ Vue.component("showGuestsForHost", {
 					<input type="text" placeholder="Search guest" v-model = "searchText">
 				</div>
 				<label>My guests</label>
-				<table class="myGuests">
-				<tr bgcolor="lightgrey">
-					<th>Username</th>
-					<th>First name</th>
-					<th>Last name</th>
-					<th>Gender</th>
-					<th>User type</th>
-				</tr>
+				<table  class="table table-hover">
+				<thead>
+					<tr bgcolor="lightblue">
+						<th>Username</th>
+						<th>First name</th>
+						<th>Last name</th>
+						<th>Gender</th>
+						<th>User type</th>
+					</tr>
+				</thead>
 				
-				<tr v-for="u in search">
-					<td>{{u.username }}</td>
-					<td>{{u.firstName }}</td>
-					<td>{{u.lastName }}</td>
-					<td>{{u.gender }}</td>
-					<td>{{u.typeOfUser }}</td>
-				</tr>
+				<tbody>
+					<tr v-for="u in search">
+						<td>{{u.username }}</td>
+						<td>{{u.firstName }}</td>
+						<td>{{u.lastName }}</td>
+						<td>{{u.gender }}</td>
+						<td>{{u.typeOfUser }}</td>
+					</tr>
+				</tbody>
 				</table>
 			</div>
 		</div>

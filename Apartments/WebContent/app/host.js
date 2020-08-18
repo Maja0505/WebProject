@@ -10,12 +10,12 @@ Vue.component("host", {
 	    }
 },
 		template: ` 
-		<div>
-			<button type="submit" v-on:click="showAllGuestsForHost()">Show my guests</button>
+		<div class="btn-group-vertical">
+			<button type="button" v-on:click="showAllGuestsForHost()" class="btn btn-primary">Show my guests</button>
 			<showGuestsForHost></showGuestsForHost>
-			<button type="submit" v-on:click="showAllReservationsForHost()">Show all reservations</button>
+			<button type="button" v-on:click="showAllReservationsForHost()" class="btn btn-primary">Show all reservations</button>
 			<reservationsForHost></reservationsForHost>
-			<button type="submit" v-on:click="showApartmentsForHost()">Show my apartments</button>
+			<button type="button" v-on:click="showApartmentsForHost()" class="btn btn-primary">Show my apartments</button>
 			<apartmentsForHost></apartmentsForHost>
 		</div>
 		`

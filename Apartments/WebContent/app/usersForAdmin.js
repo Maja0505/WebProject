@@ -21,15 +21,18 @@ Vue.component("usersForAdmin",{
 					      <input type="text" placeholder="Search.." v-model = "searchText">
 					</div>
 					<div v-if="currentUser">
-						<table class="users">
-							<tr bgcolor="lightgrey">
+						<table  class="table table-hover">
+						  <thead>
+							<tr bgcolor="lightblue">
 								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Username</th>
 								<th>Gender</th>
 								<th>User type</th>
 							</tr>
-							
+						  </thead>
+						
+						  <tbody>
 							<tr v-for="u in search" v-if="currentUser.username != u.username">
 								<td>{{u.firstName }}</td>
 								<td>{{u.lastName }}</td>
@@ -37,6 +40,7 @@ Vue.component("usersForAdmin",{
 								<td>{{u.gender }}</td>
 								<td>{{u.typeOfUser }}</td> 
 							</tr>
+						  </tbody>
 						</table>
 					</div>
 				</div>	
