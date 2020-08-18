@@ -74,7 +74,7 @@ Vue.component("apartmentsForHost", {
 							<th @click="sort('status')">Status</th>
 						</tr>
 					    
-						<tr v-for="a in searchActive"  v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'ACTIVE'">
+						<tr v-for="a in searchActive" v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'ACTIVE' && a.flag==0">
 							<td>{{a.id}}</td>
 							<td>{{a.location.address.city}}</td>
 							<td>{{a.pricePerNight }}</td>
@@ -84,6 +84,7 @@ Vue.component("apartmentsForHost", {
 						</tr>
 					</table>
 					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
+				    <button style="background-color:MediumSeaGreen;" v-on:click="deleteApartment()" v-show="selectedApartment">Delete</button>
 					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
 					<editApartment></editApartment>
 			    	<commentApartmentForHost></commentApartmentForHost>
@@ -126,7 +127,7 @@ Vue.component("apartmentsForHost", {
 							<th @click="sort('status')">Status</th>
 						</tr>
 					    
-						<tr v-for="a in searchInactive"  v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'INACTIVE'">
+						<tr v-for="a in searchInactive" v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'INACTIVE' && a.flag==0">
 							<td>{{a.id}}</td>
 							<td>{{a.location.address.city}}</td>
 							<td>{{a.pricePerNight }}</td>
@@ -136,6 +137,7 @@ Vue.component("apartmentsForHost", {
 						</tr>
 					</table>
 					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
+					<button style="background-color:MediumSeaGreen;" v-on:click="deleteApartment()" v-show="selectedApartment">Delete</button>
 					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
 					<editApartment></editApartment>
 			    	<commentApartmentForHost></commentApartmentForHost>
@@ -181,8 +183,30 @@ Vue.component("apartmentsForHost", {
 
 
 		        
-			},
+			}, 
 	methods:{
+		
+		deleteApartment : function(){
+			this.$root.$emit('showEditForm',{},false);
+			this.$root.$emit('showComent',{},false);
+			
+			for(let apartment of this.allApartments){
+				if(apartment.id == this.selectedApartment.id){
+					apartment.flag = 1;
+					break;
+				}
+			}
+			
+			this.selectedApartment.flag = 1;
+			this.updateApartment(this.selectedApartment);
+			this.selectedApartment = null;
+		},
+		
+		updateApartment : function(newApartment){
+			axios
+	          .put('rest/apartments/updateApartment',newApartment)
+		},
+		
 		selectApartment : function(apartment){
 			this.selectedApartment = apartment;
 			//ako ponovo selektujemo da nam se zatvore sve forme
