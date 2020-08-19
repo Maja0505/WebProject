@@ -53,11 +53,12 @@ Vue.component("login", {
 				for(user in this.users){
 					if(this.users[user].username == username){
 						if(this.users[user].password == password){
-							
+							 
+							let curentUser = this.users[user];
 							 axios
 					          .post('rest/users/login',this.users[user])
 					          .then(response => (toast('User ' + this.users[user].firstName + ' successed login!'),
-					        		  this.$router.push('/')))
+					        		  this.$root.$emit('changeCurentUser',curentUser),this.$router.push('/')))
 							//u slucaju potrebe da ovaj gornji post nece da odradi kako treba tj.
 					        //odradi ga pre get zahteva iz homePage.js potrebna je ova donja linija  
 					        //this.$root.$emit('loginUser',this.users[user].typeOfUser);
