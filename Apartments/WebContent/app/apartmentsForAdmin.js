@@ -77,21 +77,14 @@ Vue.component("apartmentsForAdmin", {
 						</tr>
 					</thead>
 					    
-<<<<<<< HEAD
-					<tbody>
-						<tr v-for="a in search"  v-on:click="selectApartment(a)">
-							<td>{{a.location.address.city}}</td>
-							<td>{{a.pricePerNight }}</td>
-							<td>{{a.host.username }}</td>
-						</tr>
-					</tbody>
-=======
+				<tbody>
 					<tr v-for="a in search" v-if="a.flag==0" v-on:click="selectApartment(a)">
 						<td>{{a.location.address.city}}</td>
 						<td>{{a.pricePerNight }}</td>
 						<td>{{a.host.username }}</td>
 					</tr>
->>>>>>> branch 'master' of https://github.com/Maja0505/WebProject.git
+				</tbody>
+
 				</table>
 				
 				<div v-if="selectedApartment">
