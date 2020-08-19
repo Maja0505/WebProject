@@ -23,6 +23,6 @@ const router = new VueRouter({
 
 var app = new Vue({
 	router,
-	el: '#Apartments',
+	el: '#Apartments'
 	
 });
