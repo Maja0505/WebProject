@@ -29,10 +29,10 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	},
 
 	template : `
-			<div>
-				<button type="submit" v-on:click="showApartments()">Show apartments for reservation</button>
+			<div class="container">
+				<h1>APARTMENTS FOR RENT</h1>
 				
-				<div v-if="showAllApartments">
+				<div>
 					<searchApartments></searchApartments>
 					<button v-on:click="showFilters()" v-if="currentUser">Filters</button>
 					<div v-show="showFiltersForm">
@@ -118,26 +118,25 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 
 	    	});
 	      this.$root.$on('refreshCurrentUser',()=>{this.currentUser = null})
-
+	      this.$root.$on('showApartmentsFormForUnregistredUser',()=>{this.showApartments()})
 	},
 
 	
 	methods : {
 		
 		showApartments : function(){
-			if(!this.showAllApartments){
 				 axios    
 		          .get('rest/apartments/all')
 		          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
 		        		  axios
 			     	        .get('rest/comments/all')
 			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null,
-			     	        		this.getActiveApartments(),this.showAllApartments = true))))
-			}else{
-				this.showAllApartments = false;
+			     	        		this.getActiveApartments()))))
+				
+			   
 				this.activeApartments = null;
 				this.selectedApartment = null;
-			}
+			
 				
 		},
 		
