@@ -14,48 +14,58 @@ Vue.component("registration", {
 },
 		template: ` 
 		<div>
-			<table>
-				<tr>
-					<td>First name:</td>
-					<td><input name="FirstName" type="text" v-model="user.firstName"/></td>
-					<td>{{errorFirstName}}</td>
-				</tr>
-				<tr>
-					<td>Last name:</td>
-					<td><input name="LastName" type="text" v-model="user.lastName"/></td>
-					<td>{{errorLastName}}</td>
-				</tr>
-				<tr>
-					<td>Gender:</td>
-					<td>
-					<input type="radio" id="male" name="gender" value="MALE" v-model="user.gender">
-					<label for="male">Male</label>
-					<input type="radio" id="female" name="gender" value="FEMALE" v-model="user.gender">
-					<label for="female">Female</label>
-					</td>	
-					<td>{{errorGender}}</td>				
-				</tr>
-				<tr>
-					<td>Username:</td>
-					<td><input name="Username" type="text" v-model="user.username"/></td>
-					<td>{{errorUsername}}</td>
-				</tr>		
-				<tr>
-					<td>Password:</td>
-					<td><input name="Password" type="password" v-model="user.password"/></td>
-					<td>{{errorPassword}}</td>
-				</tr>
-				<tr>
-					<td>ConfirmPassword:</td>
-					<td><input name="ConfirmPassword" type="password" v-model="confirmPassword"/></td>
-					<td>{{errorConfirmPassword}}</td>
-				</tr>
-				<tr>
-					
-					<td colspan="3"><button v-on:click="checkForm(user, confirmPassword)">Register</button></td>
-				</tr>
-								
-			</table>
+
+			
+<form>
+  <div class="container-registration">
+  	<label class="text-center-register">Registration</label>
+    <p>Please fill in this form to create an account.</p>
+    <hr>
+	<div class="input-container-registration">
+    <label><b>First name</b></label><br>
+    <input name="FirstName" type="text" v-model="user.firstName" required>
+    <p  class="small-register-error">{{errorFirstName}}</p>
+    
+
+    <label><b>Last name</b></label><br>
+    <input name="LastName" type="text" v-model="user.lastName" required>
+    <p  class="small-register-error">{{errorLastName}}</p>
+    
+    <label><b>Gender</b></label><br>
+	<label class="radio-inline"><input type="radio" id="male" name="gender" value="MALE" v-model="user.gender">Male</label>
+	<label class="radio-inline"><input type="radio" id="female" name="gender" value="FEMALE" v-model="user.gender">Female</label></br>
+	<p  class="small-register-error">{{errorGender}}</p>
+
+    
+    
+    
+    <label><b>Username</b></label><br>
+    <input name="Username" type="text" v-model="user.username" required>
+	<p  class="small-register-error">{{errorUsername}}</p>
+	
+
+	
+
+    <label><b>Password</b></label><br>
+    <input name="Password" type="password" v-model="user.password" required>
+	<p  class="small-register-error">{{errorPassword}}</p>
+	
+    <label><b>Repeat Password</b></label><br>
+    <input name="ConfirmPassword" type="password" v-model="confirmPassword" required>
+     <p  class="small-register-error">{{errorConfirmPassword}}</p>
+     
+    </div>
+    <hr>
+    	
+    <button type="submit" class="registerbtn" v-on:click="checkForm(user, confirmPassword)">Register</button>
+  </div>
+  
+  <div class="container-registration signin">
+    <p>Already have an account? <a href="#/login">Sign in</a>.</p>
+  </div>
+</form>
+			
+			
 		</div>
 		`
 		,methods : {

@@ -10,23 +10,29 @@ Vue.component("login", {
 },
 		template: ` 
 		    <div>
-		    	<table>
+		    	<div  class="box-login">
+		    		<label class="text-center-login">Login</label>
+		    	<table class="table-login">
 		              <tr>
+		              	<div  class="input-container-login">
 		              	<td>Username: </td>
-		                <td><input type="text" v-model="username"></td>  
-		                <td style="color:Red"><b>{{wrong_username}}</b></td>          
+		                <td><input type="text" v-model="username"><p class="small-login-error">{{wrong_username}}</p></td> 
+		                </div> 
+		              </tr>
+		              		              
+		              <tr>
+		              	<div class="input-container-login">
+			              	<td>Password: </td>
+			                <td><input type="password" v-model="password"><p class="small-login-error">{{wrong_password}}</p></td>
+		                </div>
 		              </tr>
 		              
 		              <tr>
-		              	<td>Password: </td>
-		                <td><input type="password" v-model="password"></td>
-		                <td style="color:Red"><b>{{wrong_password}}</b></td>       
-		              </tr>
-		              
-		              <tr>
-		                <td><button v-on:click="login(username,password)">Login</button></td>
+		                <td><button v-on:click="login(username,password)" class="btn-login">Login</button></td>
 		              </tr>
 		          </table> 
+		        </div>
+		          
 		    </div>
 		`,
 		mounted () {
