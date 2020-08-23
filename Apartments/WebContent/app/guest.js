@@ -6,13 +6,12 @@ Vue.component("guest", {
 	    return {
 		  
 	    }
-		},
+		},//OVDE IDE PRIKAZ APARTMANA ZA GOSTE
 		template: `
 		<div>
 			<apartmentsForGuestOrUnregistredUser></apartmentsForGuestOrUnregistredUser>
-			<button type="submit" v-on:click="showReservations()">Show your reservations</button>
-			<reservationsForGuest></reservationsForGuest>
 			<button onclick="location.href='#/comment'">Comment apartment</button>
+			
 		<p>CAO JA SAM GUEST</p>
 		</div>
 		`,

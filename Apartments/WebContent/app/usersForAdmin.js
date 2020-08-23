@@ -7,16 +7,14 @@ Vue.component("usersForAdmin",{
 		return{
 			users:null,
 			currentUser:null,
-			showAllUsers:false,
 			searchText:""
 		}
 	},
 	
 	template: `
 			<div>
-				<button type="submit" v-on:click="showUsers()">Show all users</button>
 				
-				<div v-show="showAllUsers">
+				<div>
 					<div class="search-container">
 					      <input type="text" placeholder="Search.." v-model = "searchText">
 					</div>
@@ -48,23 +46,20 @@ Vue.component("usersForAdmin",{
 	`,
 	
 	mounted(){
-		   axios
+		 this.$root.$on('allUsersForAdmin',(text) => {this.getAllUsers()});
+	        this.getAllUsers()    //PROVERITI
+		
+	},
+	
+	methods : {
+		getAllUsers:function(){
+			 axios
 	         .get('rest/users/all')
 	         .then(response => (response.data ? this.users = response.data : this.users = null))
 	        
 	       axios
 	         .get('rest/users/currentUser')
 	         .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
-		
-	},
-	
-	methods : {
-
-		showUsers : function(){
-			if(!this.showAllUsers){
-				this.showAllUsers = true;
-			}else
-				this.showAllUsers = false;
 		}
 	},
 	

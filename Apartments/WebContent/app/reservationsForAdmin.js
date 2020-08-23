@@ -5,7 +5,6 @@ Vue.component("reservationsForAdmin",{
 	data : function(){
 		return {
 			allReservations:null,
-			showReservations:false,
 			searchText:'',
 			currentSortDir:'asc',
 	    	showFiltersForm:false,
@@ -19,8 +18,7 @@ Vue.component("reservationsForAdmin",{
 	
 	template : `
 				<div>
-					<button type="submit" v-on:click="showAllReservations()">Show all reservations</button>
-					<div v-show="showReservations">
+					<div>
 						<div class="search-container">
 						      <input type="text" placeholder="Search reservation by username.." v-model = "searchText">
 						</div>	
@@ -58,18 +56,20 @@ Vue.component("reservationsForAdmin",{
 					</div>
 				</div>
 			`,
+	mounted(){
+        
+        this.$root.$on('reservationsForAdmin',(text) => {this.showAllReservations()});
+        this.showAllReservations()    //PROVERITI
+	},
 	
 	methods : {
 		
 		showAllReservations : function(){
 			this.searchText = '';
-			if(!this.showReservations)
-				axios
-			        .get('rest/reservations/all')
-			        .then(response => (response.data ? this.allReservations = response.data : this.allReservations = null,
-			        		this.showReservations = true))
-			else
-				this.showReservations = false;
+			axios
+		        .get('rest/reservations/all')
+		        .then(response => (response.data ? this.allReservations = response.data : this.allReservations = null,
+		        		this.showReservations = true))
 		},
 		
 		

@@ -2,7 +2,6 @@ Vue.component("amenities", {
 	
 	data: function () {
 	    return {
-	    	showAmenities:false,
 	    	allAmenitites:null,
 	    	name:null,
 	    	maxId:0,
@@ -17,8 +16,7 @@ Vue.component("amenities", {
 	
 	template: `
 		<div>
-			<button type="submit" v-on:click="showAllAmenities()">Show amneities for apartments</button>
-			<div v-show="showAmenities">
+			<div>
 			<br>
 			<input type="text" v-model="name"></intput><button v-on:click="addAmenitieToList()">Add</button>
 			<p style="color:red">{{errorAmenitie}}</p>
@@ -54,7 +52,8 @@ Vue.component("amenities", {
 	`,
 	
 	mounted(){
-		
+		 this.$root.$on('amenitiesForAdmin',() => {this.getAllAmenities()});
+	     this.getAllAmenities()    //PROVERITI
 			
 	},
 	 
@@ -68,20 +67,11 @@ Vue.component("amenities", {
 	        .get('rest/amenities/all')
 	        .then(response => (response.data ? this.allAmenitites = response.data : this.allAmenitites = null,this.findMaxId()))
 		},
-		showAllAmenities: function(){
-			if(this.showAmenities){
-				this.showAmenities = false;
-			}else{
-				this.showAmenities = true;
-			}
-			
-			this.getAllAmenities();
-			
-		},
+
 		findMaxId : function(){
-			for(amenities of this.allAmenitites){
-    			if(parseInt(amenities.id) > this.maxId){
-    				this.maxId = parseInt(amenities.id);
+			for(a of this.allAmenitites){
+    			if(parseInt(a.id) > this.maxId){
+    				this.maxId = parseInt(a.id);
     			}
     		}
 		},

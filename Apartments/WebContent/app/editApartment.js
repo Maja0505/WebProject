@@ -22,13 +22,47 @@ Vue.component("editApartment", {
 			  errorPricePerNight:"",
 			  errorCheckInTime:"",
 			  errorCheckOutTime:"",
-			  
+			  image:null,
+			  productSpect:"",
+			  slideIndex : 1
+
 	    }
 },
 		template: ` 
 		<div>
 			
 			<div v-show="showEditForm" v-if="showEditForm">
+
+ <!-- Container for the image gallery -->
+<div class="container">
+
+  <!-- Full-width images with number text -->
+  <div class="mySlides" v-for="image in selectedApartment.images">
+    <div class="numbertext">1 / 6</div>
+      <img :src="image" style="width:100%">
+  </div>
+
+  <!-- Next and previous buttons -->
+  <a class="prev" v-on:click="plusSlides(-1)">&#10094;</a>
+  <a class="next" v-on:click="plusSlides(1)">&#10095;</a>
+
+  <!-- Image text -->
+  <div class="caption-container">
+    <p id="caption"></p>
+  </div>
+
+  <!-- Thumbnail images -->
+  <div class="row">
+    <div class="column"  v-for="(item, index) in selectedApartment.images">
+      <img class="demo cursor" :src="item" style="width:100%"  v-on:click="currentSlide(index+1)" alt="The Woods">
+    </div>
+    
+  </div>
+</div> 
+
+
+
+
 				<table>
 					<tr>
 						<th>STATUS of Apartment</th>
@@ -125,6 +159,9 @@ Vue.component("editApartment", {
 							</script>
 					</tr>
 					<tr><td align='center' colspan='3'><button v-on:click="viewAmenities()" v-bind:disabled="mode=='EDITING'">View amenities</button></td></tr>
+				<tr><td><input type="text" v-model="productSpect" /></td>
+				<td><input type="file" @change="uploadImage" name="image" id="image"  accept="image/*" ></td>
+				<td><button type="submit" @click.prevent="submit"> Submit</button></td></tr>
 				</table>
 				<div v-show="viewAmenitiesForm">
 					<table class="allAmenities">
@@ -144,8 +181,10 @@ Vue.component("editApartment", {
 		</div>
 		`,
 		mounted () {
-	        this.$root.$on('showEditForm',(text,text2) => {this.selectedApartment = text,this.showEditForm = text2,this.getStartEndDate()});
+	        this.$root.$on('showEditForm',(text,text2) => {this.selectedApartment = text,this.showEditForm = text2,this.getStartEndDate(),this.showSlides(this.slideIndex)});
+	        
 		},
+
 		methods:{
 			isInApartmentList:function(amenitie){
 				let amenitieExist = this.selectedApartment.amenities.filter(function(a) {
@@ -196,7 +235,8 @@ Vue.component("editApartment", {
 			getStartEndDate : function(){
 				if(this.showEditForm){
 					this.startDate = this.selectedApartment.dateOfIssue[0];
-					this.endDate = this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1];					
+					this.endDate = this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1];	
+					
 				}
 
 			},
@@ -354,7 +394,59 @@ Vue.component("editApartment", {
 				}
 				this.confirm();
 				
-			}
+			},
+			uploadImage: function(e) {
+				 let img = e.target.files[0]
+				 this.image = "images/" + img.name
+				},
+			submit: function () {
+					
+					  var stringApartment = JSON.stringify(this.selectedApartment);
+					  var objApartment = JSON.parse(stringApartment);
+					  objApartment['images'].push(this.image);
+
+					  axios
+				         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
+				       		  {
+			 		        	headers: {
+			 		        		'Content-Type': 'application/json',
+					        			}
+			        	  });
+					  
+					},plusSlides(n) {
+						this.showSlides(this.slideIndex += n);
+					},currentSlide(n) {
+						this.showSlides(this.slideIndex = n);
+					},showSlides(n) {
+						if(this.showEditForm){
+							  var i;
+							  var slides =this.$el.querySelectorAll(".mySlides");
+							  var dots = this.$el.querySelectorAll(".demo");
+							  var captionText = this.$el.querySelectorAll("#caption");
+							  if (n > slides.length) {this.slideIndex = 1}
+							  if (n < 1) {this.slideIndex = slides.length}
+							  for (i = 0; i < slides.length; i++) {
+							    slides[i].style.display = "none";
+							  }
+							  for (i = 0; i < dots.length; i++) {
+							    dots[i].className = dots[i].className.replace(" active", "");
+							  }
+							  slides[this.slideIndex-1].style.display = "block";
+							  dots[this.slideIndex-1].className += " active";
+							  captionText.innerHTML = dots[this.slideIndex-1].alt;
+							  
+							  
+							  
+							  
+							  
+							  
+							  
+							  
+						}
+			
+						} 
+
+
 		},
 		components: {
 			vuejsDatepicker

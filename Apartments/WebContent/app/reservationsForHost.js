@@ -12,7 +12,6 @@ function fixOneDate(date){
 Vue.component("reservationsForHost", {
 	data: function () {
 	    return {
-	    	showAllReservations:false,
 	    	allReservationsForHost:null,
 	    	loggedUser:null,
 	    	hostReservations:[],
@@ -33,7 +32,7 @@ Vue.component("reservationsForHost", {
 		template: ` 
 		<div>
 			
-			<div v-show="showAllReservations">
+			<div>
 			 <div class="search-container">
 			  		<p>Pretraga</p>
 					<input type="text" placeholder="Search reservation" v-model = "searchText">
@@ -90,7 +89,8 @@ Vue.component("reservationsForHost", {
 			
 			mounted(){
 			        
-		        this.$root.$on('showAllReservationsForHost',(text) => {this.showAllReservations = text,this.show()});
+		        this.$root.$on('reservationsForHost',(text) => {this.showReservations()});
+		        this.showReservations()
 			        
 			},
 			
@@ -109,11 +109,7 @@ Vue.component("reservationsForHost", {
 				    	        		this.filteredAllReservations()))))
 				},
 				
-				show : function(){
-					if(this.showReservations){
-						this.showReservations();
-					}
-				},filteredAllReservations: function(){
+				filteredAllReservations: function(){
 					this.hostReservations = [];
 					for(let apartment of this.loggedUser.apartmentsForRent){
 						for(let reservation of this.allReservationsForHost){
@@ -295,7 +291,7 @@ Vue.component("reservationsForHost", {
 			computed : {
 
 				search(){
-				if(this.hostReservations)	
+				if(this.hostReservations)
 					return this.hostReservations.filter(a => {
 					         return a.guest.username.toLowerCase().includes(this.searchText.toLowerCase()) && (this.filterByCreateStatus(a) || this.filterByRejectedStatus(a) || this.filterByWithdrawalStuatus(a) || this.filterByAcceptedStatus(a) || this.filterByCompletedStatus(a))  })
 				}

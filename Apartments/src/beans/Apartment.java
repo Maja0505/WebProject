@@ -21,7 +21,7 @@ public class Apartment {
 	private Host host;
 	@JsonIgnoreProperties({"apartment","guest","rate","text"})
 	private List<Comment> comments;
-	private List<Image> images;
+	private List<String> images;
 	private int pricePerNight;
 	private String checkInTime;
 	private String checkOutTime;
@@ -37,7 +37,7 @@ public class Apartment {
 
 	public Apartment(String id,TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
 			List<Date> dateOfIssue, List<Date> availabilityByDates, Host host, List<Comment> comments,
-			List<Image> images, int pricePerNight, String checkInTime, String checkOutTime,
+			List<String> images, int pricePerNight, String checkInTime, String checkOutTime,
 			StatusOfApartment statusOfApartment, List<Amenities> amenities, List<Reservation> reservations) {
 		super();
 		this.id = id;
@@ -131,11 +131,11 @@ public class Apartment {
 		this.comments = comments;
 	}
 
-	public List<Image> getImages() {
+	public List<String> getImages() {
 		return images;
 	}
 
-	public void setImages(List<Image> images) {
+	public void setImages(List<String> images) {
 		this.images = images;
 	}
 

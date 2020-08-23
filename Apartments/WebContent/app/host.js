@@ -10,27 +10,14 @@ Vue.component("host", {
 	    }
 },
 		template: ` 
-		<div class="btn-group-vertical">
-			<button type="button" v-on:click="showAllGuestsForHost()" class="btn btn-primary">Show my guests</button>
-			<showGuestsForHost></showGuestsForHost>
-			<button type="button" v-on:click="showAllReservationsForHost()" class="btn btn-primary">Show all reservations</button>
-			<reservationsForHost></reservationsForHost>
-			<button type="button" v-on:click="showApartmentsForHost()" class="btn btn-primary">Show my apartments</button>
+		<div>
 			<apartmentsForHost></apartmentsForHost>
 		</div>
 		`
 		,
 		
 		methods:{
-			//prikaz svih korisnika koji imaju rezervaciju za apartman prijavljenog hosta(showGuestsForHost)
-			showAllGuestsForHost : function(){
-				if(this.showAllMyGuests){
-					this.showAllMyGuests = false;
-				}else{
-					this.showAllMyGuests = true;
-				}
-				this.$root.$emit('showAllGuestsForHost',this.showAllMyGuests);
-			},
+	
 			//prikaz svih rezervacija prijavljenog hosta(reservationsForHost)
 			showAllReservationsForHost : function(){
 				if(this.showAllReservations){

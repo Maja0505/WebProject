@@ -34,14 +34,6 @@ Vue.component("homePage", {
 		 
 		</div>
 
-
-		
-	
-	
-		<button type="submit" v-show="user" v-on:click="showProfile()">Show profile</button>
-		<div v-if="user" v-show="showProfileInfo">
-			<editProfile></editProfile>
-		</div>
 		<div v-if = "user">
 			<div v-show="user.typeOfUser == 'ADMIN'">
 				<admin></admin>

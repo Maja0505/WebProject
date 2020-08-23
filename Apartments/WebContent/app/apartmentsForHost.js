@@ -2,7 +2,6 @@ Vue.component("apartmentsForHost", {
 	
 	data: function () {
 	    return {
-	    	showOptions:false,
 	    	showActive:false,
 	    	showInactive:false,
 	    	allApartments:null,
@@ -32,7 +31,8 @@ Vue.component("apartmentsForHost", {
 	
 	template: `
 		<div>
-			<div v-show="showOptions" style="border: 5px solid red">
+
+			<div>
 			<button v-on:click="showActiveForHost()">Show ACTIVE apartments</button>
 			<button v-on:click="showInactiveForHost()">Show INACTIVE apartments</button>
 			
@@ -64,6 +64,7 @@ Vue.component("apartmentsForHost", {
 						
 					</div>
 					<h3>ACTIVE Apartments</h3>
+							
 					<label v-show="activeApartmentsForHost.length == 0">Apartments with status ACTIVE doesn't exist</label>
 
 					<table v-show="activeApartmentsForHost.length != 0" border = "1" class="table table-hover">
@@ -124,6 +125,11 @@ Vue.component("apartmentsForHost", {
 					<h3>INACTIVE Apartments</h3>
 					<label v-show="inactiveApartmentsForHost.length == 0">Apartments with status INACTIVE doesn't exist</label>
 
+
+
+
+
+
 					<table v-show="inactiveApartmentsForHost.length != 0" border = "1" class="table table-hover">
 					<thead>
 						<tr bgcolor="lightgrey">
@@ -159,7 +165,6 @@ Vue.component("apartmentsForHost", {
 		
 	mounted(){
 		        
-	        this.$root.$on('showApartments',(text) => {this.showOptions = text});
 	        this.$root.$on('searchApartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        	
@@ -535,6 +540,13 @@ Vue.component("apartmentsForHost", {
 			if(this.inactiveApartmentsForHost)	
 				return this.inactiveApartmentsForHost.filter(a => {
 				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
-			}
+			},
+		formattedClubs() {
+		          return this.searchActive.reduce((c, n, i) => {
+		              if (i % 4 === 0) c.push([]);
+		              c[c.length - 1].push(n);
+		              return c;
+		          }, []);
+		      }
 	}
 });

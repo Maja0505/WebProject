@@ -7,14 +7,13 @@ Vue.component("reservationsForGuest", {
 		  allReservations:null,
 		  user:null,
 		  guestReservations:[],
-		  showGuestReservations:false,
 		  selectedReservation:null
 	    }
 	},
 	
 	template: `
 		<div>
-			<div v-show="showGuestReservations">
+			<div>
 				<table class="table table-hover">
 				<thead>
 					<tr bgcolor="lightblue">
@@ -42,23 +41,21 @@ Vue.component("reservationsForGuest", {
 	
 	mounted(){
 	        
-        this.$root.$on('showGuestReservations',(text) => {this.showReservations()});
-	        
+        this.$root.$on('reservationsForGuest',(text) => {this.showReservations()});
+        this.showReservations()    //PROVERITI
 	},
 	
 	methods:{
 		showReservations : function(){
 		
-		if(!this.showGuestReservations)	
 			axios
 		        .get('rest/users/currentUser')
 		        .then(response => (response.data ? this.user = response.data : this.user = null,
 	        		axios
 	    	        .get('rest/reservations/all')
 	    	        .then(response => (response.data ? this.allReservations = response.data : this.allReservations = null,
-	    	        		this.filteredAllReservations(),this.showGuestReservations = true))))
-	    else
-	    	this.showGuestReservations = false;
+	    	        		this.filteredAllReservations()))))
+	  
 		},
 		
 		

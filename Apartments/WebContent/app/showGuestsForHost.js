@@ -13,7 +13,7 @@ Vue.component("showGuestsForHost", {
 },
 		template: ` 
 		<div>
-			<div v-show="showAllMyGuests">
+			<div>
 				<div class="search-container">
 			  		<p>Pretraga</p>
 					<input type="text" placeholder="Search guest" v-model = "searchText">
@@ -44,7 +44,8 @@ Vue.component("showGuestsForHost", {
 		</div>
 		`	
 		, mounted () {
-	        this.$root.$on('showAllGuestsForHost',(text) => {this.showAllMyGuests = text,this.show()})     
+	        this.$root.$on('guestsForHost',() => {this. myGuests = [],this.getAllUser()})     
+	        this.getAllUser()
 	    }
 		,methods: {
 			getMyGuests: function(){
@@ -80,11 +81,8 @@ Vue.component("showGuestsForHost", {
 		          .then(response => (this.reservations = response.data,this.getMyGuests()))
 	    
 		      
-			},show : function(){
-				if(this.showAllMyGuests){
-					this.getAllUser();
-				}
-			},getAllUser: function(){
+			},
+			getAllUser: function(){
 				axios
 		          .get('rest/users/all')
 		          .then(response => (this.users = response.data,this.getCurrentUser()))
@@ -93,8 +91,8 @@ Vue.component("showGuestsForHost", {
 		computed : {
 
 			search(){
-			if(this.myGuests)	
-				return this.myGuests.filter(a => {
+			if(this.myGuests)
+			return this.myGuests.filter(a => {
 				         return a.username.toLowerCase().includes(this.searchText.toLowerCase()) || a.gender.toLowerCase().includes(this.searchText.toLowerCase()) })
 			}
 		}
