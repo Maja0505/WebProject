@@ -84,8 +84,20 @@ Vue.component("apartmentsForAdmin", {
 						<td>{{a.host.username }}</td>
 					</tr>
 				</tbody>
-
 				</table>
+				
+				<div class="row">
+					<div class="col-sm-4" v-for="a in search">
+						<div class="panel panel-default" style="width: 25rem;" v-if="a!=null && a.flag==0">
+							 <div class="card-body">
+						        <h5 class="card-title">{{a.location.address.city}}</h5>
+						        <img :src="a.images[0]" class="card-img-top" style="width: 24.9rem;">
+						        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+						        <a href="#" class="btn btn-primary">View</a>
+						     </div>
+						</div>
+					</div>
+				</div>
 				
 				<div v-if="selectedApartment">
 					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
