@@ -63,6 +63,22 @@ public class ApartmentService {
 		apartmentDAO.save(apartments,apartment,ctx.getRealPath("") + "json/apartment.json");
 	}
 	
+	@POST
+	@Path("/changeSelectedApartment")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void setSessionForApartment(Apartment apartment) {
+		request.getSession().setAttribute("selectedApartment", apartment);
+	}
+	
+	@GET
+	@Path("/currentSelectedApartment")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Apartment getSelectedApartment() {
+		return (Apartment) request.getSession().getAttribute("selectedApartment");
+	}
+	
 	@PUT
 	@Path("/updateApartment")
 	@Consumes(MediaType.APPLICATION_JSON)
