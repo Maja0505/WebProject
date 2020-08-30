@@ -83,9 +83,18 @@ public class ApartmentService {
 	@Path("/updateApartment")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void updateGuest(Apartment apartment) throws JsonGenerationException, JsonMappingException, IOException {
+	public void updateApartment(Apartment apartment) throws JsonGenerationException, JsonMappingException, IOException {
 		ApartmentDAO apartmentDAO = (ApartmentDAO) ctx.getAttribute("apartments");
 		apartmentDAO.update(apartment, ctx.getRealPath("")+"json/apartment.json");
+	}
+	
+	@PUT
+	@Path("/updateAllApartments")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateApartments(List<Apartment> apartments) throws JsonGenerationException, JsonMappingException, IOException {
+		ApartmentDAO apartmentDAO = (ApartmentDAO) ctx.getAttribute("apartments");
+		apartmentDAO.updateAllApartments(apartments, ctx.getRealPath("")+"json/apartment.json");
 	}
 	
 	

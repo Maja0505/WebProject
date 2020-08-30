@@ -37,6 +37,13 @@ public class ApartmentDAO {
 		apartments.replace(String.valueOf(apartment.getId()), apartments.get(String.valueOf(apartment.getId())), apartment);
 	}
 	
+	public void updateAllApartments(List<Apartment> allApartments,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.saveAll(allApartments, path);
+		for (Apartment a : allApartments) {
+			apartments.replace(String.valueOf(a.getId()), apartments.get(String.valueOf(a.getId())), a);
+		}
+	}
+	
 	public Collection<Apartment> allAparmtents() {
 		return apartments.values();
 	}
