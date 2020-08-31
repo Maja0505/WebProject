@@ -1,6 +1,5 @@
 package beans;
 
-import java.awt.Image;
 import java.util.Date;
 import java.util.List;
 

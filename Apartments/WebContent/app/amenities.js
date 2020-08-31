@@ -31,7 +31,7 @@ Vue.component("amenities", {
 					<tr v-show="!allAmenitites" >
 						<td>List is empty</td>
 					</tr>
-					<tr v-for="a in allAmenitites" v-show="allAmenitites" v-on:click="selectAmenitie(a)">
+					<tr v-for="a in allAmenitites" v-show="allAmenitites" v-if="a.flag==0" v-on:click="selectAmenitie(a)">
 						<td>{{a.name}}</td>
 					</tr>
 				</tbody>
@@ -39,6 +39,7 @@ Vue.component("amenities", {
 				<br>
 				<p v-if="selectedAmenitie">Selected amenitie: {{selectedAmenitie.name}}</p>
 				<button v-show="selectedAmenitie" v-on:click="showFormForEdit()">Edit selected amenitie</button>
+				<button v-show="selectedAmenitie" v-on:click="deleteAmenitie()">Delete selected amenitie</button>
 				<div v-show="showEditForm" v-if="showEditForm">
 					<input type="text" v-model="selectedAmenitie.name" v-bind:disabled="mode=='NOT_EDIT_YET'"></intput>
 					<button v-on:click="edit()" v-bind:disabled="mode=='EDITING'">Edit</button>
@@ -160,8 +161,45 @@ Vue.component("amenities", {
 			}else{
 				this.showEditForm = true;
 			}
-		}
+		},
 		
+		deleteAmenitie : function(){
+			
+			for(let amenitie of this.allAmenitites){
+				if(this.selectedAmenitie.id == amenitie.id){
+					amenitie.flag = 1;
+					break;
+				}
+			}
+			
+			this.selectedAmenitie.flag = 1;
+			var deleteAmenitie = this.selectedAmenitie
+			this.selectedAmenitie = null;
+			
+			axios
+		      .put('rest/amenities/updateAmenitie',deleteAmenitie)
+		    
+		    axios
+		      .get('rest/apartments/all')
+		      .then(response => (this.deleteAmenitieFromAllApartments(response.data,deleteAmenitie)))
+		     
+		},
+		
+		
+		deleteAmenitieFromAllApartments : function(allApartments,amenitieForDelete){
+			for(let apartmant of allApartments){
+				for(let amenitie of apartmant.amenities){
+					if(amenitie.id == amenitieForDelete.id){
+						amenitie.flag = 1;
+						break;
+					}
+				}
+			}
+			
+			axios
+		      .put('rest/apartments/updateAllApartments',allApartments)
+			
+		}
 		
 	}
 		

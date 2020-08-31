@@ -68,23 +68,6 @@ Vue.component("apartmentsForAdmin", {
 						</table>
 						
 					</div>
-				<table border = "1"  class="table table-hover">
-					<thead>
-						<tr bgcolor="lightblue">
-							<th>Location</th>
-							<th v-on:click="sort()">Price Per Night</th>
-							<th>Host</th>
-						</tr>
-					</thead>
-					    
-				<tbody>
-					<tr v-for="a in search" v-if="a.flag==0" v-on:click="selectApartment(a)">
-						<td>{{a.location.address.city}}</td>
-						<td>{{a.pricePerNight }}</td>
-						<td>{{a.host.username }}</td>
-					</tr>
-				</tbody>
-				</table>
 				
 				<div class="row">
 					<div class="col-sm-4" v-for="a in search">
@@ -93,7 +76,7 @@ Vue.component("apartmentsForAdmin", {
 						        <h5 class="card-title">{{a.location.address.city}}</h5>
 						        <img :src="a.images[0]" class="card-img-top" style="width: 24.9rem;">
 						        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-						        <a href="#" class="btn btn-primary">View</a>
+						        <button v-on:click="viewApartment(a)">View</button>
 						     </div>
 						</div>
 					</div>
@@ -149,6 +132,15 @@ Vue.component("apartmentsForAdmin", {
 	 
 	
 	methods : {
+		
+		viewApartment :  function(apartment){
+			
+			this.$router.push('/admin/viewApartment/' + apartment.id)
+			axios
+	    	  .post('rest/apartments/changeSelectedApartment',apartment)
+	          	.then(this.$root.$emit('viewApartment',apartment))
+
+		},
 		
 		deleteApartment : function(){
 			this.$root.$emit('showEditForm',{},false);

@@ -7,12 +7,20 @@ function fixDate(apartments){
 	return apartments;
 }
 
+var postalCode = {};
+var city = {};
+var street = {};
+
+var latitude = {}; 
+var longitude = {};
 
 Vue.component("apartment", {
 	data: function () {
 	    return {
-		  location:{},
+		  location:null,
+		  streetNumber:"",
 		  address:{},
+		  locationOfApartment:{},
 		  apartment:{},
 		  allApartments:null,
 		  loggedUser:null,
@@ -26,6 +34,7 @@ Vue.component("apartment", {
 		  errorLongitude:"",
 		  errorLatitude:"",
 		  errorStreet:"",
+		  errorLocation:"",
 		  errorStreetNumber:"",
 		  errorCity:"",
 		  errorPostalCode:"",
@@ -33,7 +42,7 @@ Vue.component("apartment", {
 		  errorPricePerNight:"",
 		  errorCheckInTime:"",
 		  errorCheckOutTime:"",
-
+		  
 	    }
 	},
 		template: ` 
@@ -62,42 +71,13 @@ Vue.component("apartment", {
 
 				</tr>
 				<tr>
-						<th>logitude</th>
-						<td><input type="text"  v-model="location.longitude"/></td>
-						<td>{{errorLongitude}}</td>
-
+						<td>Street number</td>
+						<td><input type="text" v-model="streetNumber"/></td>
+						<td>{{errorStreetNumber}}</td>
+						<td>Street name</td>
+						<td><input type="search" id="address" class="form-control" placeholder="Search street" style="width: 70rem;"/></td>
+						<td>{{errorLocation}}</td>
 				</tr>
-				<tr>
-					<th>latitude</th>
-					<td><input type="text"  v-model="location.latitude"/></td>
-					<td>{{errorLatitude}}</td>
-
-				</tr>
-				<tr>
-					<th>street</th>
-					<td><input type="text" v-model="address.street"/></td>
-					<td>{{errorStreet}}</td>
-
-				</tr>
-				<tr>
-					<th>streetNumber</th>
-					<td><input type="text" v-model="address.streetNumber"/></td>
-					<td>{{errorStreetNumber}}</td>
-
-				</tr>
-				<tr>
-					<th>city</th>
-					<td><input type="text" v-model="address.city"/></td>
-					<td>{{errorCity}}</td>
-
-				</tr>
-	      		<tr>
-					<th>postalCode</th>
-					<td><input type="text" v-model="address.postalCode"/></td>
-					<td>{{errorPostalCode}}</td>
-
-				</tr>
-				
 				<tr>
 						<th>Date Of Issue OD:</th>
 						<td><vuejs-datepicker format="dd.MM.yyyy" v-model="startDate"></vuejs-datepicker></td>
@@ -124,7 +104,6 @@ Vue.component("apartment", {
 						<td>{{errorCheckOutTime}}</td>
 
 					
-						</script>
 				</tr>
 				<tr>
 				<td colspan="3"><button v-on:click="checkForm()">Dodaj</button></td>
@@ -139,12 +118,42 @@ Vue.component("apartment", {
 
 		`	
 		, mounted () {
-			
+			 this.allPlaces();
 	         axios
 		      .get('rest/users/currentUser')
 		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
 	    }
 		,methods: {
+			
+			allPlaces : function() {
+					var placesAutocomplete = places({
+					    appId: 'plQ4P1ZY8JUZ',
+					    apiKey: 'bc14d56a6d158cbec4cdf98c18aced26',
+					    container: this.$el.querySelector('#address'),
+					    type: 'address',
+					    templates:{
+					    	value : function(suggestion){
+					    		return suggestion.name;
+					    	}
+					    }
+					  }).configure({
+						  type: 'address',
+					  });
+					
+					placesAutocomplete.on('change',function(e){
+						//pravljenje adrese i lokacije za apartman
+						 postalCode = e.suggestion.postcode || "";
+						 city = e.suggestion.city || "";
+						 street = e.suggestion.name || "";
+						
+						latitude = e.suggestion.latlng.lat || ""; 
+						longitude = e.suggestion.latlng.lng  || "";
+						
+					});
+					
+					
+			},
+			
 			getLoggedUser:function(){
 				 axios
 			      .get('rest/users/currentUser')
@@ -164,9 +173,19 @@ Vue.component("apartment", {
 	    			}
 	    		}
 				this.maxId++;
-			    //moramo napraviti za odabir lokacije(tada ovo brisem)
-				this.location.address = this.address;
-				this.apartment.location = this.location;
+				
+
+				this.locationOfApartment.longitude = longitude;
+				this.locationOfApartment.latitude = latitude;
+				
+				
+				this.address.postalCode = postalCode;
+				this.address.city = city;
+				this.address.street = street;
+				
+				this.address.streetNumber = this.streetNumber;
+				this.locationOfApartment.address = this.address;
+				this.apartment.location = this.locationOfApartment;
 
 				
 				//za generisanje datuma
@@ -224,17 +243,12 @@ Vue.component("apartment", {
 			  this.errorTypeOfApartment = "";
 			  this.errorNumberOfRooms = "";
 			  this.errorNumberOfGuests = "";
-			  this.errorLongitude = "";
-			  this.errorLatitude = "";
-			  this.errorStreet  = "";
-			  this.errorStreetNumber = "";
-			  this.errorCity = "";
-			  this.errorPostalCode = "";
+			  this.errorLocation  = "";
+			  this.errorStreetNumber  = "";
 			  this.errorDateOfIssue = "";
 			  this.errorPricePerNight = "";
 			  this.errorCheckInTime = "";
 			  this.errorCheckOutTime = "";
-			
 			
 			if(!this.apartment.typeOfApartment){
 				this.errorTypeOfApartment = "can't be empty"
@@ -250,26 +264,11 @@ Vue.component("apartment", {
 			}else if(Number.isInteger(this.apartment.numberOfGuests)){
 				this.errorNumberOfGuests = "must be an integer";
 			}
-			if(!this.location.longitude){
-				this.errorLongitude = "can't be empty"
+			if(!street){
+				this.errorLocation= "can't be empty"
 			}
-			if(!this.location.latitude){
-				this.errorLatitude = "can't be empty"
-			}
-			
-			if(!this.address.street){
-				this.errorStreet = "can't be empty"
-			}
-			
-			if(!this.address.streetNumber){
-				this.errorStreetNumber = "can't be empty"
-			}
-			
-			if(!this.address.city){
-				this.errorCity = "can't be empty"
-			}
-			if(!this.address.postalCode){
-				this.errorPostalCode = "can't be empty"
+			if(!this.streetNumber){
+				this.errorStreetNumber= "can't be empty"
 			}
 			if(!this.startDate){
 				this.errorDateOfIssue = "can't be empty"
@@ -290,7 +289,7 @@ Vue.component("apartment", {
 				this.errorCheckOutTime = "can't be empty"
 			}
 		
-		 if( this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorLongitude == "" && this.errorLatitude == "" && this.errorStreet  == "" && this.errorStreetNumber == "" && this.errorCity == "" && this.errorPostalCode =="" &&    this.errorDateOfIssue == "" && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
+		 if( this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorLocation == "" && this.errorStreetNumber == ""&&    this.errorDateOfIssue == "" && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
 			 this.getAllApartments();
 		 }
 		
