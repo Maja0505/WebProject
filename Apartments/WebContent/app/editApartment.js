@@ -1,3 +1,5 @@
+var base64Image={};
+var ImgName = null;
 Vue.component("editApartment", {
 	data: function () {
 	    return {
@@ -25,7 +27,6 @@ Vue.component("editApartment", {
 			  image:null,
 			  productSpect:"",
 			  slideIndex : 1
-
 	    }
 },
 		template: ` 
@@ -33,32 +34,32 @@ Vue.component("editApartment", {
 			
 			<div v-show="showEditForm" v-if="showEditForm">
 
- <!-- Container for the image gallery -->
-<div class="container">
-
-  <!-- Full-width images with number text -->
-  <div class="mySlides" v-for="image in selectedApartment.images">
-    <div class="numbertext">1 / 6</div>
-      <img :src="image" style="width:100%">
-  </div>
-
-  <!-- Next and previous buttons -->
-  <a class="prev" v-on:click="plusSlides(-1)">&#10094;</a>
-  <a class="next" v-on:click="plusSlides(1)">&#10095;</a>
-
-  <!-- Image text -->
-  <div class="caption-container">
-    <p id="caption"></p>
-  </div>
-
-  <!-- Thumbnail images -->
-  <div class="row">
-    <div class="column"  v-for="(item, index) in selectedApartment.images">
-      <img class="demo cursor" :src="item" style="width:100%"  v-on:click="currentSlide(index+1)" alt="The Woods">
-    </div>
-    
-  </div>
-</div> 
+		 <!-- Container for the image gallery -->
+		<div class="container">
+		
+		  <!-- Full-width images with number text -->
+		  <div class="mySlides" v-for="image in selectedApartment.images">
+		    <div class="numbertext">1 / 6</div>
+		      <img :src="image" style="width:100%">
+		  </div>
+		
+		  <!-- Next and previous buttons -->
+		  <a class="prev" v-on:click="plusSlides(-1)">&#10094;</a>
+		  <a class="next" v-on:click="plusSlides(1)">&#10095;</a>
+		
+		  <!-- Image text -->
+		  <div class="caption-container">
+		    <p id="caption"></p>
+		  </div>
+		
+		  <!-- Thumbnail images -->
+		  <div class="row">
+		    <div class="column"  v-for="(item, index) in selectedApartment.images">
+		      <img class="demo cursor" :src="item" style="width:100%"  v-on:click="currentSlide(index+1)" alt="The Woods">
+		    </div>
+		    
+		  </div>
+		</div> 
 
 
 
@@ -160,14 +161,14 @@ Vue.component("editApartment", {
 					</tr>
 					<tr><td align='center' colspan='3'><button v-on:click="viewAmenities()" v-bind:disabled="mode=='EDITING'">View amenities</button></td></tr>
 				<tr><td><input type="text" v-model="productSpect" /></td>
-				<td><input type="file" @change="uploadImage" name="image" id="image"  accept="image/*" ></td>
+				<td><input type="file" @change="uploadImage" name="image" id="image"  accept="image/*"  ></td>
 				<td><button type="submit" @click.prevent="submit"> Submit</button></td></tr>
 				</table>
 				<div v-show="viewAmenitiesForm">
 					<table class="allAmenities">
 						<tr><th>Name</th><th>In my apartment</th></tr>
 						
-						<tr  v-for="a in allAmenities">
+						<tr  v-for="a in allAmenities" v-if="a.flag == 0">
 							<th>{{a.name}}</th>
 							<th><input type="checkbox" :checked="isInApartmentList(a)" @click="onChange(a,$event)"></th>
 						</tr>
@@ -219,6 +220,7 @@ Vue.component("editApartment", {
 })
 				
 			},
+			
 			viewAmenities : function(){
 				if(this.viewAmenitiesForm){
 					this.viewAmenitiesForm = false
@@ -232,6 +234,7 @@ Vue.component("editApartment", {
 
 				}
 			},
+			
 			getStartEndDate : function(){
 				if(this.showEditForm){
 					this.startDate = this.selectedApartment.dateOfIssue[0];
@@ -240,14 +243,16 @@ Vue.component("editApartment", {
 				}
 
 			},
+			
 			edit: function(){
 				this.backup = [];
 				this.backup=[this.selectedApartment.typeOfApartment,this.selectedApartment.numberOfRooms,this.selectedApartment.numberOfGuests,
-					 this.selectedApartment.location.longitude,this.selectedApartment.location.latitude,this.selectedApartment.location.address.street,
-					 this.selectedApartment.location.address.streetNumber,this.selectedApartment.location.address.city,this.selectedApartment.location.address.postalCode,
-					 this.startDate,this.endDate,this.selectedApartment.pricePerNight,this.selectedApartment.checkInTime,this.selectedApartment.checkOutTime,this.selectedApartment.statusOfApartment];
+				this.selectedApartment.location.longitude,this.selectedApartment.location.latitude,this.selectedApartment.location.address.street,
+			    this.selectedApartment.location.address.streetNumber,this.selectedApartment.location.address.city,this.selectedApartment.location.address.postalCode,
+			    this.startDate,this.endDate,this.selectedApartment.pricePerNight,this.selectedApartment.checkInTime,this.selectedApartment.checkOutTime,this.selectedApartment.statusOfApartment];
 				this.mode = "EDITING";
 			},
+			
 			confirm: function(){
  
 				 //update Apartmana
@@ -256,8 +261,10 @@ Vue.component("editApartment", {
 			          .put('rest/apartments/updateApartment',this.selectedApartment)
 		            .then(response => (toast('Apartment is successful update')))
 			},
+			
 			cancel: function(){
-				 this.errorTypeOfApartment = "";
+				
+				  this.errorTypeOfApartment = "";
 				  this.errorNumberOfRooms = "";
 				  this.errorNumberOfGuests = "";
 				  this.errorLongitude = "";
@@ -289,6 +296,7 @@ Vue.component("editApartment", {
 				
 				  this.mode = "NOT_EDIT_YET";
 			},
+			
 			checkForm: function(){
 					
 				  this.errorTypeOfApartment = "";
@@ -365,6 +373,7 @@ Vue.component("editApartment", {
 			 }
 			
 			},
+			
 			generateDateOfIssue: function(){
 				
 				if(this.selectedApartment.dateOfIssue[0] != this.startDate ||  this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1] != this.endDate){
@@ -392,12 +401,25 @@ Vue.component("editApartment", {
 					 }
 				
 				}
+				
 				this.confirm();
 				
 			},
 			uploadImage: function(e) {
-				 let img = e.target.files[0]
-				 this.image = "images/" + img.name
+					 let img = e.target.files[0];
+					 //putanju slike cuvamo u aparmtnanu
+					 this.image = "images/" + img.name;
+					 //naziv slike za saveImage fju
+					 ImgName = img.name;
+					 //pretvaranje u base64 format
+					 var reader = new FileReader();
+					 reader.readAsDataURL(img); 
+					 reader.onloadend = function() {
+			 	     var base64data = reader.result;  
+				     base64Image = base64data;
+					 }
+					
+				
 				},
 			submit: function () {
 					
@@ -412,12 +434,25 @@ Vue.component("editApartment", {
 			 		        		'Content-Type': 'application/json',
 					        			}
 			        	  });
+					  axios
+				         .post('rest/apartments/saveImage/'+ ImgName ,JSON.stringify(base64Image),
+					       		  {
+			 		        	headers: {
+			 		        		'Content-Type': 'application/json'
+					        			}
+			        	  });
 					  
-					},plusSlides(n) {
+					},
+					
+			plusSlides(n) {
 						this.showSlides(this.slideIndex += n);
-					},currentSlide(n) {
+					},
+					
+			currentSlide(n) {
 						this.showSlides(this.slideIndex = n);
-					},showSlides(n) {
+					},
+					
+			showSlides(n) {
 						if(this.showEditForm){
 							  var i;
 							  var slides =this.$el.querySelectorAll(".mySlides");
@@ -425,26 +460,25 @@ Vue.component("editApartment", {
 							  var captionText = this.$el.querySelectorAll("#caption");
 							  if (n > slides.length) {this.slideIndex = 1}
 							  if (n < 1) {this.slideIndex = slides.length}
-							  for (i = 0; i < slides.length; i++) {
-							    slides[i].style.display = "none";
-							  }
-							  for (i = 0; i < dots.length; i++) {
-							    dots[i].className = dots[i].className.replace(" active", "");
-							  }
-							  slides[this.slideIndex-1].style.display = "block";
-							  dots[this.slideIndex-1].className += " active";
-							  captionText.innerHTML = dots[this.slideIndex-1].alt;
-							  
-							  
-							  
-							  
-							  
-							  
-							  
-							  
+							 
+							  this.$nextTick(function(){
+								  for (i = 0; i < slides.length; i++) {
+									    slides[i].style.display = "none";
+									  }
+							      for (i = 0; i < dots.length; i++) {
+									    dots[i].className = dots[i].className.replace(" active", "");
+								      }
+							      
+								  this.$el.querySelectorAll(".mySlides")[this.slideIndex-1].style.display = "block";
+								  this.$el.querySelectorAll(".demo")[this.slideIndex-1].className += " active";
+								  this.$el.querySelectorAll("#caption").innerHTML =  this.$el.querySelectorAll(".demo")[this.slideIndex-1].alt;	  
+								  
+							  })
+							
+
 						}
 			
-						} 
+					} 
 
 
 		},
