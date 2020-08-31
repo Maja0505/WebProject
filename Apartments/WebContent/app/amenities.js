@@ -1,5 +1,4 @@
 Vue.component("amenities", {
-	
 	data: function () {
 	    return {
 	    	allAmenitites:null,
