@@ -49,9 +49,11 @@ Vue.component("login", {
 		    </div>
 		`,
 		mounted () {
-        axios
-          .get('rest/users/all')
-          .then(response => (this.users = response.data))
+			
+	        axios
+	          .get('rest/users/all')
+	          .then(response => (this.users = response.data))
+	          
 		},
 		methods: {
 			login: function(username,password) {
