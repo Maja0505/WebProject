@@ -10,29 +10,42 @@ Vue.component("login", {
 },
 		template: ` 
 		    <div>
-		    	<div  class="box-login">
-		    		<label class="text-center-login">Login</label>
-		    	<table class="table-login">
-		              <tr>
-		              	<div  class="input-container-login">
-		              	<td>Username: </td>
-		                <td><input type="text" v-model="username"><p class="small-login-error">{{wrong_username}}</p></td> 
-		                </div> 
-		              </tr>
-		              		              
-		              <tr>
-		              	<div class="input-container-login">
-			              	<td>Password: </td>
-			                <td><input type="password" v-model="password"><p class="small-login-error">{{wrong_password}}</p></td>
-		                </div>
-		              </tr>
-		              
-		              <tr>
-		                <td><button v-on:click="login(username,password)" class="btn-login">Login</button></td>
-		              </tr>
-		          </table> 
-		        </div>
-		          
+		    	<div class="limiter">
+					<div class="container-login100">
+						<div class="wrap-login100">
+							<form class="login100-form validate-form">
+								<span class="login100-form-title p-b-34">
+									LOGIN
+								</span>
+								<div class="wrap-input100 m-b-20">
+										<input id="first-name" class="input100-wrap-input100 input100" type="text" placeholder="Username" v-model="username">
+										<span class="focus-input100"></span>
+										<p class="error-wrap-input100">{{wrong_username}}</p>
+								</div>
+								<div class="wrap-input100  m-b-20">
+									<input class="input100-wrap-input100 input100" type="password" placeholder="Password" v-model="password">
+									<span class="focus-input100"></span>
+									<p class="error-wrap-input100">{{wrong_password}}</p>
+								</div>
+								<div class="container-login100-form-btn">
+									<button class="login100-form-btn" v-on:click.prevent="login(username,password)">
+										Sign in
+									</button>
+								</div>
+								<div class="w-full text-center p-t-27 p-b-239">
+									<span class="txt1">
+										Don't have account?
+									</span>
+									<a href="#/registration" class="txt2">
+										Go to registration page
+									</a>
+								</div>
+							</form>
+			
+							<div class="login100-more" style="background-image: url('images/apartment1.png');"></div>
+						</div>
+					</div>
+				</div>
 		    </div>
 		`,
 		mounted () {
@@ -42,7 +55,7 @@ Vue.component("login", {
 		},
 		methods: {
 			login: function(username,password) {
-	
+
 				this.username = username;
 				this.password = password;
 				
