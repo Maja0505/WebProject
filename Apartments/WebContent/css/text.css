@@ -1,0 +1,27 @@
+.txt1 {
+  font-family: fantasy;
+  font-size: 17px;
+  line-height: 1.4;
+  color: #999999;
+}
+
+.txt2 {
+  font-family: fantasy;
+  font-size: 17px;
+  line-height: 1.4;
+  color: blue;
+}
+
+.txt3 {
+  font-family: fantasy;
+  font-size: 35px;
+  color: #555555;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+  font-weight:bold;
+  
+  width: 100%;
+  display: block;
+}

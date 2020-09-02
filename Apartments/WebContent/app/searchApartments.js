@@ -1,3 +1,5 @@
+var city = '';
+
 Vue.component("searchApartments", {
 	
 	data: function () {
@@ -16,67 +18,75 @@ Vue.component("searchApartments", {
 	
 	template: `
 			<div>
-				<p>PRETRAGA</p>
-				<table>
-				
-				<tr>
-					<td>Date</td>
-				</tr>
-				<tr>	
-						
-						from:
-						<vuejs-datepicker format="dd.MM.yyyy" v-model="searchStartDate"></vuejs-datepicker>
-						to:
-						<vuejs-datepicker  format="dd.MM.yyyy" v-model="searchEndDate"></vuejs-datepicker>
-
-
-
-				</tr>
-				
-				<tr>
-					<td>Location(City)</td>
-				</tr>
-				<tr>
-					<td><input type="text" v-model="searchLocation"/></td>
-
-				</tr>
-				
-				<tr>
-					<td>Price</td>
-				</tr>
-				<tr>
-					<td><input type="text"  v-model="searchPriceFrom"/>-<input type="text" v-model="searchPriceTo"/></td>
-					
-				</tr>
-				
-				<tr>
-						<td>Number Of Rooms</td>
-				</tr>
-				<tr>
-						<td><input type="text"   v-model="searchNumberOfRoomsFrom"/>-<input type="text"  v-model="searchNumberOfRoomsTo"/></td>
-
-				</tr>
-				
-				<tr>
-						<td>Number Of Guests</td>
-				</tr>
-				<tr>
-						<td><input type="text"  v-model="searchNumberOfGuests"/></td>
-
-				</tr>
-
-
-				
-
-	
-				<td colspan="3"><button  v-on:click="searchApartment()">Search</button></td>
-
-				</tr>
-				
-			</table>
+				<div class="container-search-apartment">
+				  
+				  <div class="row" style="margin-left: 50px;">
+					  	<div class="column25-in-form-search-apartment">
+					  		<div class="row">
+								<div class="column25-in-form-search-apartment m-l-50" style="text-align:left;">
+									Date from :
+								</div>
+								<div class="column50-in-form-search-apartment">
+									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchStartDate"></vuejs-datepicker>
+								</div>
+					  		</div>
+					  		<div class="row"> 
+								<div class="column25-in-form-search-apartment m-l-50" style="text-align:left;"> 
+									Date to :
+								</div>
+								<div class="column50-in-form-search-apartment">
+									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchEndDate"></vuejs-datepicker>
+								</div>
+					  		</div>
+					  	</div>	
+					  	
+					  	<div class="column50-in-form-search-apartment" style="width:650px;">
+					  		<div class="row"> 
+								<div class="column25-in-form-search-apartment" style="width:192.5px"> 
+									Location(City) :
+								</div>
+								<div class="column50-in-form-search-apartment" style="text-align:left;width:420px">
+									<input type="search" style="color:black" id="address" class="location-input-style" placeholder="Search city"/>
+								</div>
+					  		</div>
+					  		<div class="row">
+					  			<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 15px;"> 
+									Price(EUR) :
+								</div>
+								<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 10px;color:black;"> 
+									<input class="small-input" type="text"  v-model="searchPriceFrom"/><label style="color:white;">--</label><input class="small-input" type="text" v-model="searchPriceTo"/>
+								</div>
+								<div class="column25-in-form-search-apartment" style="width:150px;"> 
+									Number of rooms :
+								</div>
+								<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 5px;color:black;"> 
+									<input class="small-input" type="text"  v-model="searchNumberOfRoomsFrom"/><label style="color:white;">--</label><input class="small-input" type="text" v-model="searchNumberOfRoomsTo"/>
+								</div>
+					  		</div>
+					  	</div>	
+					  
+					  	<div class="column25-in-form-search-apartment">
+			  				<div class="row">
+			  					<div class="column50-in-form-search-apartment"> 
+									Number of guests :
+								</div>
+								<div class="column25-in-form-search-apartment" style="color:black;"> 
+									<input type="text" style="width:90px;" v-model="searchNumberOfGuests"/>
+								</div>
+			  				</div>
+			  				<div class="row">
+			  					<div class="column50-in-form-search-apartment container-btn-form" style="text-align: center;margin-left: 100px;"> 
+									<button class="form-btn" style="background:blue;" v-on:click="searchApartment()">Search</button></td>
+								</div>
+			  				</div>
+					  	</div>	
+				  	</div>
+				</div>
 			</div>
 		`,	
 		mounted () {
+		
+	      this.allPlaces();
           axios
 	         .get('rest/users/currentUser')
 	          	.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
@@ -93,7 +103,34 @@ Vue.component("searchApartments", {
 		},
 	          	
 		methods:{
-		searchApartment: function(apartment){
+			allPlaces : function() {
+				var placesAutocomplete = places({
+				    appId: 'plQ4P1ZY8JUZ',
+				    apiKey: 'bc14d56a6d158cbec4cdf98c18aced26',
+				    container: this.$el.querySelector('#address'),
+				    templates:{
+				    	value : function(suggestion){
+				    		return suggestion.name
+				    	}
+				    }
+				  }).configure({
+					  type: 'city',
+				  });
+				
+				placesAutocomplete.on('change',function(e){
+					 city = e.suggestion.value || "";
+				});
+				
+				
+		},
+			
+			
+		searchApartment: function(){
+			if(this.$el.querySelector("#address").value == ''){
+				this.searchLocation = '';
+			}else{
+				this.searchLocation = city;
+			}
 			if(this.currentUser){
 				if(this.currentUser.typeOfUser === 'HOST'){
 					this.$root.$emit('searchApartmentForHost',this.searchStartDate,this.searchEndDate,this.searchPriceFrom,this.searchPriceTo,this.searchLocation,this.searchNumberOfRoomsFrom,this.searchNumberOfRoomsTo,this.searchNumberOfGuests);
