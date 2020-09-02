@@ -24,17 +24,22 @@ Vue.component("navigationbar",{
 			    </div>
 			    <div class="collapse navbar-collapse" id="myNavbar">
 			      <ul class="nav navbar-nav navbar-right">
+			      		
 			      		<li><a href="#/profile" v-if = "user" v-show="user.typeOfUser == 'HOST'">Profile</a></li>
 			      		<li><a href="#/apartment" v-if = "user" v-show="user.typeOfUser == 'HOST'">Add apartment</a></li>
 						<li><a href="#/guestsList" v-if = "user" v-show="user.typeOfUser == 'HOST'" v-on:click="getGuestsForHost">My guests</a></li>
 						<li><a href="#/allReservations" v-if = "user" v-show="user.typeOfUser == 'HOST'" v-on:click="getReservationsForHost">My reservations</a></li>
+	    				
+	    				
 	    				<li><a href="#/profile" v-if = "user" v-show="user.typeOfUser == 'GUEST'">Profile</a></li>
 						<li><a href="#/guest/allReservations" v-if = "user" v-show="user.typeOfUser == 'GUEST'" v-on:click="getReservationsForGuest">My reservations</a></li>
+	    				
+	    				
 	    				<li><a href="#/profile" v-if = "user" v-show="user.typeOfUser == 'ADMIN'">Profile</a></li>
+	    				<li><a href="#/admin/allApartments" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getAllApartmentsForAdmin">All apartments</a></li>
 	    				<li><a href="#/admin/allUsers" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getAllUsersForAdmin">All users</a></li>
 	    				<li><a href="#/admin/allReservations" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getReservationsForAdmin">All reservations</a></li>
 	    				<li><a href="#/amenities" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getAmnenitiesForAdmin">All amnenites</a></li>
-
 
 
 						<li><a href="#/login" v-show="!user">Login</a></li>
@@ -84,6 +89,9 @@ Vue.component("navigationbar",{
 		},
 		getAmnenitiesForAdmin:function(){
 			this.$root.$emit('amenitiesForAdmin');
+		},
+		getAllApartmentsForAdmin : function(){
+			this.$root.$emit('apartmentsForAdmin');
 		}
 	}
 	

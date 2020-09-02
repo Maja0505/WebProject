@@ -10,88 +10,81 @@ Vue.component("registration", {
 	      errorUsername:"",
 	      errorPassword:"",
 	      errorConfirmPassword:"",
-	      loggedUser : null
+	      loggedUser : null,
+	      gender:'Choose gender'
 	    }
 },
 		template: ` 
 		<div>
-
-<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="post">
-					<span class="login100-form-title p-b-34">
-						Registration
-					</span>
-					
-					<div class="wrap-input100  validate-input m-b-20" data-validate="Type user name">
-						<input id="first-name" class="input100" type="text" name="username" placeholder="First name" v-model="user.firstName">
-						<span class="focus-input100"></span>
-						<p class="error-wrap-input100">{{errorFirstName}}</p>
+			<div class="container-image-and-form">
+					<div class="container-for-wrap">
+						<form class="container-form">
+							<span class="txt3 p-b-34">
+								Registration
+							</span>
+							<div class="container-form-input m-b-20">
+								<input id="first-name" class="form-input" type="text" name="username" placeholder="First name" v-model="user.firstName">
+								<span class="focus-form-input"></span>
+								<p class="form-input-error">{{errorFirstName}}</p>
+							</div>
+							<div class="container-form-input m-b-20">
+								<input id="last-name" class="form-input" type="text" name="username" placeholder="Last name" v-model="user.lastName">
+								<span class="focus-form-input"></span>
+								<p class="form-input-error">{{errorLastName}}</p>
+							</div>
+							<div class="container-form-input m-b-20">
+								<select class="form-select" v-model="gender" v-if="gender=='Choose gender'" style="color:#bbbbbb">
+							 		<option value="Choose gender" hidden>Choose gender</option>
+								    <option value="MALE" style="color:#666666">Male</option>
+									<option value="FEMALE" style="color:#666666">Female</option>
+							  	</select>
+						      	<select class="form-select" v-model="gender" v-if="gender!='Choose gender'"style="color:#666666">
+								    <option value="Choose gender" hidden>Choose gender</option>
+								    <option value="MALE" style="color:#666666">Male</option>
+									<option value="FEMALE" style="color:#666666">Female</option>
+							  	</select>
+								<p class="form-input-error">{{errorGender}}</p>
+							</div>
+							<div class="container-form-input m-b-20">
+								<input id="username" class="form-input" type="text" name="username" placeholder="Username" v-model="user.username">
+								<span class="focus-form-input"></span>
+								<p class="form-input-error">{{errorUsername}}</p>
+							</div>
+							<div class="container-form-input m-b-20">
+								<input class="form-input" type="password" name="pass" placeholder="Password" v-model="user.password">
+								<span class="focus-form-input"></span>
+								<p class="form-input-error">{{errorPassword}}</p>
+							</div>
+							<div class="container-form-input m-b-20">
+								<input class="form-input" type="password" name="pass" placeholder="Confirm password" v-model="confirmPassword">
+								<span class="focus-form-input"></span>
+								<p class="form-input-error">{{errorConfirmPassword}}</p>
+							</div>
+							<div class="container-btn-form">
+								<button class="form-btn" v-on:click.prevent="checkForm(user, confirmPassword)">
+									Register
+								</button>
+							</div>
+							<div class="w-full text-center p-t-27 p-b-239">
+								<span class="txt1">
+									Already have an account?
+								</span>
+								<a href="#/login" class="txt2">
+									Sign in
+								</a>
+							</div>
+						</form>
+						<div class="container-image" style="background-image: url('images/apartment1.png');"></div>
 					</div>
-					<div class="wrap-input100  validate-input m-b-20" data-validate="Type password">
-						<input id="last-name" class="input100" type="text" name="username" placeholder="Last name" v-model="user.lastName">
-						<span class="focus-input100"></span>
-						<p class="error-wrap-input100">{{errorLastName}}</p>
-					</div>
-					<div class="wrap-input100  validate-input m-b-20" data-validate="Type password">
-				      <select class="browser-default custom-select input100" v-model="user.gender" >
-						    <option value="MALE" selected>Male</option>
-							<option value="FEMALE">Female</option>
-					  </select>
-						<span class="focus-input100"></span>
-						<p class="error-wrap-input100">{{errorGender}}</p>
-					</div>
-					<div class="wrap-input100  validate-input m-b-20" data-validate="Type user name">
-						<input id="username" class="input100" type="text" name="username" placeholder="Username" v-model="user.username">
-						<span class="focus-input100"></span>
-						<p class="error-wrap-input100">{{errorUsername}}</p>
-					</div>
-					<div class="wrap-input100  validate-input m-b-20" data-validate="Type password">
-						<input class="input100" type="password" name="pass" placeholder="Password" v-model="user.password">
-						<span class="focus-input100"></span>
-						<p class="error-wrap-input100">{{errorPassword}}</p>
-					</div>
-					<div class="wrap-input100  validate-input m-b-20" data-validate="Type password">
-						<input class="input100" type="password" name="pass" placeholder="Confirm password" v-model="confirmPassword">
-						<span class="focus-input100"></span>
-						<p class="error-wrap-input100">{{errorConfirmPassword}}</p>
-					</div>
-
-
-
-					
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" v-on:click.prevent="checkForm(user, confirmPassword)">
-							Register
-						</button>
-					</div>
-
-					<div class="w-full text-center p-t-27 p-b-239">
-						<span class="txt1">
-							Already have an account?
-						</span>
-
-						<a href="#/login" class="txt2">
-							Sign in
-						</a>
-					</div>
-
-			
-				</form>
-
-				<div class="login100-more" style="background-image: url('images/apartment1.png');"></div>
+				</div>
 			</div>
 		</div>
-	</div>
-
-
-</div>
 		`
 		,methods : {
 			checkForm : function (user, confirmPassword) {
 				
-				 this.$nextTick(function(){	
+				 this.$nextTick(function(){
+					 	user.gender = this.gender;
 					 	this.errorFirstName = "";
 					    this.errorLastName = "";
 				        this.errorGender = "";
@@ -106,7 +99,7 @@ Vue.component("registration", {
 						if(!user.lastName){
 						    this.errorLastName = "Last name can't be empty";
 						}
-						if(!user.gender){
+						if(user.gender == 'Choose gender'){
 					        this.errorGender = "Gender can't be empty";
 
 						}
