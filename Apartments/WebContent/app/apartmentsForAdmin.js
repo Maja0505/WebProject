@@ -7,9 +7,7 @@ Vue.component("apartmentsForAdmin", {
 	    return {
 	    	allApartments:null,
 	    	allComments:null,
-	    	showAllApartments:false,
 	    	selectedApartment:null,
-	    	searchText:'',
 	    	currentSortDir:'asc',
 	    	searchStartDate:'',
 		    searchEndDate:'',
@@ -31,15 +29,8 @@ Vue.component("apartmentsForAdmin", {
 	
 	template: `
 		<div>
-			<button type="submit" v-on:click="showApartments()">Show all apartments</button>
-			
-			<div v-show="showAllApartments">
-				<div class="search-container">
-					<input type="text" placeholder="Search apartment by location" v-model = "searchText">
-				</div>
-				
 				<searchApartments></searchApartments>
-				<button v-on:click="showFilters()">Filters</button>
+				<button v-on:click="showFilters()" style="margin-top: 220px;">Filters</button>
 					<div v-show="showFiltersForm">
 						<p>STATUS OF APARTMENT</p>
 						<input type="checkbox" id="create" name="create" value="ACTIVE" v-model="isActive">
@@ -92,7 +83,6 @@ Vue.component("apartmentsForAdmin", {
 					<editApartment></editApartment>
 					<commentForAdmin></commentForAdmin>
 				</div>
-			</div>
 		</div>
 	`,
 	
@@ -127,7 +117,9 @@ Vue.component("apartmentsForAdmin", {
 		          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.getInactiveApartments(),this.getActiveApartments()))
 
 	        });
-			
+	        
+	     this.$root.$on('apartmentsForAdmin',(text) => {this.showApartments()})    
+		 this.showApartments();	
 	},
 	 
 	
@@ -177,18 +169,12 @@ Vue.component("apartmentsForAdmin", {
 		showApartments : function(){
 			this.searchText = '';
 			this.commentsForSelectedApartment = [];
-			if(!this.showAllApartments)
 				axios
 			        .get('rest/apartments/all')
 			        .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
 				   		 axios
 			     	        .get('rest/comments/all')
-			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null,
-			     	        					this.showAllApartments = true))))
-			else{
-				this.showAllApartments = false;
-				this.selectedApartment = null;
-			}		
+			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null))))
 		},
 		
 		updateApartment : function(newApartment){
@@ -391,13 +377,9 @@ Vue.component("apartmentsForAdmin", {
 
 		search(){
 			
-			/*if(this.allApartments)	
-				return this.allApartments.filter(a => {
-				         return a.location.address.city.toLowerCase().includes(this.searchText.toLowerCase())})*/
 			if(this.allApartments)	
 				return this.allApartments.filter(a => {
 				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
-			
 	
 		}
 	}

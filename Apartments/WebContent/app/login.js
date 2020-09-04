@@ -10,40 +10,37 @@ Vue.component("login", {
 },
 		template: ` 
 		    <div>
-		    	<div class="limiter">
-					<div class="container-login100">
-						<div class="wrap-login100">
-							<form class="login100-form validate-form">
-								<span class="login100-form-title p-b-34">
-									LOGIN
+				<div class="container-image-and-form">
+					<div class="container-for-wrap">
+						<form class="container-form">
+							<span class="txt3 p-b-34">
+								LOGIN
+							</span>
+							<div class="container-form-input m-b-20">
+									<input id="first-name" class="form-input" type="text" placeholder="Username" v-model="username">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{wrong_username}}</p>
+							</div>
+							<div class="container-form-input m-b-20">
+								<input class="form-input" type="password" placeholder="Password" v-model="password">
+								<span class="focus-form-input"></span>
+								<p class="form-input-error">{{wrong_password}}</p>
+							</div>
+							<div class="container-btn-form">
+								<button class="form-btn" v-on:click.prevent="login(username,password)">
+									Sign in
+								</button>
+							</div>
+							<div class="w-full text-center p-t-27 p-b-239">
+								<span class="txt1">
+									Don't have account?
 								</span>
-								<div class="wrap-input100 m-b-20">
-										<input id="first-name" class="input100-wrap-input100 input100" type="text" placeholder="Username" v-model="username">
-										<span class="focus-input100"></span>
-										<p class="error-wrap-input100">{{wrong_username}}</p>
-								</div>
-								<div class="wrap-input100  m-b-20">
-									<input class="input100-wrap-input100 input100" type="password" placeholder="Password" v-model="password">
-									<span class="focus-input100"></span>
-									<p class="error-wrap-input100">{{wrong_password}}</p>
-								</div>
-								<div class="container-login100-form-btn">
-									<button class="login100-form-btn" v-on:click.prevent="login(username,password)">
-										Sign in
-									</button>
-								</div>
-								<div class="w-full text-center p-t-27 p-b-239">
-									<span class="txt1">
-										Don't have account?
-									</span>
-									<a href="#/registration" class="txt2">
-										Go to registration page
-									</a>
-								</div>
-							</form>
-			
-							<div class="login100-more" style="background-image: url('images/apartment1.png');"></div>
-						</div>
+								<a href="#/registration" class="txt2">
+									Go to registration page
+								</a>
+							</div>
+						</form>
+						<div class="container-image" style="background-image: url('images/apartment1.png');"></div>
 					</div>
 				</div>
 		    </div>
