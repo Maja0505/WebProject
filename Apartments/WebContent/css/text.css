@@ -25,3 +25,25 @@
   width: 100%;
   display: block;
 }
+
+.txt4 {
+  font-family: fantasy;
+  font-size: 17px;
+  line-height: 1.4;
+  color: rgb(0, 0, 128);
+}
+
+.txt5 {
+  font-size: 14px;
+  font-style:normal;
+  line-height: 1.4;
+  color: rgb(0, 0, 128);
+}
+
+.txt6 {
+  font-size: 16px;
+  font-style:normal;
+  line-height: 1.4;
+  color: rgb(0, 0, 128);
+}
+

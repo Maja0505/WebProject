@@ -30,48 +30,60 @@ Vue.component("apartmentsForAdmin", {
 	template: `
 		<div>
 				<searchApartments></searchApartments>
-				<button v-on:click="showFilters()" style="margin-top: 220px;">Filters</button>
-					<div v-show="showFiltersForm">
-						<p>STATUS OF APARTMENT</p>
-						<input type="checkbox" id="create" name="create" value="ACTIVE" v-model="isActive">
-						<label>ACTIVE</label><br>
-						<input type="checkbox" id="rejected" name="rejected" value="INACTIVE" v-model="isInactive" >
-						<label>INACTIVE</label><br>
-						
-						<p>TYPE OF APARTMENT</p>
-						<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
-						<label>ROOM</label><br> 
-						<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
-						<label>WHOLE_APARTMENT</label><br>
-						
-						<p>AMENITIES</p>
-						<table>
-						
-							<tr><td>Name</td><td>Checked</td></tr>
-					
-						
-						
-							<tr  v-for="a in allAmenities">
-								<td><input type="checkbox"  @click="onChange(a,$event)"></td>
-								<td>{{a.name}}</td>
-							</tr>
-						
-						</table>
-						
-					</div>
 				
-				<div class="row">
-					<div class="col-sm-4" v-for="a in search">
-						<div class="panel panel-default" style="width: 25rem;" v-if="a!=null && a.flag==0">
-							 <div class="card-body">
-						        <h5 class="card-title">{{a.location.address.city}}</h5>
-						        <img :src="a.images[0]" class="card-img-top" style="width: 24.9rem;">
-						        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-						        <button v-on:click="viewApartment(a)">View</button>
-						     </div>
-						</div>
+				<div class="row" style="margin-top: 200px;">
+					<div class="column30-in-apartments-view">
+						<div class="container-filters-apartment">
+							<button class="btn-filter" v-on:click="showFilters()">Click to show filters</button>
+							<div v-show="showFiltersForm" class="container-filters-content">
+								 
+								<label class="txt4">STATUS OF APARTMENT</label><br>
+								<input type="checkbox" id="create" name="create" value="ACTIVE" v-model="isActive">
+								<label class="txt5">active</label><br>
+								<input type="checkbox" id="rejected" name="rejected" value="INACTIVE" v-model="isInactive" >
+								<label class="txt5">inactive</label><br>
+								
+								<label class="txt4">TYPE OF APARTMENT</label><br>
+								<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
+								<label class="txt5">room</label><br> 
+								<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
+								<label class="txt5">whole apartment</label><br>
+								
+								<label class="txt4">AMENITIES</label><br>
+									<div  v-for="a in allAmenities">
+										<input type="checkbox"  @click="onChange(a,$event)">
+										<label class="txt5">{{a.name}}</label><br>
+									</div>
+							</div>
+					 	</div>	
 					</div>
+					<div class="column70-in-apartments-view">
+						<div class="row" v-for="a in search">
+							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
+								<div class="row">
+								 	<div class="container-image-in-search-apartment">
+								        <img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
+								 		<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
+								 	</div>
+								 	
+								 	<div class="container-infoOfApartment-in-search-apartment">
+							 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+							 			<div class="row">
+											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
+											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
+								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+							 			</div>
+								 	</div>
+								 </div>
+							</div>
+						</div>
+					</div>	
 				</div>
+				
+				
+				
+								
+				
 				
 				<div v-if="selectedApartment">
 					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
