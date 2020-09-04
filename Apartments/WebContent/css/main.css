@@ -40,6 +40,10 @@
 body, html {
 	height: 100%;
 	font-family: Poppins-Regular, sans-serif;
+	padding-top: 0px;
+	padding-right: 0px;
+	padding-left: 0px;
+	padding-bottom: 0px;
 }
 
 /*---------------------------------------------*/
@@ -185,6 +189,8 @@ iframe {
   background: #f2f2f2;
 }
 
+
+
 .wrap-login100 {
   width: 1170px;
   background: #fff;
@@ -239,6 +245,7 @@ iframe {
   display: flex;
   flex-wrap: wrap;
   padding: 150px 65px 40px 65px;
+  background: rgba(0,0,0,0.3);
 }
 
 .login100-form-title {
@@ -382,48 +389,6 @@ input.input100 {
 }
 
 
-
-/*------------------------------------------------------------------
-[ Responsive ]*/
-
-@media (max-width: 992px) {
-  .login100-form {
-    width: 60%;
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
-  .login100-more {
-    width: 40%;
-  }
-}
-
-@media (max-width: 768px) {
-  .login100-form {
-    width: 100%;
-  }
-
-  .login100-more {
-    width: 100%;
-  }
-}
-
-@media (max-width: 576px) {
-  .login100-form {
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 150px;
-  }
-
-  .rs1-wrap-input100,
-  .rs2-wrap-input100 {
-    width: 100%;
-  }
-
-  .rs2-wrap-input100 {
-    border-left: 1px solid #e6e6e6;
-  }
-}
 
 
 /*------------------------------------------------------------------

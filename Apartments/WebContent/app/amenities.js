@@ -9,46 +9,50 @@ Vue.component("amenities", {
 	    	selectedAmenitie:null,
 	    	showEditForm:false,
 	    	backup:[],
-	    	mode: "NOT_EDIT_YET"
+	    	mode: "NOT_EDIT_YET",
+	    	searchText:'',
+	    	selectedInput:null
 	    }
 	},
 	
 	template: `
-		<div>
-			<div>
-			<br>
-			<input type="text" v-model="name"></intput><button v-on:click="addAmenitieToList()">Add</button>
-			<p style="color:red">{{errorAmenitie}}</p>
-			<br>
-				<table  class="table table-hover">
-				<thead>
-					<tr>
-					<th>Amenities</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-show="!allAmenitites" >
-						<td>List is empty</td>
-					</tr>
-					<tr v-for="a in allAmenitites" v-show="allAmenitites" v-if="a.flag==0" v-on:click="selectAmenitie(a)">
-						<td>{{a.name}}</td>
-					</tr>
-				</tbody>
-				</table>
-				<br>
-				<p v-if="selectedAmenitie">Selected amenitie: {{selectedAmenitie.name}}</p>
-				<button v-show="selectedAmenitie" v-on:click="showFormForEdit()">Edit selected amenitie</button>
-				<button v-show="selectedAmenitie" v-on:click="deleteAmenitie()">Delete selected amenitie</button>
-				<div v-show="showEditForm" v-if="showEditForm">
-					<input type="text" v-model="selectedAmenitie.name" v-bind:disabled="mode=='NOT_EDIT_YET'"></intput>
-					<button v-on:click="edit()" v-bind:disabled="mode=='EDITING'">Edit</button>
-					<button v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'">Confirm</button>
-					<button v-on:click="cancel()" v-bind:disabled="mode=='NOT_EDIT_YET'">Cancel</button>
-					<p style="color:red">{{errorAmenitieEdit}}</p>
-				</div>
+	<div>
+		<div class="content-profile" style="background-image: url('images/apartment1.png');">
+		  <form class="container-amenities">
+			<div id="myDIV" class="header" >
+			  <div class="row">
+			  <div class="column">
+			  	  <h2 style="color:white;margin-right:50%" >ADD AMENITIE</h2>
+
+				  <input type="text" id="myInput" placeholder="Add amenitie..." class="input-amenities" v-model="name">
+				  <span v-on:click="addAmenitieToList()" class="addBtn">Add</span>
+				  <p class="error-amenitie">{{errorAmenitie}}</p>
+			  </div>
+			  	<div class="column">
+			  	 <div class="row">
+					<h2 style="color:white;float: right;" >SEARCH LIST</h2>
+			  	 </div>
+			  	 <div class="row">
+			  	 <input type="text" id="myInput" placeholder="Search amenitie..." class="input-amenities" v-model="searchText" style="float: right;">
+			 		</div>
+			 	</div>
+			  	
+			 </div>
 			</div>
-			
+			<ul id="myUL" class="ul-amenities">
+			  <li v-for="a in search" v-show="allAmenitites" v-if="a.flag==0" v-on:click="selectAmenitie(a)" class="list-group-item d-flex justify-content-between align-items-center" >
+			  <label v-if = "(mode =='NOT_EDIT_YET' && !selectedAmenitie) || (mode =='NOT_EDIT_YET' && selectedAmenitie.name == a.name) || (selectedAmenitie.name != a.name)">{{a.name}}</label>
+			  <input v-model="selectedInput" v-if = "(mode !='NOT_EDIT_YET'  && selectedAmenitie && selectedAmenitie.name == a.name)"/>
+			  	  <span v-if="mode =='NOT_EDIT_YET'"><button class="button-amenitie"  v-on:click="edit()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">EDIT</button></span>
+			      <span v-if="mode =='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="deleteAmenitie()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">DELETE</button></span>
+			       <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="confirm()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">CONFIRM</button></span>
+			      <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="cancel()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">CANCEL</button></span>
+			      <label style="color:red" v-if="(selectedAmenitie && a.name == selectedAmenitie.name)">{{errorAmenitieEdit}}</label>
+			  </li>
+			</ul> 
+			</form>
 		</div>
+	</div>
 	`,
 	
 	mounted(){
@@ -60,7 +64,18 @@ Vue.component("amenities", {
 	
 	methods : {
 		selectAmenitie:function(amenitie){
-			this.selectedAmenitie = amenitie;
+			if(this.mode != "EDITING"){
+				this.selectedInput = amenitie.name;
+				if(this.mode=="NOT_EDIT_YET" && this.selectedAmenitie == amenitie){
+					this.selectedAmenitie = null;
+				}else{
+					this.selectedAmenitie = amenitie;
+					this.errorAmenitie='';
+					this.errorAmenitieEdit='';
+				}
+			}
+			
+			
 		},
 		getAllAmenities:function(){
 			axios
@@ -114,6 +129,7 @@ Vue.component("amenities", {
 		},	
 		cancel:function(){
 			this.errorAmenitie = "";
+			this.errorAmenitieEdit="";
 			this.selectedAmenitie.name = this.backup[0];
 			this.mode = "NOT_EDIT_YET";
 		},
@@ -121,11 +137,11 @@ Vue.component("amenities", {
 		confirm:function(){
 			
 			this.errorAmenitieEdit = '';
-    		if(this.selectedAmenitie.name){
+    		if(this.selectedInput){
     				var sameName= this.allAmenitites.filter(amenitie => {
-        		        return amenitie.name == this.selectedAmenitie.name})
-        		    if(sameName.length > 1){
-        		    	this.errorAmenitieEdit = this.selectedAmenitie.name + " already exists";
+        		        return amenitie.name == this.selectedInput})
+        		    if(sameName.length >= 1){
+        		    	this.errorAmenitieEdit = this.selectedInput + " already exists";
         		    	this.name = null;
         		    	this.maxId = 0;
         		    }
@@ -142,9 +158,11 @@ Vue.component("amenities", {
 			if(this.errorAmenitieEdit == "")
 			{
 				this.mode = "NOT_EDIT_YET";
+				this.selectedAmenitie.name=this.selectedInput
 				 axios
-			          .put('rest/amenities/updateAmenitie',this.selectedAmenitie)
-		            .then(response => (toast('Amenitie is successful update')))
+			          .put('rest/amenities/updateAmenitie', this.selectedAmenitie)
+		            .then(response => (this.selectedAmenite=null))
+		            
 			}
 		
 		},
@@ -200,8 +218,16 @@ Vue.component("amenities", {
 			
 		}
 		
+	},
+	computed : {
+
+		search(){
+			
+			if(this.allAmenitites)	
+				return this.allAmenitites.filter(a => {
+				         return a.name.toLowerCase().includes(this.searchText.toLowerCase())})
+		}
 	}
-		
 		
 	
 });

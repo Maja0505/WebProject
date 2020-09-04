@@ -18,110 +18,142 @@ Vue.component("editProfile", {
 	    }
 },
 		template: ` 
+		
 		<div>
-		
-		
-			<div class="container bootstrap snippets bootdeys">
-<div class="row">
-  <div class="col-xs-12 col-sm-9">
-    <form class="form-horizontal">
-        <div class="panel panel-default">
-          <div class="panel-body text-center">
-           <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-circle profile-avatar" alt="User avatar">
-          </div>
-        </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-        <h4 class="panel-title">User info</h4>
-        </div>
-        <div class="panel-body">
-        
-          <div class="form-group">
-            <label class="col-sm-2 control-label">First name:</label>
-            <div class="col-sm-10">
-              <input type="text" v-model="user.firstName" v-bind:disabled="mode=='NOT_EDIT_YET'" class="form-control"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">Last name:</label>
-            <div class="col-sm-10">
-			<input type="text" v-model="user.lastName" v-bind:disabled="mode=='NOT_EDIT_YET'" class="form-control"/>
-           </div>
-          </div>
-           <div class="form-group">
-            <label class="col-sm-2 control-label">Location</label>
-            <div class="col-sm-10" >
-              <select class="form-control" v-model="user.gender" v-bind:disabled="mode=='NOT_EDIT_YET'">
-                <option>MALE</option>
-                <option>FEMALE</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      
+			
+			<div class="content-profile" style="background-image: url('images/apartment1.png');">
+			  	<form class="container-profile">
+			  		<span class="profile-form-title p-b-34">
+									PROFILE
+					</span>
+					<img src="images/male_image.png" class="img-profile " v-if="user.gender=='MALE'">
+					<img src="images/female_image.png" class="img-profile " v-if="user.gender=='FEMALE'">
 
-      <div class="panel panel-default">
-        <div class="panel-heading">
-        <h4 class="panel-title">Profile info</h4>
-        </div>
-        <div class="panel-body">
-		 
-		  <div class="form-group">
-            <label class="col-sm-2 control-label">Username:</label>
-            <div class="col-sm-10">
-            <input type="text" v-model="user.username" v-bind:disabled="true" class="form-control"/>
-            </div>
-          </div>
-		
-			<div class="form-group">
-			<label class="col-sm-2 control-label">Password:</label>
-            <div class="col-sm-10">
-             
-               <button v-on:click="change()" v-bind:disabled="mode=='NOT_EDIT_YET'"  class="btn btn-default">Change password</button>
-          
+					<div class="button-form">
+						
+						
+						<div class="container-profile-form-btn">
+										<button class="cancel_edit_button" v-on:click="cancle()" v-bind:disabled="mode=='NOT_EDIT_YET'"  v-show="mode!='NOT_EDIT_YET'">
+											CANCEL
+										</button>
+						</div>
+						<div class="container-profile-form-btn">
+										<button class="confirm_edit_button"  v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'">
+											CONFIRM
+										</button>
+						</div>
+						<div class="container-profile-form-btn" style="margin-right: 40px;">
+										<button class="profile-form-btn" v-on:click="edit()" v-bind:disabled="mode=='EDITING'" >
+											EDIT
+										</button>
+						</div>
+					</div>
+					<div class="wrap-profile-form">
+						<div class="profile-info-column-form">
+							<div class="w-full text-center">
+									<span class="txt2-profile">
+										Profile info
+									</span>
+								
+							</div>
+						
+							<div class="wrap-profile m-b-20">
+								<div class="row">
+									<div class="column-label">
+										<label style="margin-top: 5px;">Username:</label>
+									</div>
+									<div class="column-input" >
+										<input  class="input-in-profile" type="text" placeholder="Username" v-model="user.username" v-bind:disabled="true" style="margin-top: 5px;">
+									</div>
+								</div>
+								
+							</div>
+							<div class="container-profile-form-btn-change-password" style="  margin-bottom: 20px;margin-right: 10px;margin-left: 85px;">
+										<button class="profile-form-btn"  v-on:click="change()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'">
+										CHANGE PASSWORD<img src="images/down.png" class="icon" v-show="!changePassword"></img><img src="images/up-arrow.png" class="icon" v-show="changePassword"></img>
+										</button>
+							</div>
+							<div class="wrap-profile m-b-20">
+								<div class="row" v-show="changePassword">
+									<div class="column-label">
+										<label>Current password:</label>
+									</div>
+									<div class="column-input">
+										<input type="password" v-model="oldPassword"  class="input-in-profile"  placeholder="Current password" >
+									</div>
+								</div>
+								<p  v-show="changePassword" class="error-wrap-input-in-profile">{{errorOldPassword}}</p>
+							</div>
+							<div class="wrap-profile m-b-20">
+								<div class="row" v-show="changePassword">
+										<div class="column-label">
+											<label>New password:</label>
+										</div>
+										<div class="column-input">
+											<input type="password" v-model="newPassword" class="input-in-profile" placeholder="New password">
+										</div>
+								</div>
+								
+								<p   v-show="changePassword" class="error-wrap-input-in-profile">{{errorNewPassword}}</p>
+							</div>
+							<div class="wrap-profile m-b-20">
+								<div class="row" v-show="changePassword">
+										<div class="column-label">
+											<label>Confirm password:</label>
+										</div>
+										<div class="column-input">
+											<input type="password" v-model="confirmPassword"  class="input-in-profile"  placeholder="Confirm password" >
+										</div>
+								</div>
+				
+								<p  v-show="changePassword" class="error-wrap-input-in-profile">{{errorConfirmPassword}}</p>
+							</div>
 
-            </div>
-          </div>
-          <div class="form-group" v-if="changePassword">
-            <label class="col-sm-2 control-label">Current password</label>
-            <div class="col-sm-10">
-              <input type="password" v-model="oldPassword"  class="form-control"/>
-            </div>
-          </div>
-          <div class="form-group" v-if="changePassword">
-            <label class="col-sm-2 control-label">New password</label>
-            <div class="col-sm-10">
-            <td><input type="password" v-model="newPassword"  class="form-control"/></td>
-            </div>
-          </div>
-
-        </div>
-      
-      </div>
-       <div class="panel panel-default">
-        <div class="panel-heading">
-         <div class="form-group">
-            <div class="col-sm-4" >
-              <button v-on:click="edit()" v-bind:disabled="mode=='EDITING'" class="btn btn-default">Edit</button>
-            </div>
-            <div class="col-sm-4" >
-             <button v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'" class="btn btn-default">Confirm</button>
-            </div>
-            <div class="col-sm-4">
-            <button v-on:click="cancle()" v-bind:disabled="mode=='NOT_EDIT_YET'" class="btn btn-default">Cancle</button>
-              
-            </div>
-          </div>
-       
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-</div>	
-
+						</div>
+						<div class="profile-column-form">
+							<div class="w-full text-center">
+									<span class="txt2-profile">
+										User info
+									</span>
+								
+							</div>
+								
+							<div class="wrap-profile m-b-20">
+								<div class="row">
+									<div class="column-label"><label>First name:</label></div>
+									<div class="column-input">
+										<input  class="input-in-profile" type="text" placeholder="First name" v-model="user.firstName"  v-bind:disabled="mode=='NOT_EDIT_YET'">
+									</div>
+								</div>
+								<p class="error-wrap-input-in-profile">{{errorFirstName}}</p>
+							</div>
+							<div class="wrap-profile m-b-20">
+							<div class="row">
+								<div class="column-label"><label>Last name:</label></div>
+									<div class="column-input">
+										<input  class="input-in-profile" type="text" placeholder="Last name" v-model="user.lastName" v-bind:disabled="mode=='NOT_EDIT_YET'">
+									</div>
+								</div>
+								<p class="error-wrap-input-in-profile">{{errorLastName}}</p>
+							</div>
+							<div class="wrap-profile m-b-20">
+							<div class="row">
+								<div class="column-label"><label>Gender:</label></div>
+									<div class="column-input">
+										<select class="input-in-profile" v-model="user.gender" v-bind:disabled="mode=='NOT_EDIT_YET'">
+							                <option>MALE</option>
+							                <option>FEMALE</option>
+							              </select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
+				
+			  	</form>
+			</div>
 		</div>
 		`,
 		mounted () {
@@ -139,7 +171,16 @@ Vue.component("editProfile", {
 		},	
 			
 		change: function(){
-				this.changePassword = true;
+				if(this.changePassword){
+					this.changePassword = false;
+					this.errorNewPassword = "";
+				    this.errorConfirmPassword = "";
+		            this.errorOldPassword = "";
+
+				}else{
+					this.changePassword = true;
+
+				}
 		},	
 			
 		edit : function(){
