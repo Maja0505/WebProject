@@ -65,7 +65,7 @@ Vue.component("homePage", {
 					this.$root.$emit('show');
 				},
 				showApartments:function(){
-
+					this.$root.$emit('showApartmentsFormForUnregistredUser');
 					this.$router.push('/allApartments');
 					
 				}

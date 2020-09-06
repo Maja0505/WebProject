@@ -7,7 +7,7 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 			showAllApartments : false,
 			allApartments : null,
 			currentUser : null,
-			activeApartments : null,
+			activeApartments : [],
 			selectedApartment : null,
 			allComments : null,
 			currentSort:'id',
@@ -117,30 +117,35 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	    	this.searchNumberOfGuests=searchNumberOfGuests
 
 	    	});
+          
 	      this.$root.$on('refreshCurrentUser',()=>{this.currentUser = null})
 	      this.$root.$on('showApartmentsFormForUnregistredUser',()=>{this.showApartments()})
+	      this.showApartments();
 	},
 
 	
 	methods : {
 		
 		showApartments : function(){
+			
+			 this.$nextTick(function(){
 				 axios    
 		          .get('rest/apartments/all')
 		          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
 		        		  axios
 			     	        .get('rest/comments/all')
-			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null,
-			     	        		this.getActiveApartments()))))
+			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null
+			     	        	, this.getActiveApartments()	))))
 				
 			   
-				this.activeApartments = null;
-				this.selectedApartment = null;
-			
+			  
+				
+			 })
 				
 		},
 		
 		getActiveApartments : function(){
+			
 			this.activeApartments = [];
 				for(let apartment of this.allApartments){
 					if(apartment.statusOfApartment == 'ACTIVE'){
