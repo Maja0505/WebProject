@@ -18,13 +18,32 @@ Vue.component("reservationsForAdmin",{
 	
 	template : `
 				<div>
+					<div class="content-profile" style="background-image: url('images/apartment3.png');">
+						<form class="container-amenities">
+						
+						
+						
+						<h1 style="margin-left:15%;">RESERVATIONS</h1>
 					<div>
-						<div class="search-container">
-						      <input type="text" placeholder="Search reservation by username.." v-model = "searchText">
-						</div>	
-						<button v-on:click="showFilters()">Filters</button>
-						<div v-show="showFiltersForm">
-							<input type="checkbox" id="create" name="create" value="CREATED" v-model="isCreated">
+						<div class="row" style="padding-left:15%;padding-right:15%;">
+							<div class="column">
+								  <input style=" border-radius: 0;width: 80%; margin-top:10%; padding: 10px;margin-right:0%;margin-left:0%;" type="text" placeholder="Search reservation by username.." v-model = "searchText">
+
+							
+							</div>
+							<div class="column">
+								  <button v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:40%;height:20%;" class="addBtn">Sort by price</button>
+
+							</div>
+
+						</div>
+						
+
+					</div>
+					<div class="container-user-for-admin"  v-on:click="showFilters()">
+						 <p><span >FILTERS</span></p>
+						 <div v-if="showFiltersForm">
+						 	<input type="checkbox" id="create" name="create" value="CREATED" v-model="isCreated">
 							<label>CREATED</label><br>
 							<input type="checkbox" id="rejected" name="rejected" value="REJECTED" v-model="isRejected" >
 							<label>REJECTED</label><br>
@@ -35,24 +54,24 @@ Vue.component("reservationsForAdmin",{
 							<input type="checkbox" id="completed" name="completed" value="COMPLETED" v-model="isCompleted">
 							<label>COMPLETED</label><br>
 						</div>
-						<table border = "1"  class="table table-hover">
-						 <thead>
-							<tr bgcolor="lightblue">
-								<th>Apartment id</th>
-								<th>Guest username</th>
-								<th>Status of reservation</th>
-								<th v-on:click="sort()">Full price</th>
-							</tr>
-						 </thead>
-						 <tbody>
-							<tr v-for="r in search">
-								<td>{{r.apartment.id}}</td>
-								<td>{{r.guest.username }}</td>
-								<td>{{r.statusOfReservation }}</td>
-								<td>{{r.fullPrice}}</td>
-							</tr>
-						 </tbody>
-						</table>
+					</div>
+					
+						
+					
+					<div style="margin-top:3%;">
+						
+						
+							<div class="container-user-for-admin" v-for="r in search">
+							 
+							  <p><span >{{r.apartment.id}}</span></p>
+							  <P>Guest: {{r.guest.username }}</p>
+							  <p>Status: {{r.statusOfReservation }}</p>
+							  <p>Full price:{{r.fullPrice}}</p>
+							</div>
+					
+					</div>
+						
+						</form>
 					</div>
 				</div>
 			`,

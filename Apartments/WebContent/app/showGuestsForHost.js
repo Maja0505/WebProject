@@ -2,7 +2,7 @@ Vue.component("showGuestsForHost", {
 	data: function () {
 	    return {
 		  users: null,
-		  loggedUser:{},
+		  loggedUser:null,
 	      selectedStudent: {},
 	      myGuests:[],
 	      searchField: "",
@@ -53,7 +53,8 @@ Vue.component("showGuestsForHost", {
 	
 					let guests= this.users.filter(user => {
 				        return user.typeOfUser == ("GUEST")})
-
+				   if(this.loggedUser.apartmentsForRent)
+				{
 					for (apartment of this.loggedUser.apartmentsForRent) {
 						for(reservation of this.reservations){
 							if(reservation.apartment.id == apartment.id){
@@ -66,7 +67,8 @@ Vue.component("showGuestsForHost", {
 								}	
 							}
 						}
-					}							
+					}
+				  }
 				}
 			,getCurrentUser: function(){
 			     axios
