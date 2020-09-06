@@ -38,9 +38,9 @@ Vue.component("editApartment", {
 		<div class="container">
 		
 		  <!-- Full-width images with number text -->
-		  <div class="mySlides" v-for="image in selectedApartment.images">
+		  <div class="mySlides" style="width:50%;" v-for="image in selectedApartment.images">
 		    <div class="numbertext">1 / 6</div>
-		      <img :src="image" style="width:100%">
+		      <img :src="image" style="width:100%;height:500px;">
 		  </div>
 		
 		  <!-- Next and previous buttons -->
@@ -55,9 +55,8 @@ Vue.component("editApartment", {
 		  <!-- Thumbnail images -->
 		  <div class="row">
 		    <div class="column"  v-for="(item, index) in selectedApartment.images">
-		      <img class="demo cursor" :src="item" style="width:100%"  v-on:click="currentSlide(index+1)" alt="The Woods">
+		      <img class="demo cursor" :src="item" style="width:100px;height:100px;"  v-on:click="currentSlide(index+1)" alt="The Woods">
 		    </div>
-		    
 		  </div>
 		</div> 
 

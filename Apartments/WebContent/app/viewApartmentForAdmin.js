@@ -11,8 +11,8 @@ Vue.component('viewApartmentForAdmin',{
 	
 	template : `
 		<div>
-			<div v-if="selectedApartment">
-				<p>Selektovan je apartman sa id {{selectedApartment.id}} 
+			<div v-if="selectedApartment" class="m-t-100">
+				<p style="text-align:center" class="txt3">You picked a apartment  TREBA DODATI NAZIV APARTMANA <br>Price per night is {{selectedApartment.pricePerNight}}$ <br> 
 					<button type="submit" v-on:click="moreInfo()">More info</button>
 					<button type="submit" v-on:click="deleteApartment()">Delete</button>
 					<button type="submit" v-on:click="showComments()">Comments of apartment</button>

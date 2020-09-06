@@ -34,7 +34,7 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 				
 				<div>
 					<searchApartments></searchApartments>
-					<button v-on:click="showFilters()" v-if="currentUser">Filters</button>
+					<button v-on:click="showFilters()" v-if="currentUser" style="margin-top:200px;">Filters</button>
 					<div v-show="showFiltersForm">
 						
 						<p>TYPE OF APARTMENT</p>

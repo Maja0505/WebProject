@@ -31,7 +31,7 @@ Vue.component("apartmentsForAdmin", {
 		<div>
 				<searchApartments></searchApartments>
 				
-				<div class="row" style="margin-top: 200px;">
+				<div class="row" style="margin-top: 225px;">
 					<div class="column30-in-apartments-view">
 						<div class="container-filters-apartment">
 							<button class="btn-filter" v-on:click="showFilters()">Click to show filters</button>
