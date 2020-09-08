@@ -10,7 +10,7 @@ Vue.component("homePage", {
 		template: ` 
 		<div>
 		<!--DEO SA SLIKOM-->
-		<div class="polaroid" v-show="!user || user.typeOfUser === 'GUEST'">
+		<div class="polaroid" v-show="!user || user.typeOfUser === 'GUEST' || user.typeOfUser === 'HOST' || user.typeOfUser === 'ADMIN' ">
 		  <img src="https://www.udr.com/globalassets/communities/the-kennedy-building/images/hr_mainheader_overview_1900x874_thekennedybuilding_2012_bdg1_el.jpg" alt="5 Terre" style="width:100%">
 		  
 		  <div class="container2">
@@ -65,8 +65,16 @@ Vue.component("homePage", {
 					this.$root.$emit('show');
 				},
 				showApartments:function(){
-					this.$root.$emit('showApartmentsFormForUnregistredUser');
-					this.$router.push('/allApartments');
+					if(!this.user || this.user.typeOfUser === 'GUEST'){
+						this.$root.$emit('showApartmentsFormForUnregistredUser');
+						this.$router.push('/allApartments');
+					}else if(this.user.typeOfUser === 'HOST'){
+						
+					}else if(this.user.typeOfUser === 'ADMIN'){
+						this.$root.$emit('apartmentsForAdmin');
+						this.$router.push('/admin/allApartments');
+					}
+					
 					
 				}
 				

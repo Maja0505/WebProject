@@ -13,34 +13,32 @@ Vue.component("showGuestsForHost", {
 },
 		template: ` 
 		<div>
-			<div>
-				<div class="search-container">
-			  		<p>Pretraga</p>
-					<input type="text" placeholder="Search guest" v-model = "searchText">
-				</div>
-				<label>My guests</label>
-				<table  class="table table-hover">
-				<thead>
-					<tr bgcolor="lightblue">
-						<th>Username</th>
-						<th>First name</th>
-						<th>Last name</th>
-						<th>Gender</th>
-						<th>User type</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<tr v-for="u in search">
-						<td>{{u.username }}</td>
-						<td>{{u.firstName }}</td>
-						<td>{{u.lastName }}</td>
-						<td>{{u.gender }}</td>
-						<td>{{u.typeOfUser }}</td>
-					</tr>
-				</tbody>
-				</table>
-			</div>
+		
+			<div class="content-profile" style="background-image: url('images/apartment3.png');">
+					<form class="container-amenities">
+					<h1 style="margin-left:15%;">MY GUESTS</h1>
+					<div>
+						      <input style=" border-radius: 0;width: 30%; margin-top:5%; padding: 10px;margin-right:15%;margin-left:15%;" type="text" placeholder="Search.." v-model = "searchText">
+					</div>
+					
+					
+					<div style="margin-top:3%;">
+						
+						<div v-if="loggedUser">
+							<div class="container-user-for-admin" v-for="u in search">
+							  <img src="images/female_image.png" alt="Avatar" style="width:90px" v-if="u.gender == 'FEMALE'">
+							  <img src="images/male_image.png" alt="Avatar" style="width:90px" v-if="u.gender == 'MALE'">
+							  <p><span >{{u.firstName}} {{u.lastName }}</span></p>
+							  <P>Username: {{u.username}}</p>
+							  <p>Gender: {{u.gender}}</p>
+							  <P>User type: {{u.typeOfUser}}</p>
+							</div>
+						</div>
+					</div>
+					
+					
+					</form>
+		   </div>
 		</div>
 		`	
 		, mounted () {

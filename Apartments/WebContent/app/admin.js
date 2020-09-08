@@ -10,9 +10,8 @@ Vue.component("admin", {
 },
 		template: ` 
 		<div>
-			<amenities></amenities>
+			
 			<addHost></addHost>
-			<p>CAO JA SAM ADMIN</p>
 		</div>
 		`,
 

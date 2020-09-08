@@ -41,12 +41,12 @@ Vue.component("amenities", {
 			</div>
 			<ul id="myUL" class="ul-amenities">
 			  <li v-for="a in search" v-show="allAmenitites" v-if="a.flag==0" v-on:click="selectAmenitie(a)" class="list-group-item d-flex justify-content-between align-items-center" >
-			  <label v-if = "(mode =='NOT_EDIT_YET' && !selectedAmenitie) || (mode =='NOT_EDIT_YET' && selectedAmenitie.name == a.name) || (selectedAmenitie.name != a.name)">{{a.name}}</label>
-			  <input v-model="selectedInput" v-if = "(mode !='NOT_EDIT_YET'  && selectedAmenitie && selectedAmenitie.name == a.name)"/>
-			  	  <span v-if="mode =='NOT_EDIT_YET'"><button class="button-amenitie"  v-on:click="edit()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">EDIT</button></span>
-			      <span v-if="mode =='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="deleteAmenitie()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">DELETE</button></span>
-			       <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="confirm()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">CONFIRM</button></span>
-			      <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="cancel()" v-if="selectedAmenitie && selectedAmenitie.name == a.name">CANCEL</button></span>
+				  <label v-if = "(mode =='NOT_EDIT_YET' && !selectedAmenitie) || (mode =='NOT_EDIT_YET' && selectedAmenitie.name == a.name) || (selectedAmenitie.name != a.name)">{{a.name}}</label>
+				  <input v-model="selectedInput" v-if = "(mode !='NOT_EDIT_YET'  && selectedAmenitie && selectedAmenitie.name == a.name)"/>
+			  	  <span v-if="mode =='NOT_EDIT_YET'"><button class="button-amenitie"  v-on:click="edit()" v-if="selectedAmenitie && selectedAmenitie.name == a.name" type="button">EDIT</button></span>
+			      <span v-if="mode =='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="deleteAmenitie()" v-if="selectedAmenitie && selectedAmenitie.name == a.name" type="button">DELETE</button></span>
+			      <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="confirm()" v-if="selectedAmenitie && selectedAmenitie.name == a.name" type="button">CONFIRM</button></span>
+			      <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="cancel()" v-if="selectedAmenitie && selectedAmenitie.name == a.name" type="button">CANCEL</button></span>
 			      <label style="color:red" v-if="(selectedAmenitie && a.name == selectedAmenitie.name)">{{errorAmenitieEdit}}</label>
 			  </li>
 			</ul> 
@@ -96,7 +96,7 @@ Vue.component("amenities", {
 				this.maxId++;
     			if(this.name){
     				var sameName= this.allAmenitites.filter(amenitie => {
-        		        return amenitie.name == this.name})
+        		        return amenitie.name == this.name && amenitie.id == 0})
         		    if(sameName.length != 0){
         		    	this.errorAmenitie = this.name + " already exists";
         		    	this.name = null;
@@ -139,7 +139,7 @@ Vue.component("amenities", {
 			this.errorAmenitieEdit = '';
     		if(this.selectedInput){
     				var sameName= this.allAmenitites.filter(amenitie => {
-        		        return amenitie.name == this.selectedInput})
+        		        return amenitie.name == this.selectedInput && amenitie.id == 0})
         		    if(sameName.length >= 1){
         		    	this.errorAmenitieEdit = this.selectedInput + " already exists";
         		    	this.name = null;

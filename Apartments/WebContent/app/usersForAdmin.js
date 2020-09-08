@@ -20,9 +20,7 @@ Vue.component("usersForAdmin",{
 					<div>
 						      <input style=" border-radius: 0;width: 30%; margin-top:5%; padding: 10px;margin-right:15%;margin-left:15%;" type="text" placeholder="Search.." v-model = "searchText">
 					</div>
-					
-					
-					
+	
 					<div style="margin-top:3%;">
 						
 						<div v-if="currentUser">

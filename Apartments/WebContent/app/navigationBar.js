@@ -40,6 +40,7 @@ Vue.component("navigationbar",{
 	    				<li><a href="#/admin/allUsers" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getAllUsersForAdmin">All users</a></li>
 	    				<li><a href="#/admin/allReservations" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getReservationsForAdmin">All reservations</a></li>
 	    				<li><a href="#/amenities" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getAmnenitiesForAdmin">All amnenites</a></li>
+	    				<li><a href="#/admin/addHost" v-if = "user" v-show="user.typeOfUser == 'ADMIN'">Add host</a></li>
 
 
 						<li><a href="#/login" v-show="!user">Login</a></li>

@@ -11,6 +11,7 @@ const reservationsForGuest = {template: '<reservationsForGuest></reservationsFor
 const reservationsForAdmin = {template: '<reservationsForAdmin></reservationsForAdmin>'}
 const viewApartmentForAdmin = {template: '<viewApartmentForAdmin></viewApartmentForAdmin>'}
 const AllApartmentsForAdmin = {template: '<apartmentsForAdmin></apartmentsForAdmin>'}
+const AddHost = {template: '<addHost></addHost>'}
 
 
 const editProfile = {template: '<editProfile></editProfile>'}
@@ -35,7 +36,8 @@ const router = new VueRouter({
 	    { path: '/profile' , component: editProfile},
 	    { path: '/admin/allUsers' , component: usersForAdmin},
 	    { path: '/admin/viewApartment/*' , component : viewApartmentForAdmin},
-	    { path: '/admin/allApartments' , component : AllApartmentsForAdmin}
+	    { path: '/admin/allApartments' , component : AllApartmentsForAdmin},
+	    { path:'/admin/addHost', component: AddHost}
 	  ],
 });
 

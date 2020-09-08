@@ -1,6 +1,14 @@
-/**
- * 
- */
+function fixDate(reservations){
+	for(var r of reservations){
+		
+			r.startDateOfReservation= new Date(parseInt(r.startDateOfReservation));
+		
+	}
+	return reservations;
+}
+function fixOneDate(date){
+	 return new Date(parseInt(date));
+}
 Vue.component("reservationsForGuest", {
 	data: function () {
 	    return {
@@ -13,6 +21,117 @@ Vue.component("reservationsForGuest", {
 	
 	template: `
 		<div>
+		
+			<div class="content-profile" style="background-image: url('images/apartment3.png');">
+						<form class="container-amenities" method="put">
+						
+						
+						
+						<h1 style="margin-left:15%;">RESERVATIONS</h1>
+					<div>
+						<div class="row" style="padding-left:15%;padding-right:15%;">
+							<div class="column">
+								  <input style="visibility:hidden;border-radius: 0;width: 80%; margin-top:10%; padding: 10px;margin-right:0%;margin-left:0%;" type="text" placeholder="Search reservation by username..">
+
+							
+							</div>
+							<div class="column">
+								  <button v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:40%;height:20%;" class="addBtn">Sort by price</button>
+
+							</div>
+
+						</div>
+						
+
+					</div>
+					
+					
+						
+					
+					<div style="margin-top:3%;">
+						
+						
+							<div class="container-user-for-admin" v-for="g in guestReservations">
+							 <p><span >Reservation ID: {{g.id}}</span></p>
+							 <div class="row">
+							  <div class="column">
+							   <p>Apartment id: {{g.apartment.id}}</p>
+							  </div>
+							   <div class="column">
+							    <p>Guest: {{g.guest.username}}</p>
+							  </div>
+							 </div>
+							 <div class="row">
+							  <div class="column">
+							    <p>Status: {{g.statusOfReservation}}</p>
+							  </div>
+							   <div class="column">
+							    <p>Full price: {{g.fullPrice}}</p>
+							  </div>
+							 </div>
+							 <div class="row">
+							  <div class="column">
+							      <p>Start date: {{g.startDateOfReservation | dateFormat('DD.MM.YYYY')}}</p>
+							  </div>
+							   <div class="column">
+							    <p>Number Of Nights: {{g.numberOfNights}}</p>
+							  </div>
+							 </div>
+							 
+							  <div class="row">
+							  <div class="column">
+							       <label v-show = "(g.statusOfReservation == 'CREATED')">Reservation is created</label>
+							       <label v-show = "(g.statusOfReservation == 'ACCEPTED')" style="color:green;">Reservation is accepted</label>
+							       <label  v-show = "g.statusOfReservation == 'COMPLETED'">Reservation is completed</label>
+							       <label  v-show = "g.statusOfReservation == 'REJECTED'" style="color:red;">Reservation is rejected</label>
+							       <label  v-show = "g.statusOfReservation == 'WITHDRAWAL'" style="color:red;">Reservation is canceled</label>
+							  </div>
+							   <div class="column">
+
+							   	<div class="column">
+							        <button class="cancel_edit_button"  v-on:click="changeState(g)" v-show ="(g.statusOfReservation == 'ACCEPTED' || g.statusOfReservation == 'CREATED')"  type="button" style="padding: 0px;">Cancel reservation</button>
+							 	</div>
+							  </div>
+							 </div>
+							 
+							 
+							  
+							
+							
+							
+							 
+							 
+							 
+							
+							</div>
+					
+						</div>
+						
+					</form>
+				</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 			<div>
 				<table class="table table-hover">
 				<thead>
@@ -53,7 +172,7 @@ Vue.component("reservationsForGuest", {
 		        .then(response => (response.data ? this.user = response.data : this.user = null,
 	        		axios
 	    	        .get('rest/reservations/all')
-	    	        .then(response => (response.data ? this.allReservations = response.data : this.allReservations = null,
+	    	        .then(response => (response.data ? this.allReservations = fixDate(response.data) : this.allReservations = null,
 	    	        		this.filteredAllReservations()))))
 	  
 		},
@@ -105,6 +224,17 @@ Vue.component("reservationsForGuest", {
 			}
 		}
 		
-	}
+	},filters: {
+
+		dateFormat: function (value, format) {
+
+		var parsed = moment(value);
+
+		return parsed.format(format);
+
+		}
+
+	},
+	
 
 });

@@ -19,9 +19,9 @@ Vue.component("addHost",{
 	
 	template : `
 			<div>
-				<button type="submit" v-on:click="changeShowAddHostPart()">Add Host</button>
-				
-				<div v-if="showAddHostPart">
+				<div class="content-profile" style="background-image: url('images/apartment3.png');">
+					<form class="container-profile">
+							
 					<table>
 						<tr>
 							<td>First name:</td>
@@ -62,27 +62,13 @@ Vue.component("addHost",{
 							<td colspan="3"><button v-on:click="checkForm(user, confirmPassword)">Add new host</button></td>
 						</tr>
 					</table>
+						
+					</form>
 				</div>
 			</div>
 	`,
 
 	methods : {
-		changeShowAddHostPart : function(){
-			if(!this.showAddHostPart){
-				this.showAddHostPart = true;
-			}else{
-				this.errorFirstName = "";
-			    this.errorLastName = "";
-		        this.errorGender = "";
-		        this.errorUsername = "";
-		        this.errorPassword = "";
-		        this.errorConfirmPassword = "";
-		        this.confirmPassword = "";
-		        this.user = {};
-		        this.users = {};
-				this.showAddHostPart = false;	
-			}			
-		},
 		
 		checkForm : function (user, confirmPassword) {
 			this.errorFirstName = "";

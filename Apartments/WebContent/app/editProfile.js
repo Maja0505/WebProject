@@ -38,7 +38,7 @@ Vue.component("editProfile", {
 										</button>
 						</div>
 						<div class="container-profile-form-btn">
-										<button class="confirm_edit_button"  v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'">
+										<button class="confirm_edit_button"  v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'" type="button">
 											CONFIRM
 										</button>
 						</div>
