@@ -26,6 +26,21 @@
   padding-top: 20px;
 }
 
+.column75-in-form-search-apartment {
+  float: left;
+  width: 75%;
+  padding: 5px;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.column33-in-form-search-apartment {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+  text-align: center;
+  padding-top: 20px;
+}
 .row:after {
   content: "";
   display: table;

@@ -9,7 +9,7 @@ import enums.StatusOfReservation;
 public class Reservation {
 
 	private String id;
-	@JsonIgnoreProperties({"typeOfApartment","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
+	@JsonIgnoreProperties({"typeOfApartment","name","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
 	private Apartment apartment;
 	private Date startDateOfReservation;
 	private int numberOfNights;

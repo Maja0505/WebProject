@@ -1,14 +1,10 @@
 package service;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,7 +19,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -101,19 +96,20 @@ public class ApartmentService {
 	}
 	
 	@POST
-	@Path("/saveImage/{imageName}")
+	@Path("/saveImages/{idApartment}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void saveImage(String  fromBase64,@PathParam("imageName") String name) throws JsonParseException, JsonMappingException, IOException {
+	public void saveImage(List<String> base64StringImages,@PathParam("idApartment") String id) throws JsonParseException, JsonMappingException, IOException {
 		
-		 name = URLDecoder.decode(name, "UTF-8");
 		 String fileName = ctx.getRealPath("")+"images";
-		 String base64Image = fromBase64.split(",")[1];
-		 byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
-		 File imgFile = new File(fileName + "/" + name);  
-         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));  
-         ImageIO.write(img, "png", imgFile);  
-		
+		 int i = 1;
+		 for(String s : base64StringImages) {
+			 s = s.split(",")[1];
+			 byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(s);
+			 File imgFile = new File(fileName + "/" + id + "-" + i++ + ".png");  
+	         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));  
+	         ImageIO.write(img, "png", imgFile); 
+		 }
 	}
 
 	@PUT

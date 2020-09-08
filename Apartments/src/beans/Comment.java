@@ -6,7 +6,7 @@ public class Comment {
 		private String id;
 		@JsonIgnoreProperties({"password","firstName","lastName","gender","typeOfUser","rentedApartments","reservations"})
 		private Guest guest;
-		@JsonIgnoreProperties({"typeOfApartment","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
+		@JsonIgnoreProperties({"typeOfApartment","name","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
 		private Apartment apartment;
 		private String text;
 		private int rate;

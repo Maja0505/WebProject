@@ -10,7 +10,7 @@ import beans.Reservation;
 public class GuestDTO {
 
 	public String username;
-	@JsonIgnoreProperties({"typeOfApartment","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
+	@JsonIgnoreProperties({"typeOfApartment","name","numberOfRooms","numberOfGuests","location","dateOfIssue","availabilityByDates","host","comments","images","pricePerNight","checkInTime","checkOutTime","statusOfApartment","amenities","reservations"})
 	public List<Apartment> apartments;
 	@JsonIgnoreProperties({"apartment","startDateOfReservation","numberOfNights","fullPrice","reservationMessage","guest","statusOfReservation"})
 	public List<Reservation> reservations;
