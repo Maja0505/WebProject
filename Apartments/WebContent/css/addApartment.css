@@ -1,0 +1,10 @@
+.apartment-images{
+  width:75%;
+  overflow: auto;
+  height:100%;
+  color: gray;
+  border-color: gray;
+  border-radius:10px;
+  border-style:solid;
+  border-width: thin;
+}

@@ -10,6 +10,7 @@ import enums.TypeOfApartment;
 
 public class Apartment {
 	private String id;
+	private String name;
 	private TypeOfApartment typeOfApartment;
 	private int numberOfRooms;
 	private int numberOfGuests;
@@ -34,13 +35,14 @@ public class Apartment {
 		
 	}
 
-	public Apartment(String id,TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
+	public Apartment(String id,String name,TypeOfApartment typeOfApartment, int numberOfRooms, int numberOfGuests, Location location,
 			List<Date> dateOfIssue, List<Date> availabilityByDates, Host host, List<Comment> comments,
 			List<String> images, int pricePerNight, String checkInTime, String checkOutTime,
 			StatusOfApartment statusOfApartment, List<Amenities> amenities, List<Reservation> reservations) {
 		super();
 		this.id = id;
 		this.typeOfApartment = typeOfApartment;
+		this.name = name;
 		this.numberOfRooms = numberOfRooms;
 		this.numberOfGuests = numberOfGuests;
 		this.location = location;
@@ -193,9 +195,13 @@ public class Apartment {
 	public void setFlag(int flag) {
 		this.flag = flag;
 	}
-	
-	
-	
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 }
