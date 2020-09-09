@@ -98,7 +98,7 @@ Vue.component('viewApartment',{
 					</p>
 					
 					<editApartment></editApartment>
-					<commentForAdmin></commentForAdmin>
+					<commentForAdmin></commentForAdmin> 
 				</div>
 				
 			</div>
