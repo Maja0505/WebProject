@@ -14,7 +14,7 @@ Vue.component('viewApartment',{
 	
 	template : `
 		<div>
-			<div v-if="selectedApartment" class="content-profile" style="background-image: url('images/apartment3.png');">
+			<div v-if="selectedApartment" class="content-profile">
 				
 				<div v-if="currentUser==null || currentUser.typeOfUser=='GUEST'">
 					<div class="container-apartment-view">
@@ -80,7 +80,7 @@ Vue.component('viewApartment',{
 								</div>
 							</div>
 						</div>
-						<div class="row" style="width:50%;height:7%;margin-left:25%;">
+						<div class="row" v-show="currentUser.typeOfUser=='GUEST'" style="width:50%;height:4%;margin-left:25%;">
 							<button type="button" class="form-btn" v-on:click="showReservation()">BOOK APARTMENT</button>
 						</div>
 						<div class="row" >
@@ -108,18 +108,22 @@ Vue.component('viewApartment',{
 	
 	mounted(){
 		this.$root.$on('viewApartment',(text) => {this.selectedApartment = text});
-		
-		
+		this.$root.$on('showReservationFormInView',(text)=>{this.showReservationForm = false})
 		axios
         	.get('rest/users/currentUser')
          		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
 		axios
           	.get('rest/apartments/currentSelectedApartment')
         		.then(response => (this.selectedApartment = response.data,this.showSlides(this.slideIndex)))
-        	
+       this.changeBGImage(); 		
 	},
 	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
+		
 		showReservation : function(){
 			if(!this.showReservationForm){
 				this.showReservationForm = true;

@@ -134,7 +134,8 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		viewApartment :  function(apartment){
 			axios
 	    	  .post('rest/apartments/changeSelectedApartment',apartment)
-	          	.then(this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id))
+	          	.then(this.$root.$emit('viewApartment',apartment)
+	          			,this.$router.push('/viewApartment/' + apartment.id))
 
 		},
 		

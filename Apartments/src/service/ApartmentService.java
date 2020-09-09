@@ -93,6 +93,7 @@ public class ApartmentService {
 	public void updateApartment(Apartment apartment) throws JsonGenerationException, JsonMappingException, IOException {
 		ApartmentDAO apartmentDAO = (ApartmentDAO) ctx.getAttribute("apartments");
 		apartmentDAO.update(apartment, ctx.getRealPath("")+"json/apartment.json");
+		request.getSession().setAttribute("selectedApartment", apartment);
 	}
 	
 	@POST

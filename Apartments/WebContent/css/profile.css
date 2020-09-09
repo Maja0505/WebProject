@@ -1,6 +1,6 @@
 /* Style the content */
 .content-profile {
-  background-repeat: no-repeat;
+  background-repeat: repeat-y;
   background-attachment: fixed;  
   background-size: cover;
   
