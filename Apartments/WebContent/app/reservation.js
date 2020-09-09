@@ -18,48 +18,105 @@ Vue.component("reservation", {
 	template: `
 	
 			<div>
-					<div v-if="showReservationForm">
-				   		<table>	
-				   			<tr>
-				   				<td>Datum pocetka rezervacije: </td>
-				   				<td><vuejs-datepicker v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates"></vuejs-datepicker></td>
-				   			</tr>
-				   			<tr>
-				   				<td>Broj nocenja: </td>
-				   				<td><input type="number" value = "1" v-on:keydown = "stopKeydown" v-model="reservation.numberOfNIghts" min="1" max="15"></td>
-				   			</td>
-				   			<tr>
-				   				<td>Poruka namenjena domacinu: </td>
-				   				<td><input type="text" v-model="reservation.reservationMessage"></td>
-				   			</tr>
-				   			<tr>
-				   				<td>Ukupna cena rezervacije: </td>
-				   				<td>{{reservation.numberOfNIghts * selectedApartment.pricePerNight}}</td>
-				   			</tr>
-				   		</table>
-				   		<p>{{error}}</p>
-						<button type="submit"  v-on:click="bookingApartment()">Confirm</button>
+					<div v-if="showReservationForm" class="container-reservation">
+						<div class="row">
+							<label class="txt7">Reservation</label>
+						</div>
+						<div class="row">
+							<div class="column66-in-form-search-apartment">
+								<div class="column50-in-form-search-apartment"  style="text-align:left;padding:0px;">
+									<label class="txt8" style="margin-left:5%;">Date of start reservation: </label>
+								</div>
+								<div class="column50-in-form-search-apartment"  style="text-align:left;padding:0px;">	
+									<vuejs-datepicker input-class="reservation-input" style="width:70%;" v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates"></vuejs-datepicker>
+									<span class="focus-reservation-input"></span>
+								</div>
+							</div>
+							<div class="column33-in-form-search-apartment">
+								<div class="column66-in-form-search-apartment" style="padding:0px;text-align:left;">
+									<label class="txt8">Number of nights: </label>
+								</div>
+								<div class="column33-in-form-search-apartment" style="padding:0px;text-align:left;">
+									<div class="container-reservation-input">
+										<input class="reservation-input" type="number" v-on:keydown = "stopKeydown" v-model="reservation.numberOfNIghts" min="1" max="15">
+										<span class="focus-reservation-input"></span>
+									</div>
+								</div>	
+							</div>
+						</div>
+						<div class="row">
+							<div class="column66-in-form-search-apartment" style="padding-top: 0px;">
+								<div class="column50-in-form-search-apartment"  style="text-align:left;">
+									<label class="txt8" style="margin-left:4%;">Message for host: </label>
+								</div>
+								<div class="column50-in-form-search-apartment"  style="text-align:left;padding:0px;">	
+									<div class="container-reservation-input" style="width:70%;">
+										<textarea class="reservation-input"  type="text" v-model="reservation.reservationMessage"></textarea>
+										<span class="focus-reservation-input"></span>
+									</div>
+								</div>	
+							</div>
+							<div class="column33-in-form-search-apartment">
+								<div class="column66-in-form-search-apartment" style="padding:0px;text-align:left;">
+									<label class="txt8">Price per night: </label>
+								</div>
+								<div class="column33-in-form-search-apartment" style="padding:0px;text-align:left;">
+									<label class="txt8">{{selectedApartment.pricePerNight}} $</label>
+								</div>	
+							</div>
+						</div>
+						<div class="row">
+							<div class="column50-in-form-search-apartment"  style="text-align:left;padding-top:10px;">
+								<label class="txt8" style="margin-left:4%;">Full price for reservation: </label>
+							</div>
+							<div class="column50-in-form-search-apartment" style="text-align:left;padding:10px;">
+								<div v-show="reservation.numberOfNIghts" class="column25-in-form-search-apartment"  style="text-align:left;padding:0px;">
+									<label class="txt8">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</label>
+								</div>
+								<div v-show="!reservation.numberOfNIghts" class="column25-in-form-search-apartment"  style="text-align:left;padding:0px;">	
+									<label class="txt8">0 $</label>
+								</div>
+								<div class="column50-in-form-search-apartment" style="margin-left:12.5%;padding-top:0px;">
+									<div class="container-btn-form">
+										<button type="button" class="form-btn" style="height:30%;" v-on:click="bookingApartment()">CONFIRM</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+				   			<label class="txt8" style="color:red;margin-left:2.5%;">{{error}}</label>
+						</div>
+						
 		       		</div>
 			</div>
 		
 		`,
 		mounted () {
 
-		  this.$root.$on('showReservationPart',(text1,text2)=>{this.selectedApartment = text1,
-			  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates(),this.findMaxId()});
-		  
-			axios
-				.get('rest/users/currentUser')
-	         	.then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
-
-		      axios
-		          .get('rest/reservations/all')
-		          .then(response =>  (response.data ? this.allReservations = response.data : this.allReservations = null))
-			  
+		  this.$root.$on('showReservationPart',(text1,text2)=>{ this.loadData(),
+			  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates(),this.findMaxId(),this.error=""});
+		  this.loadData();	
 	    },
 	
 		methods: {
-	    	
+			
+			loadData: function(){
+				
+				axios
+		          .get('rest/apartments/currentSelectedApartment')
+		          .then(response => (this.selectedApartment = response.data))
+				
+				axios
+				  .get('rest/users/currentUser')
+	         	  .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
+
+		        axios
+		          .get('rest/reservations/all')
+		          .then(response =>  (response.data ? this.allReservations = response.data : this.allReservations = null))
+
+			},
+			
 			findMaxId : function(){
 				for(res of this.allReservations){
 	    			if(parseInt(res.id) > this.maxId){
@@ -99,6 +156,14 @@ Vue.component("reservation", {
 	    	},
 	    	
 	    	bookingApartment: function(){
+	    		
+	    		this.error="";
+	    		
+	    		if(!this.reservation.numberOfNIghts || !this.reservation.startDateOfReservation){
+	    			this.error = "You need to choose start date and number of nights!";
+	    			return;
+	    		}
+	    		
 	    		
 	    		this.maxId++;
 	    	     
@@ -173,9 +238,18 @@ Vue.component("reservation", {
  			        		'Content-Type': 'application/json',
  			        			}
 	        		  })
-	
+	        	//update usera	  
+	        	axios
+		       	   .put('rest/guests/updateUser', JSON.stringify(objGuest),
+		       			   {
+			        	headers: {
+ 			        		'Content-Type': 'application/json',
+ 			        			}
+	        		  })	  
+
 	           this.$root.$emit('loadApartmentForGuest',false)
-     	       toast('Za apartman iz grada ' + this.selectedApartment.location.address.city + ' uspesno ostavljena rezervacija !')
+	    	   this.showReservationForm = false;
+	    	   this.$root.$emit('showReservationFormInView');
 	    	}
 		},
 		

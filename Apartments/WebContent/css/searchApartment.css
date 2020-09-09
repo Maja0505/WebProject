@@ -41,6 +41,7 @@
   text-align: center;
   padding-top: 20px;
 }
+
 .row:after {
   content: "";
   display: table;
