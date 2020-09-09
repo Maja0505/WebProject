@@ -5,19 +5,20 @@ Vue.component("comment", {
 	      emptyText:"",
 	      emptyRate:"",
 	      showAllApartments:false,
-	      allApartments:null,
+	      allApartments:[],
 	      apartmentsOfMyReservations:[],
 	      selectedApartment:null,
-	      selectedApartment:null,
+	      selectedApartmentId:null,
 	      showCommentPart:false,
 	      allComments:null,
 	      maxId:0,
-	      user:null
+	      user:null,
+	      showCommentForm : false
 	      
 	    }
 },
 		template: ` 
-			<div>
+			<div v-if="showCommentForm" style="border-style: dotted;margin-top:2%;">
 					
 				<div>
 
@@ -27,7 +28,8 @@ Vue.component("comment", {
 					<table>
 						<tr>
 							<td>Text</td>
-							<td><input type="text" v-model="comment.text" /></td>
+							<td><textarea v-model="comment.text" style="border-style: solid;border-width: 2px;" name="Text1" cols="60" rows="3" ></textarea></td>
+							
 							<td>{{emptyText}}</td>
 						</tr>
 						<tr>
@@ -47,35 +49,55 @@ Vue.component("comment", {
 							<td>{{emptyRate}}</td>
 						</tr>
 						<tr>
-						 <td><button v-on:click="addComment()" type="button">Sumbit comment</button></td>
+						 <td colspan="2"><button v-on:click="addComment()" class="confirm_edit_button"  type="button" style="float:right;padding: 0px;">Sumbit comment</button></td>
+						
 						</tr>
 					</table>
 				</div>
 			</div>
 		  `,
 		mounted() {
-			this.$root.$on('addComment',(text)=>{this.selectedApartmentId = text});
-			axios
-	          .get('rest/users/currentUser')
-	          .then(response => (response.data ? this.user = response.data : this.user = null, 
-	        	   axios
-	    	          .get('rest/apartments/all')
-	    	          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
-	    	        		  this.getApartmentsOfMyReservations(),this.getSelectedAparmtnet()))))
-	        axios
-	          .get('rest/comments/all')
-	          .then(response => (response.data ? this.allComments = response.data : this.allComments = null))
-	         
+
+			
+ 	        this.$root.$on('comment',(text1,text2) => {this.selectedApartmentId = text1,this.showCommentForm = text2,this.getAllApartments()});
+ 	        this.getAllApartments();
+
+			
+	    
+
 	    	        		  
 		  },
 		    
 		methods: {
+			getAllApartments:function(){
+				if(this.showCommentForm){
+					axios
+			          .get('rest/users/currentUser')
+			          .then(response => (response.data ? this.user = response.data : this.user = null))
+			         
+			          
+			          
+			        axios
+			    	   .get('rest/apartments/all')
+			    	       .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
+			    	        		this.getApartmentsOfMyReservations(),this.getSelectedAparmtnet()))
+			        axios
+			          .get('rest/comments/all')
+			          .then(response => (response.data ? this.allComments = response.data : this.allComments = null))
+			         
+				}
+			
+			},
 			getSelectedAparmtnet: function(){
-				for(a of this.allAparmtnets){
-					if(a.id == this.selectedAparmtnetId){
+				
+				for(a of this.allApartments){
+					if(a.id === this.selectedApartmentId){
 						this.selectedApartment = a;
 					}
 				}
+				console.log(this.user)
+				console.log(this.allApartments)
+				console.log(this.selectedApartment)
 			},
 			getApartmentsOfMyReservations : function(){
 				

@@ -11,7 +11,7 @@ Vue.component("admin", {
 		template: ` 
 		<div>
 			
-			<addHost></addHost>
+			
 		</div>
 		`,
 

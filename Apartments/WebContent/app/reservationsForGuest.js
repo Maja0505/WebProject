@@ -80,9 +80,9 @@ Vue.component("reservationsForGuest", {
 								       	<button class="cancel_edit_button"  v-on:click="openCommentForm(g)" v-show ="(g.statusOfReservation == 'REJECTED' || g.statusOfReservation == 'COMPLETED')"  type="button" style="padding: 0px;">Comment apartment</button>
 							 		</div>
 							  </div>
-							  <div v-if="showCommentForm">
+							
 								<comment></comment>
-							  </div>
+							
 							</div>
 							 
 						</div>
@@ -101,11 +101,14 @@ Vue.component("reservationsForGuest", {
 	
 	methods:{
 		openCommentForm: function(reservation){
+			
 			if(this.showCommentForm){
+				this.$root.$emit('comment',reservation.apartment.id,false);
 				this.showCommentForm = false;
+				
 			}else{
+				this.$root.$emit('comment',reservation.apartment.id,true);
 				this.showCommentForm = true;
-				this.$root.$emit('addComment',reservation.apartment.id);
 			}
 		},
 		showReservations : function(){
