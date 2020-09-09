@@ -13,56 +13,88 @@ Vue.component("addHost",{
 		    errorGender:"",
 		    errorUsername:"",
 		    errorPassword:"",
-		    errorConfirmPassword:""
+		    errorConfirmPassword:"",
+		    gender:'Choose gender'
 		}
 	},
 	
 	template : `
 			<div>
 				<div class="content-profile" style="background-image: url('images/apartment3.png');">
-					<form class="container-profile">
-							
-					<table>
-						<tr>
-							<td>First name:</td>
-							<td><input name="FirstName" type="text" v-model="user.firstName"/></td>
-							<td>{{errorFirstName}}</td>
-						</tr>
-						<tr>
-							<td>Last name:</td>
-							<td><input name="LastName" type="text" v-model="user.lastName"/></td>
-							<td>{{errorLastName}}</td>
-						</tr>
-						<tr>
-							<td>Gender:</td>
-							<td>
-							<input type="radio" id="male" name="gender" value="MALE" v-model="user.gender">
-							<label for="male">Male</label>
-							<input type="radio" id="female" name="gender" value="FEMALE" v-model="user.gender">
-							<label for="female">Female</label>
-							</td>	
-							<td>{{errorGender}}</td>				
-						</tr>
-						<tr>
-							<td>Username:</td>
-							<td><input name="Username" type="text" v-model="user.username"/></td>
-							<td>{{errorUsername}}</td>
-						</tr>		
-						<tr>
-							<td>Password:</td>
-							<td><input name="Password" type="password" v-model="user.password"/></td>
-							<td>{{errorPassword}}</td>
-						</tr>
-						<tr>
-							<td>ConfirmPassword:</td>
-							<td><input name="ConfirmPassword" type="password" v-model="confirmPassword"/></td>
-							<td>{{errorConfirmPassword}}</td>
-						</tr>
-						<tr>
-							<td colspan="3"><button v-on:click="checkForm(user, confirmPassword)">Add new host</button></td>
-						</tr>
-					</table>
+					<form class="container-profile" style="height:70%;  position: fixed;">
 						
+					<div class="row m-t-50">
+						<div class="column25-in-form-search-apartment">
+							<div class="container-form-input">
+									<input class="form-input" type="text" placeholder="First name" v-model="user.firstName">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{errorFirstName}}</p>
+							</div>
+						</div>
+						<div class="column25-in-form-search-apartment">
+							<div class="container-form-input">
+									<input class="form-input" type="text" placeholder="Last name"  v-model="user.lastName">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{errorLastName}}</p>
+							</div>
+						</div>
+						<div class="column50-in-form-search-apartment">
+								<div class="container-form-input">
+									<select class="form-select" v-model="gender" v-if="gender=='Choose gender'" style="color:#bbbbbb">
+								 		<option value="Choose gender" hidden>Choose gender</option>
+									    <option value="MALE" style="color:#666666">Male</option>
+										<option value="FEMALE" style="color:#666666">Female</option>
+								  	</select>
+							      	<select class="form-select" v-model="gender" v-if="gender!='Choose gender'"style="color:#666666">
+									    <option value="Choose gender" hidden>Choose gender</option>
+									    <option value="MALE" style="color:#666666">Male</option>
+										<option value="FEMALE" style="color:#666666">Female</option>
+								  	</select>
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{errorGender}}</p>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="column50-in-form-search-apartment">
+							<div class="container-form-input">
+									<input class="form-input" type="text" placeholder="Username" v-model="user.username">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{errorUsername}}</p>
+							</div>
+						</div>
+						<div class="column50-in-form-search-apartment">
+							<div class="container-form-input">
+									<input class="form-input" type="text" placeholder="Password" v-model="user.password">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{errorPassword}}</p>
+							</div>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="column50-in-form-search-apartment">
+							<div class="container-form-input">
+									<input class="form-input" type="text" placeholder="Confirm password" v-model="confirmPassword">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error">{{errorConfirmPassword}}</p>
+							</div>
+						</div>
+
+						
+					</div>
+					<div class="row">
+						
+						<div class="column50-in-form-search-apartment">
+							<div class="container-form-input">
+									<button type="button" class="form-btn" v-on:click="checkForm(user, confirmPassword)">ADD HOST</button>
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"></p>
+							</div>
+						</div>
+						
+					</div>
+
 					</form>
 				</div>
 			</div>
@@ -71,6 +103,7 @@ Vue.component("addHost",{
 	methods : {
 		
 		checkForm : function (user, confirmPassword) {
+			user.gender = this.gender;
 			this.errorFirstName = "";
 		    this.errorLastName = "";
 	        this.errorGender = "";

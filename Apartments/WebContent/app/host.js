@@ -11,7 +11,7 @@ Vue.component("host", {
 },
 		template: ` 
 		<div>
-			<apartmentsForHost></apartmentsForHost>
+		
 		</div>
 		`
 		,

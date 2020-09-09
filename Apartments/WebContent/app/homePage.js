@@ -69,7 +69,8 @@ Vue.component("homePage", {
 						this.$root.$emit('showApartmentsFormForUnregistredUser');
 						this.$router.push('/allApartments');
 					}else if(this.user.typeOfUser === 'HOST'){
-						
+						this.$root.$emit('apartmentsForHost');
+						this.$router.push('/host/allApartments');
 					}else if(this.user.typeOfUser === 'ADMIN'){
 						this.$root.$emit('apartmentsForAdmin');
 						this.$router.push('/admin/allApartments');

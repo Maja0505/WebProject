@@ -28,8 +28,9 @@ Vue.component("navigationbar",{
 			      		<li><a href="#/profile" v-if = "user" v-show="user.typeOfUser == 'HOST'">Profile</a></li>
 			      		<li><a href="#/apartment" v-if = "user" v-show="user.typeOfUser == 'HOST'">Add apartment</a></li>
 						<li><a href="#/guestsList" v-if = "user" v-show="user.typeOfUser == 'HOST'" v-on:click="getGuestsForHost">My guests</a></li>
-						<li><a href="#/allReservations" v-if = "user" v-show="user.typeOfUser == 'HOST'" v-on:click="getReservationsForHost">My reservations</a></li>
-	    				
+						<li><a href="#/host/allReservations" v-if = "user" v-show="user.typeOfUser == 'HOST'" v-on:click="getReservationsForHost">My reservations</a></li>
+	    				<li><a href="#/host/allApartments" v-if = "user" v-show="user.typeOfUser == 'HOST'" v-on:click="getAllApartmentsForHost">My apartments</a></li>
+
 	    				
 	    				<li><a href="#/profile" v-if = "user" v-show="user.typeOfUser == 'GUEST'">Profile</a></li>
 						<li><a href="#/guest/allReservations" v-if = "user" v-show="user.typeOfUser == 'GUEST'" v-on:click="getReservationsForGuest">My reservations</a></li>
@@ -93,6 +94,9 @@ Vue.component("navigationbar",{
 		},
 		getAllApartmentsForAdmin : function(){
 			this.$root.$emit('apartmentsForAdmin');
+		},
+		getAllApartmentsForHost: function(){
+			this.$root.$emit('apartmentsForHost');
 		}
 	}
 	

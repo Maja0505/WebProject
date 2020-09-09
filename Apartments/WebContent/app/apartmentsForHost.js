@@ -2,7 +2,7 @@ Vue.component("apartmentsForHost", {
 	
 	data: function () {
 	    return {
-	    	showActive:false,
+	    	showActive:true,
 	    	showInactive:false,
 	    	allApartments:null,
 	    	selectedApartment:null,
@@ -31,13 +31,129 @@ Vue.component("apartmentsForHost", {
 	
 	template: `
 		<div>
+		
+			<div v-if="showActive">
+				<searchApartments ></searchApartments>
 
+				<div class="row" style="margin-top: 225px;">
+					<div class="column30-in-apartments-view">
+						<div class="container-filters-apartment">
+							<button class="btn-filter" v-on:click="showFilters()">Click to show filters</button>
+							<div v-show="showFiltersForm" class="container-filters-content">
+								
+								<label class="txt4">TYPE OF APARTMENT</label><br>
+								<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
+								<label class="txt5">room</label><br> 
+								<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
+								<label class="txt5">whole apartment</label><br>
+								
+								<label class="txt4">AMENITIES</label><br>
+									<div  v-for="a in allAmenities" v-if="a.flag==0">
+										<input type="checkbox"  @click="onChange(a,$event)">
+										<label class="txt5">{{a.name}}</label><br>
+									</div>
+							</div>
+					 	</div>
+					 	<div class="container-filters-apartment" style="margin-top: 390px;height:10%;background:none;">
+							<button v-on:click="showInactiveForHost()" class="profile-form-btn">Show INACTIVE apartments</button>
+						</div>
+					</div>
+					<div class="column70-in-apartments-view">
+						<h1>Active apartments</h1>
+						<div class="row" v-for="a in searchActive">
+							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
+								<div class="row">
+								 	<div class="container-image-in-search-apartment">
+								        <img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
+								 		<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
+								 	</div>
+								 	
+								 	<div class="container-infoOfApartment-in-search-apartment">
+							 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+							 			<div class="row">
+											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
+											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
+								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+							 			</div>
+								 	</div>
+								 </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+				<div v-if="selectedApartment">
+					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
+						<button type="submit" v-on:click="moreInfo()">More info</button>
+						<button type="submit" v-on:click="deleteApartment()">Delete</button>
+						<button type="submit" v-on:click="showComments()">Comments of apartment</button>
+					</p>
+					
+					<editApartment></editApartment>
+					<commentForAdmin></commentForAdmin>
+				</div>
 			<div>
-			<button v-on:click="showActiveForHost()">Show ACTIVE apartments</button>
-			<button v-on:click="showInactiveForHost()">Show INACTIVE apartments</button>
-			
+		</div>
+		
+		
+		
+		<div v-if="showInactive">
+			<div class="content-profile" style="background-image: url('images/sea.png');">
+					<form class="container-amenities">
+						<div class="row" style="padding-left:5%;padding-right:5%;padding-bottom:5%;">
+							<div class="column">
+								<h1 style="width:100%;">Inactive apartments</h1>
+
+							
+							</div>
+							<div class="column">
+							    <button v-on:click="showActiveForHost()" style="width:50%;float:left;margin-left:28%;" class="addBtn">Show active apartments</button>
+
+							</div>
+
+						</div>
+
+								<div class="row" v-for="a in searchInactive" >
+									<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
+										<div class="row">
+										 	<div class="container-image-in-search-apartment">
+										        <img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
+										 		<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
+										 	</div>
+										 	
+										 	<div class="container-infoOfApartment-in-search-apartment">
+									 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+									 			<div class="row">
+													<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
+													<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
+										 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+									 			</div>
+										 	</div>
+										 </div>
+									</div>
+								
+						</form>
+					</div>
+
+				<div v-if="selectedApartment">
+					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
+						<button type="submit" v-on:click="moreInfo()">More info</button>
+						<button type="submit" v-on:click="deleteApartment()">Delete</button>
+						<button type="submit" v-on:click="showComments()">Comments of apartment</button>
+					</p>
+					
+					<editApartment></editApartment>
+					<commentForAdmin></commentForAdmin>
+				</div>
+			<div>
+		</div>
+		
+		
+		</div>
+	<!--	
 			<div v-show="showActive">
-					<searchApartments></searchApartments>
+					
 					<button v-on:click="showFilters()">Filters</button>
 					<div v-show="showFiltersForm">
 						<p>STATUS OF APARTMENT</p>
@@ -96,7 +212,7 @@ Vue.component("apartmentsForHost", {
 			    	<commentApartmentForHost></commentApartmentForHost>
 				</div>
 				<div v-show="showInactive">
-					<searchApartments></searchApartments>
+					
 					<button v-on:click="showFilters()">Filters</button>
 					<div v-show="showFiltersForm">
 						<p>STATUS OF APARTMENT</p>
@@ -159,15 +275,16 @@ Vue.component("apartmentsForHost", {
 			    	<commentApartmentForHost></commentApartmentForHost>
 				</div>
 			</div>
-		</div>
+		</div>-->
+	 </div>
 	`	
 		,
 		
 	mounted(){
 		        
-	        this.$root.$on('searchApartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
+	        this.$root.$on('apartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
-	        	
+	        
 	        this.searchStartDate='',
 	 	   	this.searchEndDate='',
 	 	   	this.searchPriceFrom='',
@@ -195,6 +312,7 @@ Vue.component("apartmentsForHost", {
 		          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.getInactiveApartments(),this.getActiveApartments()))
 
 	        });
+	        this.showActiveForHost();
 
 
 		        
@@ -231,7 +349,8 @@ Vue.component("apartmentsForHost", {
 
 		},
 		showActiveForHost: function(){
-			
+			this.showActive = true;	
+			this.ShowInactive = false;
 	        this.searchStartDate='';
 		    this.searchEndDate='';
 		   	this.searchPriceFrom='';
@@ -248,12 +367,6 @@ Vue.component("apartmentsForHost", {
 	    	
 	    	this.$root.$emit('clearSearch','');
 	    	
-			if(this.showActive){
-				this.showActive = false;
-			}else{
-				this.showActive = true;
-				this.showInactive = false;
-			}
 			
 			//ako menjamo tabelu,selektovani postaje null i sakrivamo forme za edit i comment
 			this.selectedApartment = null;
@@ -287,12 +400,10 @@ Vue.component("apartmentsForHost", {
 	    	this.isRoom=false,
 	    	this.isWholeAparmtnet=false
 	    	
-			if(this.showInactive){
-				this.showInactive = false;
-			}else{
+
 				this.showActive = false;
 				this.showInactive = true;
-			}
+
 			
 			//ako menjamo tabelu,selektovani postaje null i sakrivamo forme za edit i comment
 			this.selectedApartment = null;
