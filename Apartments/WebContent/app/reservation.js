@@ -19,9 +19,6 @@ Vue.component("reservation", {
 	
 			<div>
 					<div v-if="showReservationForm">
-				   		<p>Izabrali ste <b>{{selectedApartment.id}}</b> apartman na lokacijom <b>{{selectedApartment.location.address.city}}</b> , cena
-				   		po noci je <b>{{selectedApartment.pricePerNight}}</b> i domacin je
-				   		 <b>{{selectedApartment.host.username }}</b></p>
 				   		<table>	
 				   			<tr>
 				   				<td>Datum pocetka rezervacije: </td>
@@ -41,13 +38,16 @@ Vue.component("reservation", {
 				   			</tr>
 				   		</table>
 				   		<p>{{error}}</p>
-						<button type="submit"  v-on:click="bookingApartment()">Booking apartment</button>
+						<button type="submit"  v-on:click="bookingApartment()">Confirm</button>
 		       		</div>
 			</div>
 		
 		`,
 		mounted () {
-		
+
+		  this.$root.$on('showReservationPart',(text1,text2)=>{this.selectedApartment = text1,
+			  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates(),this.findMaxId()});
+		  
 			axios
 				.get('rest/users/currentUser')
 	         	.then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
@@ -55,10 +55,6 @@ Vue.component("reservation", {
 		      axios
 		          .get('rest/reservations/all')
 		          .then(response =>  (response.data ? this.allReservations = response.data : this.allReservations = null))
-		      
-
-			  this.$root.$on('showReservationPart',(text1,text2)=>{this.selectedApartment = text1,
-				  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates(),this.findMaxId()});
 			  
 	    },
 	

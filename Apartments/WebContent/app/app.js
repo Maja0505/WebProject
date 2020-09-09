@@ -9,7 +9,7 @@ const showGuestsForHost = {template: '<showGuestsForHost></showGuestsForHost>'}
 const reservationsForHost = {template: '<reservationsForHost></reservationsForHost>'}
 const reservationsForGuest = {template: '<reservationsForGuest></reservationsForGuest>'}
 const reservationsForAdmin = {template: '<reservationsForAdmin></reservationsForAdmin>'}
-const viewApartmentForAdmin = {template: '<viewApartmentForAdmin></viewApartmentForAdmin>'}
+const viewApartment = {template: '<viewApartment></viewApartment>'}
 const AllApartmentsForAdmin = {template: '<apartmentsForAdmin></apartmentsForAdmin>'}
 const AddHost = {template: '<addHost></addHost>'}
 
@@ -35,7 +35,7 @@ const router = new VueRouter({
 	    { path: '/admin/allReservations' , component: reservationsForAdmin},
 	    { path: '/profile' , component: editProfile},
 	    { path: '/admin/allUsers' , component: usersForAdmin},
-	    { path: '/admin/viewApartment/*' , component : viewApartmentForAdmin},
+	    { path: '/viewApartment/*' , component : viewApartment},
 	    { path: '/admin/allApartments' , component : AllApartmentsForAdmin},
 	    { path:'/admin/addHost', component: AddHost}
 	  ],

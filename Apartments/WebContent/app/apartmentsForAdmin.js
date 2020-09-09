@@ -50,7 +50,7 @@ Vue.component("apartmentsForAdmin", {
 								<label class="txt5">whole apartment</label><br>
 								
 								<label class="txt4">AMENITIES</label><br>
-									<div  v-for="a in allAmenities">
+									<div  v-for="a in allAmenities" v-if="a.flag==0">
 										<input type="checkbox"  @click="onChange(a,$event)">
 										<label class="txt5">{{a.name}}</label><br>
 									</div>
@@ -58,7 +58,7 @@ Vue.component("apartmentsForAdmin", {
 					 	</div>	
 					</div>
 					<div class="column70-in-apartments-view">
-						<div class="row" v-for="a in search">
+						<div class="row" v-for="a in search" v-if="a.flag==0">
 							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
 								<div class="row">
 								 	<div class="container-image-in-search-apartment">
@@ -138,11 +138,9 @@ Vue.component("apartmentsForAdmin", {
 	methods : {
 		
 		viewApartment :  function(apartment){
-			
-			this.$router.push('/admin/viewApartment/' + apartment.id)
 			axios
 	    	  .post('rest/apartments/changeSelectedApartment',apartment)
-	          	.then(this.$root.$emit('viewApartment',apartment))
+	          	.then(this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id))
 
 		},
 		
