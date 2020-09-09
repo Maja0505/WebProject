@@ -29,64 +29,51 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	},
 
 	template : `
-			<div class="container">
-				<h1>APARTMENTS FOR RENT</h1>
-				
-				<div>
-					<searchApartments></searchApartments>
-					<button v-on:click="showFilters()" v-if="currentUser" style="margin-top:200px;">Filters</button>
-					<div v-show="showFiltersForm">
-						
-						<p>TYPE OF APARTMENT</p>
-						<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
-						<label>ROOM</label><br> 
-						<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
-						<label>WHOLE_APARTMENT</label><br>
-						
-						<p>AMENITIES</p>
-						<table>
-							<tr><td>Name</td><td>Checked</td></tr>
-							
-							<tr  v-for="a in allAmenities">
-								<td><input type="checkbox"  @click="onChange(a,$event)"></td>
-								<td>{{a.name}}</td>
-							</tr>
-						</table>
-						
+			<div>
+				<searchApartments></searchApartments>
+				<div class="row" style="margin-top: 225px;">
+					<div class="column30-in-apartments-view">
+						<div class="container-filters-apartment">
+							<label class="txt4" style="margin-top:5%;font-size:22px;text-align:center;letter-spacing: 3px;">FILTERS</label><br><br>
+							<div class="container-filters-content">
+								<label class="txt4">TYPE OF APARTMENT</label><br>
+								<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
+								<label class="txt5">room</label><br> 
+								<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
+								<label class="txt5">whole apartment</label><br>
+								
+								<label class="txt4">AMENITIES</label><br>
+									<div  v-for="a in allAmenities" v-if="a.flag==0">
+										<input type="checkbox"  @click="onChange(a,$event)">
+										<label class="txt5">{{a.name}}</label><br>
+									</div>
+							</div>
+					 	</div>	
 					</div>
-					<table border = "1"  class="table table-hover">
-						<thead>
-							<tr bgcolor="lightblue">
-								<th @click="sort('id')">ID</th>
-								<th @click="sort('location')">Location</th>
-								<th @click="sort('pricePerNight')">Price Per Night</th>
-								<th @click="sort('hostName')">Host</th>
-								<th @click="sort('status')">Status</th>
-							</tr>
-					    </thead>
-					    <tbody>
-							<tr v-for="a in searchActive"  v-on:click="selectApartment(a)">
-								<td>{{a.id}}</td>
-								<td>{{a.location.address.city}}</td>
-								<td>{{a.pricePerNight }}</td>
-								<td>{{a.host.username }}</td>
-								<td>{{a.statusOfApartment}}</td>
-							</tr>
-						</tbody>
-					</table>
-					
-					<div v-if="selectedApartment">
-						<p>Selektovan je apartman sa id {{selectedApartment.id}} 
-							<button type="submit" v-if="currentUser" v-on:click="reservation()">Reservation</button>
-							<button type="submit" v-on:click="showComments()">Comments of apartment</button>
-						</p>
-					</div>
-					
-					<reservation></reservation>
-					<commentApartmentForGuestOrUnregistredUser></commentApartmentForGuestOrUnregistredUser>
-
+					<div class="column70-in-apartments-view">
+						<div class="row" v-for="a in searchActive" v-if="a.flag==0">
+							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
+								<div class="row">
+								 	<div class="container-image-in-search-apartment">
+								        <img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
+								 		<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
+								 	</div>
+								 	
+								 	<div class="container-infoOfApartment-in-search-apartment">
+							 			<h2 style="margin-top:3%;">{{a.name}}</h2>
+							 			<div class="row">
+											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
+											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
+								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+							 			</div>
+								 	</div>
+								 </div>
+							</div>
+						</div>
+					</div>	
 				</div>
 			</div>
+			
 	`,
 	
 	mounted () {
@@ -135,13 +122,20 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		        		  axios
 			     	        .get('rest/comments/all')
 			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null
-			     	        	, this.getActiveApartments()	))))
-				
-			   
-			  
+			     	        	, this.getActiveApartments(),
+			     	        	axios
+						          .get('rest/amenities/all')
+						          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))))))
 				
 			 })
 				
+		},
+		
+		viewApartment :  function(apartment){
+			axios
+	    	  .post('rest/apartments/changeSelectedApartment',apartment)
+	          	.then(this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id))
+
 		},
 		
 		getActiveApartments : function(){
@@ -267,17 +261,6 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 
 				}else{
 					return true
-				}
-			},
-			showFilters: function(){
-				if(this.showFiltersForm){
-					this.showFiltersForm = false;
-				}else{
-					this.showFiltersForm = true;
-					axios
-			          .get('rest/amenities/all')
-			          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
-			          
 				}
 			},
 			onChange:function(amenitie,event){

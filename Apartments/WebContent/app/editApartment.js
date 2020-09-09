@@ -182,7 +182,7 @@ Vue.component("editApartment", {
 		`,
 		mounted () {
 	        this.$root.$on('showEditForm',(text,text2) => {this.selectedApartment = text,this.showEditForm = text2,this.getStartEndDate(),this.showSlides(this.slideIndex)});
-	        
+	        this.showSlides(this.slideIndex);
 		},
 
 		methods:{
