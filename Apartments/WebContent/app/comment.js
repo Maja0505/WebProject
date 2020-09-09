@@ -8,6 +8,7 @@ Vue.component("comment", {
 	      allApartments:null,
 	      apartmentsOfMyReservations:[],
 	      selectedApartment:null,
+	      selectedApartment:null,
 	      showCommentPart:false,
 	      allComments:null,
 	      maxId:0,
@@ -17,37 +18,12 @@ Vue.component("comment", {
 },
 		template: ` 
 			<div>
-			
-				<p>Show your apartments</p>
-				<button type="submit" v-on:click="showAll()" >Show your apartments</button>
-				
-				<div v-show="showAllApartments">
-					<table class="table table-hover">
-					  <thead>
-						<tr bgcolor="lightblue">
-							<th>Location</th>
-							<th>Price Per Night</th>
-							<th>Host</th>
-							<th>Reservation</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="a in apartmentsOfMyReservations"   v-on:click="selectApartment(a)">
-							<td>{{a.location.address.city}}</td>
-							<td>{{a.pricePerNight }}</td>
-							<td>{{a.host.username }}</td>
-							<td v-for="r in a.reservations">
-								<div>
-									<td>id : {{r.id}},    </td>
-									<td>statusOfReservation : {{r.statusOfReservation}}</td>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-					</table>
+					
+				<div>
+
 				</div>
 				
-				<div v-show="showCommentPart">
+				<div>
 					<table>
 						<tr>
 							<td>Text</td>
@@ -71,28 +47,36 @@ Vue.component("comment", {
 							<td>{{emptyRate}}</td>
 						</tr>
 						<tr>
-						 <td><button v-on:click="addComment()">Sumbit comment</button></td>
+						 <td><button v-on:click="addComment()" type="button">Sumbit comment</button></td>
 						</tr>
 					</table>
 				</div>
 			</div>
 		  `,
 		mounted() {
+			this.$root.$on('addComment',(text)=>{this.selectedApartmentId = text});
 			axios
 	          .get('rest/users/currentUser')
 	          .then(response => (response.data ? this.user = response.data : this.user = null, 
 	        	   axios
 	    	          .get('rest/apartments/all')
 	    	          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
-	    	        		  this.getApartmentsOfMyReservations()))))
+	    	        		  this.getApartmentsOfMyReservations(),this.getSelectedAparmtnet()))))
 	        axios
 	          .get('rest/comments/all')
 	          .then(response => (response.data ? this.allComments = response.data : this.allComments = null))
+	         
 	    	        		  
 		  },
 		    
 		methods: {
-			
+			getSelectedAparmtnet: function(){
+				for(a of this.allAparmtnets){
+					if(a.id == this.selectedAparmtnetId){
+						this.selectedApartment = a;
+					}
+				}
+			},
 			getApartmentsOfMyReservations : function(){
 				
 				let addApartment = false;
@@ -121,15 +105,6 @@ Vue.component("comment", {
 				this.showCommentPart = true;
 			},
 			
-			showAll : function(){
-				this.emptyText = "";
-				this.emptyRate = "";
-				this.showCommentPart = false;
-				if(this.showAllApartments){
-					this.showAllApartments = false;
-				}else
-					this.showAllApartments = true;
-			},
 			
 			addComment: function() {
 
@@ -184,7 +159,7 @@ Vue.component("comment", {
 				        		}
 		        		  })		  
 		        		  
-		        this.$router.push('/')
+		        //this.$router.push('/')
 	        	
 	        }
 		}

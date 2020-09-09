@@ -29,7 +29,7 @@ Vue.component("showGuestsForHost", {
 							  <img src="images/female_image.png" alt="Avatar" style="width:90px" v-if="u.gender == 'FEMALE'">
 							  <img src="images/male_image.png" alt="Avatar" style="width:90px" v-if="u.gender == 'MALE'">
 							  <p><span >{{u.firstName}} {{u.lastName }}</span></p>
-							  <P>Username: {{u.username}}</p>
+							  <p>Username: {{u.username}}</p>
 							  <p>Gender: {{u.gender}}</p>
 							  <P>User type: {{u.typeOfUser}}</p>
 							</div>

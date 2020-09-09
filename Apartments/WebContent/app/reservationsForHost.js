@@ -33,109 +33,87 @@ Vue.component("reservationsForHost", {
 		<div>
 		
 			<div class="content-profile" style="background-image: url('images/apartment3.png');">
-						<form class="container-amenities" method="put">
-						
-						
-						
-						<h1 style="margin-left:15%;">RESERVATIONS</h1>
+				<form class="container-amenities" method="put">
+	
+					<h1 style="margin-left:15%;">RESERVATIONS</h1>
 					<div>
-						<div class="row" style="padding-left:15%;padding-right:15%;">
-							<div class="column">
-								  <input style=" border-radius: 0;width: 80%; margin-top:10%; padding: 10px;margin-right:0%;margin-left:0%;" type="text" placeholder="Search reservation by username.." v-model = "searchText">
-
-							
+							<div class="row" style="padding-left:15%;padding-right:15%;">
+								<div class="column">
+									  <input style=" border-radius: 0;width: 80%; margin-top:10%; padding: 10px;margin-right:0%;margin-left:0%;" type="text" placeholder="Search reservation by username.." v-model = "searchText">							
+								</div>
+								<div class="column">
+									  <button v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:40%;height:20%;" class="addBtn">Sort by price</button>
+								</div>
+	
 							</div>
-							<div class="column">
-								  <button v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:40%;height:20%;" class="addBtn">Sort by price</button>
-
+					 </div>
+					 <div class="container-user-for-admin"  v-on:click="showFilters()">
+							 <p><span >FILTERS</span></p>
+							 <div v-if="showFiltersForm">
+							 	<input type="checkbox" id="create" name="create" value="CREATED" v-model="isCreated">
+								<label>CREATED</label><br>
+								<input type="checkbox" id="rejected" name="rejected" value="REJECTED" v-model="isRejected" >
+								<label>REJECTED</label><br>
+								<input type="checkbox" id="withdrawal" name="withdrawal" value="WITHDRAWAL" v-model="isWithdrawal">
+								<label>WITHDRAWAL</label><br> 
+								<input type="checkbox" id="accepted" name="accepted" value="ACCEPTED" v-model="isAccepted">
+								<label>ACCEPTED</label><br>
+								<input type="checkbox" id="completed" name="completed" value="COMPLETED" v-model="isCompleted">
+								<label>COMPLETED</label><br>
 							</div>
-
-						</div>
-						
-
-					</div>
-					<div class="container-user-for-admin"  v-on:click="showFilters()">
-						 <p><span >FILTERS</span></p>
-						 <div v-if="showFiltersForm">
-						 	<input type="checkbox" id="create" name="create" value="CREATED" v-model="isCreated">
-							<label>CREATED</label><br>
-							<input type="checkbox" id="rejected" name="rejected" value="REJECTED" v-model="isRejected" >
-							<label>REJECTED</label><br>
-							<input type="checkbox" id="withdrawal" name="withdrawal" value="WITHDRAWAL" v-model="isWithdrawal">
-							<label>WITHDRAWAL</label><br> 
-							<input type="checkbox" id="accepted" name="accepted" value="ACCEPTED" v-model="isAccepted">
-							<label>ACCEPTED</label><br>
-							<input type="checkbox" id="completed" name="completed" value="COMPLETED" v-model="isCompleted">
-							<label>COMPLETED</label><br>
-						</div>
-					</div>
+					 </div>
 					
 						
 					
 					<div style="margin-top:3%;">
-						
-						
-							<div class="container-user-for-admin" v-for="g in search">
+						<div class="container-user-for-admin" v-for="g in search">
 							 <p><span >Reservation ID: {{g.id}}</span></p>
 							 <div class="row">
-							  <div class="column">
-							   <p>Apartnet id: {{g.apartment.id}}</p>
-							  </div>
-							   <div class="column">
-							    <p>Guest: {{g.guest.username }}</p>
-							  </div>
+							 		<div class="column">
+										<p>Apartnet id: {{g.apartment.id}}</p>
+								  	</div>
+								    <div class="column">
+								    	<p>Guest: {{g.guest.username }}</p>
+								  	</div>
 							 </div>
 							 <div class="row">
-							  <div class="column">
-							    <p>Status: {{g.statusOfReservation }}</p>
-							  </div>
-							   <div class="column">
-							    <p>Full price: {{g.fullPrice}}</p>
-							  </div>
+									<div class="column">
+							    		<p>Status: {{g.statusOfReservation }}</p>
+							  		</div>
+							   		<div class="column">
+							    		<p>Full price: {{g.fullPrice}}</p>
+							  		</div>
 							 </div>
 							 <div class="row">
-							  <div class="column">
-							      <p>Start date: {{g.startDateOfReservation | dateFormat('DD.MM.YYYY')}}</p>
-							  </div>
-							   <div class="column">
-							    <p>Number Of Nights: {{g.numberOfNights}}</p>
-							  </div>
+							  		<div class="column">
+							      		<p>Start date: {{g.startDateOfReservation | dateFormat('DD.MM.YYYY')}}</p>
+							  		</div>
+							   		<div class="column">
+							    		<p>Number Of Nights: {{g.numberOfNights}}</p>
+							  		</div>
 							 </div>
 							 
-							  <div class="row">
-							  <div class="column">
-							       <label v-show = "(g.statusOfReservation == 'CREATED' && !isFinished(g))" style="visibility:hidden;">Reservation isn't finished</label>
-							       <label  v-show = "g.statusOfReservation == 'COMPLETED'">Reservation is completed</label>
-								   <label  v-show = "(g.statusOfReservation == 'ACCEPTED' && !isFinished(g))">Reservation isn't finished</label>
+							 <div class="row">
+								  <div class="column">
+								       <label v-show = "(g.statusOfReservation == 'CREATED' && !isFinished(g))" style="visibility:hidden;">Reservation isn't finished</label>
+								       <label  v-show = "g.statusOfReservation == 'COMPLETED'">Reservation is completed</label>
+									   <label  v-show = "(g.statusOfReservation == 'ACCEPTED' && !isFinished(g))">Reservation isn't finished</label>
+								  </div>
+							  	  <div class="column">
+								   	   <div class="column">
+								           <button class="confirm_edit_button" v-show = "g.statusOfReservation == 'CREATED'" v-on:click ="accepteReservation(g)" type="button" style="padding: 0px;">Accept reservation</button>
+								 	   </div>
+								 	   <div class="column" >
+								 	   			<button class="cancel_edit_button" v-show = "(g.statusOfReservation == 'ACCEPTED' || g.statusOfReservation == 'CREATED')" v-on:click = "cancelReservation(g)" type="button" style="padding: 0px;">Reject reservation</button>
+								       			<button class="cancel_edit_button"  v-show = "(g.statusOfReservation == 'ACCEPTED' && isFinished(g))" v-on:click = "completeReservation(g)" type="button" style="padding: 0px;">Complete reservation</button>
+								 	   </div>
+								 </div>
 							  </div>
-							   <div class="column">
-
-							   	<div class="column">
-							        <button class="confirm_edit_button" v-show = "g.statusOfReservation == 'CREATED'" v-on:click ="accepteReservation(g)" type="button" style="padding: 0px;">Accept reservation</button>
-							 	</div>
-							 	<div class="column" >
-							 	   <button class="cancel_edit_button" v-show = "(g.statusOfReservation == 'ACCEPTED' || g.statusOfReservation == 'CREATED')" v-on:click = "cancelReservation(g)" type="button" style="padding: 0px;">Reject reservation</button>
-							       <button class="cancel_edit_button"  v-show = "(g.statusOfReservation == 'ACCEPTED' && isFinished(g))" v-on:click = "completeReservation(g)" type="button" style="padding: 0px;">Complete reservation</button>
-							 	</div>
-							  </div>
-							 </div>
-							 
-							 
-							  
-							
-							
-							
-							 
-							 
-							 
-							
-							</div>
-					
-						</div>
+				   		</div>
+					</div>
 						
-					</form>
-				</div>
-		
+				</form>
+			</div>
 		</div>
 		`
 			,
