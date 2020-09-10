@@ -42,7 +42,7 @@ Vue.component("reservationsForHost", {
 									  <input style=" border-radius: 0;width: 80%; margin-top:10%; padding: 10px;margin-right:0%;margin-left:0%;" type="text" placeholder="Search reservation by username.." v-model = "searchText">							
 								</div>
 								<div class="column">
-									<button v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:50%;height:20%;" class="addBtn">SORT BY PRICE
+									<button type="button" v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:50%;height:20%;" class="addBtn">SORT BY PRICE
 										<span style="visibility:hidden">j</span>
 									 	<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
 										<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>	

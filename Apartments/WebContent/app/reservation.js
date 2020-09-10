@@ -242,14 +242,7 @@ Vue.component("reservation", {
  			        		'Content-Type': 'application/json',
  			        			}
 	        		  })
-	        	//update usera	  
-	        	axios
-		       	   .put('rest/guests/updateUser', JSON.stringify(objGuest),
-		       			   {
-			        	headers: {
- 			        		'Content-Type': 'application/json',
- 			        			}
-	        		  })	  
+	  
 
 	           this.$root.$emit('loadApartmentForGuest',false)
 	    	   this.showReservationForm = false;
