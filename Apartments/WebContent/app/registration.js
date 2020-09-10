@@ -180,15 +180,17 @@ Vue.component("registration", {
 				        headers: {
 			            'Content-Type': 'application/json',
 			        }
+			    }).then(response => {
+			    	axios
+			          .post('rest/users/addUser', JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'GUEST'}), {
+					        headers: {
+				            'Content-Type': 'application/json',
+				        }
+			          	})
+			          		.then(response => (this.login()))
 			    })
 	           
-	           	 axios
-		          .post('rest/users/addUser', JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'GUEST'}), {
-				        headers: {
-			            'Content-Type': 'application/json',
-			        }
-			    })
-		          .then(response => (this.login()))
+	           	 
 			}	
 		}
 		
