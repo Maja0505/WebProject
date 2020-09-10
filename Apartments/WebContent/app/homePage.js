@@ -34,18 +34,6 @@ Vue.component("homePage", {
 		 
 		</div>
 
-		<div v-if = "user">
-			<div v-show="user.typeOfUser == 'ADMIN'">
-				<admin></admin>
-			</div>
-			<div v-show="user.typeOfUser == 'GUEST'">
-				<guest></guest>
-			</div>
-			<div  v-show="user.typeOfUser == 'HOST'">
-				<host></host>
-			</div>
-		</div>
-	
 </div>
 		`	,mounted () {
 				this.changeBGImage();

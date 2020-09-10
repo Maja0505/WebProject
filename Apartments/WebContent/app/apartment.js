@@ -370,7 +370,7 @@ Vue.component("apartment", {
 							 		        		'Content-Type': 'application/json'
 									        			}
 							 	     	}).then(response => {
-							 	     		alert('Uspesno ste dodali apartman!');
+							 	     		alert('Success add apartment!');
 								    		this.sendRequest = false;
 								    		document.getElementById('navigationMenu').style.visibility='visible';
 							 	     	})

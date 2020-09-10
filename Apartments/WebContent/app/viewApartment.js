@@ -15,13 +15,19 @@ Vue.component('viewApartment',{
 			imagesForApartmentForConvert:[],
 			apartmentImagesLength:0,
 			maxId:0,
+     		sendRequest:false,
+
 		}
 	},
 	
 	
 	template : `
 		<div>
-			<div v-if="selectedApartment" class="content-profile">
+			<div id="myOverlay" class="overlay" v-show="sendRequest">
+				<div class="loader" ></div>
+				<div><label style="margin-top:420px;">Wait a moment..</label></div>
+			</div>
+			<div v-if="selectedApartment" class="content-profile" v-show="!sendRequest">
 				
 				<div v-if="currentUser==null || currentUser.typeOfUser=='GUEST'">
 					<div class="container-apartment-view">
@@ -374,8 +380,9 @@ Vue.component('viewApartment',{
 			
 			
 			  objApartment = {"id":''+ this.selectedApartment.id, "name":''+ this.selectedApartment.name,"typeOfApartment": this.selectedApartment.typeOfApartment,"numberOfRooms":''+ this.selectedApartment.numberOfRooms,"numberOfGuests":''+ this.selectedApartment.numberOfGuests,"location":this.selectedApartment.location,"dateOfIssue":this.dateOfIssue,"availabilityByDates":this.dateOfIssue,"host":this.loggedUser,"comments": [],"images":this.selectedApartment.images,"pricePerNight":this.selectedApartment.pricePerNight,"checkInTime":''+this.selectedApartment.checkInTime,"checkOutTime":''+this.selectedApartment.checkOutTime,"statusOfApartment":'INACTIVE',"amenities":[],"reservations":[]}
-				
-			 
+			  
+
+			  
 			 //dodajemo u listu svih apartmana
 			  axios
 		         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
@@ -385,14 +392,22 @@ Vue.component('viewApartment',{
 			        			}
 		       		  }
 		         )
-          	
+		    this.sendRequest = true;
+			document.getElementById('navigationMenu').style.visibility='hidden';
+		         
 	 	     axios
 	 	     	.post('rest/apartments/saveUpdatedImages/' + this.selectedApartment.id + '/'+ this.apartmentImagesLength,JSON.stringify(arrayImageString),
 		       		  {
 		        	headers: {
 		        		'Content-Type': 'application/json'
 		        			}
-      	  });	
+		       		  })
+		       	.then(response => {
+		       		alert('Success update apartment!');
+		    		this.sendRequest = false;
+		    		document.getElementById('navigationMenu').style.visibility='visible';
+
+	         });	
 	}
 		
 	}
