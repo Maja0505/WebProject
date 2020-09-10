@@ -328,6 +328,12 @@ Vue.component("apartmentsForHost", {
 		        
 			}, 
 	methods:{
+		viewApartment :  function(apartment){
+			axios
+	    	  .post('rest/apartments/changeSelectedApartment',apartment)
+	          	.then((response)=>{this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id)})
+
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
