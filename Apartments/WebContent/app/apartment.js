@@ -50,13 +50,17 @@ Vue.component("apartment", {
 		  image:null,
 		  imagesForApartment:[],
 		  imagesForApartmentForConvert:[],
+		  sendRequest:false,
 	    }
 	},
 		template: ` 
 		<div>
+			<div id="myOverlay" class="overlay" v-show="sendRequest">
+				<div class="loader" ></div>
+				<div><label style="margin-top:420px;">Wait a moment..</label></div>
+			</div>
 			<div class="content-profile">
-				<form class="container-profile" style="width:70%;">
-					
+				<form class="container-profile" style="width:70%;" v-show="!sendRequest">
 					<div class="row m-t-50">
 						<div class="column75-in-form-search-apartment">
 							<div class="container-form-input">
@@ -357,6 +361,8 @@ Vue.component("apartment", {
 							       					'Content-Type': 'application/json',
 							    				 }
 							    	}).then(response => {
+							    		this.sendRequest = true;
+										document.getElementById('navigationMenu').style.visibility='hidden';
 							    		axios
 							 	     		.post('rest/apartments/saveImages/' + this.maxId,JSON.stringify(arrayImageString),
 									       		  {
@@ -364,7 +370,9 @@ Vue.component("apartment", {
 							 		        		'Content-Type': 'application/json'
 									        			}
 							 	     	}).then(response => {
-							 	     		alert('Uspesno ste dodali apartman');
+							 	     		alert('Uspesno ste dodali apartman!');
+								    		this.sendRequest = false;
+								    		document.getElementById('navigationMenu').style.visibility='visible';
 							 	     	})
 							 	     	})
 							 		})
