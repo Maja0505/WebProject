@@ -112,6 +112,23 @@ public class ApartmentService {
 	         ImageIO.write(img, "png", imgFile); 
 		 }
 	}
+	
+	@POST
+	@Path("/saveUpdatedImages/{idApartment}/{i}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void saveUpdatedImage(List<String> base64StringImages,@PathParam("idApartment") String id,@PathParam("i") int i) throws JsonParseException, JsonMappingException, IOException {
+		
+		 String fileName = ctx.getRealPath("")+"images";
+		 for(String s : base64StringImages) {
+			 s = s.split(",")[1];
+			 byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(s);
+			 File imgFile = new File(fileName + "/" + id + "-" + ++i + ".png");  
+	         BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));  
+	         ImageIO.write(img, "png", imgFile); 
+		 }
+	}
+	
 
 	@PUT
 	@Path("/updateAllApartments")
