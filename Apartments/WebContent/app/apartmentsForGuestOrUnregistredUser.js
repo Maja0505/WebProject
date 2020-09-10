@@ -24,7 +24,8 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	    	allAmenities:[],
 	    	isRoom:false,
 	    	isWholeApartment:false,
-	    	checkedAmenities:[]
+	    	checkedAmenities:[],
+	    	sorting:'',
 		}
 	},
 
@@ -33,7 +34,7 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 				<searchApartments></searchApartments>
 				<div class="row" style="margin-top: 225px;">
 					<div class="column30-in-apartments-view">
-						<div class="container-filters-apartment">
+						<div class="container-filters-apartment" style="height:50%;">
 							<label class="txt4" style="margin-top:5%;font-size:22px;text-align:center;letter-spacing: 3px;">FILTERS</label><br><br>
 							<div class="container-filters-content">
 								<label class="txt4">TYPE OF APARTMENT</label><br>
@@ -48,10 +49,19 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 										<label class="txt5">{{a.name}}</label><br>
 									</div>
 							</div>
-					 	</div>	
+					 	</div>
 					</div>
 					<div class="column70-in-apartments-view">
-						<div class="row" v-for="a in searchActive" v-if="a.flag==0">
+						<div class="row">
+							<div class="container-btn-form" style="width:24%;margin-left:60%">
+								<button class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
+									<span style="visibility:hidden">j</span>
+									<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
+									<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>								
+								</button>
+							</div>
+						</div>
+						<div class="row" v-for="a in searchActive" v-if="a.flag==0" style="margin-top:2%;">
 							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
 								<div class="row">
 								 	<div class="container-image-in-search-apartment">
@@ -170,19 +180,24 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 			this.$root.$emit('showReservationPart',{},false);
 			this.$root.$emit('showCommentsForGuestOrUnregistrateUser',this.selectedApartment,true,this.allComments);
 		},
-		sort:function(s) {
-		    if(s === this.currentSort) {
-		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-		    }
-		    this.currentSort = s;
-		    
-		    this.activeApartments = this.activeApartments.sort((a,b) => {
+		sort:function() {
+			if(this.currentSortDir == 'asc'){
+				this.currentSortDir = 'desc';
+				this.sorting = 'asc';
+			}else{
+				this.currentSortDir = 'asc'
+				this.sorting = 'desc';		
+			}
+			
+			if(this.activeApartments){
+				this.activeApartments = this.activeApartments.sort((a,b) => {
 			      let modifier = 1;
 			      if(this.currentSortDir === 'desc') modifier = -1;
-			      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-			      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+			      if(a['pricePerNight'] < b['pricePerNight']) return -1 * modifier;
+			      if(a['pricePerNight'] > b['pricePerNight']) return 1 * modifier;
 			      return 0;
 			    });
+			}
 		  },
 			filterByPrice: function(a){
 				if(this.searchPriceFrom != '')

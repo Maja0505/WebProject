@@ -25,7 +25,8 @@ Vue.component("apartmentsForHost", {
 	    	isInactive:false,
 	    	isRoom:false,
 	    	isWholeApartment:false,
-	    	checkedAmenities:[]
+	    	checkedAmenities:[],
+	    	sorting:''
 	    }
 	},
 	
@@ -60,7 +61,16 @@ Vue.component("apartmentsForHost", {
 					</div>
 					<div class="column70-in-apartments-view">
 						<h1>Active apartments</h1>
-						<div class="row" v-for="a in searchActive" v-if="a.flag==0">
+						<div class="row">
+							<div class="container-btn-form" style="width:24%;margin-left:60%">
+								<button class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
+									<span style="visibility:hidden">j</span>
+									<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
+									<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>								
+								</button>
+							</div>
+						</div>
+						<div class="row" v-for="a in searchActive" v-if="a.flag==0" style="margin-top:2%;">
 							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
 								<div class="row">
 								 	<div class="container-image-in-search-apartment">
@@ -123,7 +133,7 @@ Vue.component("apartmentsForHost", {
 										 	</div>
 										 	
 										 	<div class="container-infoOfApartment-in-search-apartment">
-									 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+									 			<h2 style="margin-top:3%;">{{a.name}}</h2>
 									 			<div class="row">
 													<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 													<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
@@ -456,19 +466,24 @@ Vue.component("apartmentsForHost", {
 				
 			
 		},
-		sort:function(s) {
-		    if(s === this.currentSort) {
-		      this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-		    }
-		    this.currentSort = s;
-		    
-		    this.activeApartmentsForHost = this.activeApartmentsForHost.sort((a,b) => {
+		sort:function() {
+			if(this.currentSortDir == 'asc'){
+				this.currentSortDir = 'desc';
+				this.sorting = 'asc';
+			}else{
+				this.currentSortDir = 'asc'
+				this.sorting = 'desc';		
+			}
+			
+			if(this.activeApartmentsForHost){
+				this.activeApartmentsForHost = this.activeApartmentsForHost.sort((a,b) => {
 			      let modifier = 1;
 			      if(this.currentSortDir === 'desc') modifier = -1;
-			      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-			      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+			      if(a['pricePerNight'] < b['pricePerNight']) return -1 * modifier;
+			      if(a['pricePerNight'] > b['pricePerNight']) return 1 * modifier;
 			      return 0;
 			    });
+			}
 		  },
 		 
 		
@@ -655,13 +670,6 @@ Vue.component("apartmentsForHost", {
 			if(this.inactiveApartmentsForHost)	
 				return this.inactiveApartmentsForHost.filter(a => {
 				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
-			},
-		formattedClubs() {
-		          return this.searchActive.reduce((c, n, i) => {
-		              if (i % 4 === 0) c.push([]);
-		              c[c.length - 1].push(n);
-		              return c;
-		          }, []);
-		      }
+			}
 	}
 });
