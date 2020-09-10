@@ -79,8 +79,16 @@ Vue.component("registration", {
 				</div>
 			</div>
 		</div>
-		`
-		,methods : {
+		`,
+		mounted(){
+			this.changeBGImage();
+		},
+		methods : {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+			},
+			
 			checkForm : function (user, confirmPassword) {
 				
 				 this.$nextTick(function(){

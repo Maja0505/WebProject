@@ -93,13 +93,17 @@ Vue.component("reservation", {
 		
 		`,
 		mounted () {
-
+		  this.changeBGImage();
 		  this.$root.$on('showReservationPart',(text1,text2)=>{ this.loadData(),
 			  this.showReservationForm = text2,this.reservation = {},this.generateDisableDates(),this.findMaxId(),this.error=""});
 		  this.loadData();	
 	    },
 	
 		methods: {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+			},
 			
 			loadData: function(){
 				
@@ -238,14 +242,7 @@ Vue.component("reservation", {
  			        		'Content-Type': 'application/json',
  			        			}
 	        		  })
-	        	//update usera	  
-	        	axios
-		       	   .put('rest/guests/updateUser', JSON.stringify(objGuest),
-		       			   {
-			        	headers: {
- 			        		'Content-Type': 'application/json',
- 			        			}
-	        		  })	  
+	  
 
 	           this.$root.$emit('loadApartmentForGuest',false)
 	    	   this.showReservationForm = false;

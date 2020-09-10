@@ -21,7 +21,7 @@ Vue.component("editProfile", {
 		
 		<div>
 			
-			<div class="content-profile" style="background-image: url('images/apartment1.png');">
+			<div class="content-profile">
 			  	<form class="container-profile">
 			  		<span class="profile-form-title p-b-34">
 									PROFILE
@@ -157,6 +157,7 @@ Vue.component("editProfile", {
 		</div>
 		`,
 		mounted () {
+			this.changeBGImage();	
         axios
           .get('rest/users/currentUser')
           .then(response => (this.user = response.data))
@@ -165,6 +166,11 @@ Vue.component("editProfile", {
           
 		},
 		methods: {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment1.png" + ')';
+		},
+			
 		showProfileInfo: function(){
 			this.changePassword = false;
 			this.mode = "NOT_EDIT_YET";

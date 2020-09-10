@@ -13,12 +13,13 @@ Vue.component("reservationsForAdmin",{
 	    	isWithdrawal:false,
 	    	isAccepted:false,
 	    	isCompleted:false,
+	    	sorting:'',
 		}
 	},
 	
 	template : `
 				<div>
-					<div class="content-profile" style="background-image: url('images/apartment3.png');">
+					<div class="content-profile">
 						<form class="container-amenities">
 						
 						
@@ -32,7 +33,11 @@ Vue.component("reservationsForAdmin",{
 							
 							</div>
 							<div class="column">
-								  <button v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:40%;height:20%;" class="addBtn">Sort by price</button>
+								  <button type="button" v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:50%;height:20%;" class="addBtn">SORT BY PRICE
+										<span style="visibility:hidden">j</span>
+									 	<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
+										<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>	
+								  </button>
 
 							</div>
 
@@ -76,12 +81,16 @@ Vue.component("reservationsForAdmin",{
 				</div>
 			`,
 	mounted(){
-        
+		this.changeBGImage();
         this.$root.$on('reservationsForAdmin',(text) => {this.showAllReservations()});
         this.showAllReservations()    //PROVERITI
 	},
 	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
 		
 		showAllReservations : function(){
 			this.searchText = '';
@@ -95,8 +104,11 @@ Vue.component("reservationsForAdmin",{
 		sort(){
 			if(this.currentSortDir == 'asc'){
 				this.currentSortDir = 'desc';
-			}else
+				this.sorting = 'asc';
+			}else{
 				this.currentSortDir = 'asc'
+				this.sorting = 'desc';		
+			}
 			
 			if(this.allReservations){
 				this.allReservations = this.allReservations.sort((a,b) => {

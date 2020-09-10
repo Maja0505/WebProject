@@ -35,8 +35,14 @@ Vue.component("commentApartmentForHost", {
 			</div>
 		  `
 		,		mounted () {
+			this.changeBGImage();
 	        this.$root.$on('showComment',(text,text2) => {this.selectedApartment = text,this.showComment = text2,this.getAllComment()});
 		},methods:{
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+			},
+			
 			getAllComment: function(){
 				//ukoliko nema selektovanog nista ne dobavljamo
 				if(this.selectedApartment){

@@ -46,13 +46,18 @@ Vue.component("login", {
 		    </div>
 		`,
 		mounted () {
-			
+			this.changeBGImage();
 	        axios
 	          .get('rest/users/all')
 	          .then(response => (this.users = response.data))
 	          
 		},
 		methods: {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+			},
+			
 			login: function(username,password) {
 
 				this.username = username;

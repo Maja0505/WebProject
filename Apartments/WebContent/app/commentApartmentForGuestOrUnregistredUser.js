@@ -39,11 +39,16 @@ Vue.component('commentApartmentForGuestOrUnregistredUser',{
 	`,
 	
 	mounted(){
+	     this.changeBGImage();	
 		this.$root.$on('showCommentsForGuestOrUnregistrateUser',(text1,text2,text3)=>{this.selectedApartment = text1,this.commentsShow = text2
 			this.allComments = text3,this.showCommentForSelectedApartment()})
 	},
 	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
 		
 		showCommentForSelectedApartment : function(){
 			this.commentsForSelectedApartment = [];

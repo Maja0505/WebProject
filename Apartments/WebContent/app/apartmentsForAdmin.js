@@ -23,7 +23,8 @@ Vue.component("apartmentsForAdmin", {
 	    	isInactive:false,
 	    	isRoom:false,
 	    	isWholeApartment:false,
-	    	checkedAmenities:[]
+	    	checkedAmenities:[],
+	    	sorting:'',
 	    }
 	},
 	
@@ -58,7 +59,16 @@ Vue.component("apartmentsForAdmin", {
 					 	</div>	
 					</div>
 					<div class="column70-in-apartments-view">
-						<div class="row" v-for="a in search" v-if="a.flag==0">
+						<div class="row">
+							<div class="container-btn-form" style="width:24%;margin-left:60%">
+								<button class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
+									<span style="visibility:hidden">j</span>
+									<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
+									<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>								
+								</button>
+							</div>
+						</div>
+						<div class="row" v-for="a in search" style="margin-top:2%;" v-if="a.flag==0">
 							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
 								<div class="row">
 								 	<div class="container-image-in-search-apartment">
@@ -67,7 +77,7 @@ Vue.component("apartmentsForAdmin", {
 								 	</div>
 								 	
 								 	<div class="container-infoOfApartment-in-search-apartment">
-							 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+							 			<h2 style="margin-top:3%;">{{a.name}}</h2>
 							 			<div class="row">
 											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
@@ -99,6 +109,7 @@ Vue.component("apartmentsForAdmin", {
 	`,
 	
 	mounted(){
+		this.changeBGImage();
 		  this.$root.$on('searchApartmentForAdmin',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        	
@@ -137,10 +148,14 @@ Vue.component("apartmentsForAdmin", {
 	
 	methods : {
 		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+		},
+		
 		viewApartment :  function(apartment){
 			axios
 	    	  .post('rest/apartments/changeSelectedApartment',apartment)
-	          	.then(this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id))
+	          	.then((response)=>{this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id)})
 
 		},
 		
@@ -192,11 +207,14 @@ Vue.component("apartmentsForAdmin", {
 	          .put('rest/apartments/updateApartment',newApartment)
 		},
 		
-		sort(){
+		sort:function() {
 			if(this.currentSortDir == 'asc'){
 				this.currentSortDir = 'desc';
-			}else
+				this.sorting = 'asc';
+			}else{
 				this.currentSortDir = 'asc'
+				this.sorting = 'desc';		
+			}
 			
 			if(this.allApartments){
 				this.allApartments = this.allApartments.sort((a,b) => {
@@ -206,7 +224,6 @@ Vue.component("apartmentsForAdmin", {
 			      if(a['pricePerNight'] > b['pricePerNight']) return 1 * modifier;
 			      return 0;
 			    });
-				this.searchText = this.searchText;
 			}
 		},
 

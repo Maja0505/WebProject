@@ -54,7 +54,7 @@ Vue.component("apartment", {
 	},
 		template: ` 
 		<div>
-			<div class="content-profile" style="background-image: url('images/apartment3.png');">
+			<div class="content-profile">
 				<form class="container-profile" style="width:70%;">
 					
 					<div class="row m-t-50">
@@ -198,12 +198,17 @@ Vue.component("apartment", {
 
 		`	
 		, mounted () {
+			this.changeBGImage();
 			 this.allPlaces();
 	         axios
 		      .get('rest/users/currentUser')
 		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
 	    }
 		,methods: {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+			},
 			
 			addImage : function(e){
 				
@@ -214,23 +219,6 @@ Vue.component("apartment", {
 					this.imagesForApartmentForConvert.push(img)
 				}
 				
-				/*
-				
-				let img = e.target.files[0];
-				 //putanju slike cuvamo u aparmtnanu
-				 this.image = "images/" + img.name;
-				 //naziv slike za saveImage fju
-				 ImgName = img.name;
-				 //pretvaranje u base64 format
-				 var reader = new FileReader();
-				 reader.readAsDataURL(img); 
-				 reader.onloadend = function() {
-		 	     var base64data = reader.result;  
-			     base64Image = base64data;
-				 }
-				 
-				 this.imagesForApartment.push(this.image);*/
-
 			},
 			
 			deleteImage : function(){
@@ -354,7 +342,6 @@ Vue.component("apartment", {
 				
 				  objHost['apartmentsForRent'].push(objApartment);
 				 
-				 //dodajemo u listu svih apartmana
 				 axios
 			          .post('rest/apartments/addApartment',JSON.stringify(objApartment), 
 		        	{
@@ -362,24 +349,26 @@ Vue.component("apartment", {
 			       					'Content-Type': 'application/json',
 			    				 }
 		        	})
-		            .then(response => (toast('Apartment is successful created')))
+		            .then(response => {
+		            	axios
+					      .put('rest/hosts/updateHost',JSON.stringify(objHost),
+							    	{
+							       		headers: {
+							       					'Content-Type': 'application/json',
+							    				 }
+							    	}).then(response => {
+							    		axios
+							 	     		.post('rest/apartments/saveImages/' + this.maxId,JSON.stringify(arrayImageString),
+									       		  {
+							 		        	headers: {
+							 		        		'Content-Type': 'application/json'
+									        			}
+							 	     	}).then(response => {
+							 	     		alert('Uspesno ste dodali apartman');
+							 	     	})
+							 	     	})
+							 		})
 	            
-		         //dodajemo  u apartmentsForRent(atribut od hosta)
-			     axios
-			      .put('rest/hosts/updateHost',JSON.stringify(objHost),
-			    	{
-			       		headers: {
-			       					'Content-Type': 'application/json',
-			    				 }
-			    	})
-					
-		 	     axios
-		 	     	.post('rest/apartments/saveImages/' + this.maxId,JSON.stringify(arrayImageString),
-			       		  {
-	 		        	headers: {
-	 		        		'Content-Type': 'application/json'
-			        			}
-	        	  });	
 		}
 		, checkForm: function(){
 			

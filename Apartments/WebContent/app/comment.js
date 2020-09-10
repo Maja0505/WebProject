@@ -58,17 +58,18 @@ Vue.component("comment", {
 		  `,
 		mounted() {
 
-			
+		     this.changeBGImage();	
  	        this.$root.$on('comment',(text1,text2) => {this.selectedApartmentId = text1,this.showCommentForm = text2,this.getAllApartments()});
  	        this.getAllApartments();
-
-			
-	    
-
 	    	        		  
 		  },
 		    
 		methods: {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+			},
+			
 			getAllApartments:function(){
 				if(this.showCommentForm){
 					axios

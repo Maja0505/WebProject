@@ -3,6 +3,7 @@ Vue.component("amenities", {
 	    return {
 	    	allAmenitites:null,
 	    	name:null,
+	    	user:null,
 	    	maxId:0,
 	    	errorAmenitie:'',
 	    	errorAmenitieEdit:'',
@@ -17,7 +18,7 @@ Vue.component("amenities", {
 	
 	template: `
 	<div>
-		<div class="content-profile" style="background-image: url('images/apartment1.png');">
+		<div class="content-profile">
 		  <form class="container-amenities">
 			<div id="myDIV" class="header" >
 			  <div class="row">
@@ -58,11 +59,16 @@ Vue.component("amenities", {
 	mounted(){
 		 this.$root.$on('amenitiesForAdmin',() => {this.getAllAmenities()});
 	     this.getAllAmenities()    //PROVERITI
-			
+	     this.changeBGImage();	
 	},
 	 
 	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
+		
 		selectAmenitie:function(amenitie){
 			if(this.mode != "EDITING"){
 				this.selectedInput = amenitie.name;
@@ -79,8 +85,8 @@ Vue.component("amenities", {
 		},
 		getAllAmenities:function(){
 			axios
-	        .get('rest/amenities/all')
-	        .then(response => (response.data ? this.allAmenitites = response.data : this.allAmenitites = null,this.findMaxId()))
+	        	.get('rest/amenities/all')
+	        	.then(response => (response.data ? this.allAmenitites = response.data : this.allAmenitites = null,this.findMaxId()))
 		},
 
 		findMaxId : function(){
