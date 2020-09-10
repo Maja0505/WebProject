@@ -45,29 +45,177 @@ Vue.component("editApartment", {
 			  errorLocation:"",
 			  errorStartDate:"",
 			  errorEndDate:"",
+			  currentLocation:"",
+			  showLocationInput:false
 	    }
 },
 		template: ` 
 		<div>
-			<div class="column75-in-form-search-apartment" style="text-align:left;top:200px;background-color:red;">
-				<div class="container-form-input">
-						<input class="form-input" type="search" id="address" placeholder="Search street">
-						<span class="focus-form-input"></span>
-						<p class="form-input-error">{{errorLocation}}</p>
-				</div>
-			</div>
-
+			<div class="row m-t-5">
+						<div class="column33-in-form-search-apartment">
+							<div class="container-form-input">
+									<input v-if="selectedApartment" class="form-input" type="text" placeholder="Name of apartment" v-model="selectedApartment.name" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"><span style="color:gray;">Name of apartment</span> {{errorNameOfApartment}}</p>
+							</div>
+						</div>
+						<div class="column33-in-form-search-apartment">
+							<div class="container-form-input">
+									<input v-if="selectedApartment" class="form-input" type="number" min="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" placeholder="Price per night" v-model="selectedApartment.pricePerNight" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"><span style="color:gray;">Price per night</span> {{errorPricePerNight}}</p>
+							</div>
+						</div>
+						<div class="column33-in-form-search-apartment">
+							<div class="container-form-input">
+										<select v-if="selectedApartment"class="form-select" v-model="selectedApartment.statusOfApartment" style="color: #000;border-color: black;" v-bind:disabled="mode=='NOT_EDIT_YET'">
+									 		<option value="Choose status of apartment" hidden>Choose status of apartment</option>
+										    <option value="ACTIVE" style="color:#666666">Active</option>
+											<option value="INACTIVE" style="color:#666666">Inactive</option>
+									  	</select>
+										<p class="form-input-error"><span style="color:grey;">Status of apartment</span> </p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="column50-in-form-search-apartment">
+							<div class="container-form-input">
+								      	<select v-if="selectedApartment" class="form-select" v-model="selectedApartment.typeOfApartment" style="color: #000;border-color: black;" v-bind:disabled="mode=='NOT_EDIT_YET'" >
+										    <option value="Choose gender" hidden>Choose gender</option>
+										    <option value="ROOM" style="color:#666666">Room</option>
+											<option value="WHOLE_APARTMENT" style="color:#666666">Whole apartment</option>
+									  	</select>
+										<p class="form-input-error"><span style="color:grey;">Type of apartment</span> {{errorTypeOfApartment}}</p>
+							</div>
+						</div>
+						<div class="column25-in-form-search-apartment">
+							<div class="container-form-input">
+									<input v-if="selectedApartment" class="form-input" type="number" min="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" placeholder="Number of rooms" v-model="selectedApartment.numberOfRooms" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"><span style="color:grey;">Numebr of rooms</span> {{errorNumberOfRooms}}</p>
+							</div>
+						</div>
+						<div class="column25-in-form-search-apartment">
+							<div class="container-form-input">
+									<input v-if="selectedApartment" class="form-input" type="number" min="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" placeholder="Number of guest" v-model="selectedApartment.numberOfGuests" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"><span style="color:grey;">Number of guest</span> {{errorNumberOfGuests}}</p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="column25-in-form-search-apartment">
+							<div class="container-form-input">
+									<input v-if="selectedApartment" class="form-input" type="text" placeholder="Street number" v-model="selectedApartment.location.address.streetNumber" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"><span style="color:grey;">Street number</span> {{errorStreetNumber}}</p>
+							</div>
+						</div>
+						<div class="column75-in-form-search-apartment" style="text-align:left;">
+							<div class="container-form-input">
+									<input v-if="selectedApartment && !showLocationInput" class="form-input" type="text" placeholder="Street number" v-model="currentLocation" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;"  @focusin="inFocusLocation()">
+									<input class="form-input-vuejs" type="search" id="address" placeholder="Search street"  style="color: #000;" v-bind:disabled="mode=='NOT_EDIT_YET'"  @focusout="lostFocusLocation()" v-show="showLocationInput">
+									<span class="focus-form-input"></span>
+									<p class="form-input-error"><span style="color:grey;">Location</span> {{errorLocation}}</p>
+							</div>
+						</div>
+					</div>
+					
+					
+					
+					
+					<div class="row">
+						<div class="column50-in-form-search-apartment" style="padding-top: 0px;">
+							<div class="column50-in-form-search-apartment">
+								<div class="container-form-input">
+										<vuejs-datepicker  input-class="form-input-vuejs" placeholder="Date from" format="dd.MM.yyyy" v-model="startDate" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;"></vuejs-datepicker>
+										<span class="focus-form-input"></span>
+										<p class="form-input-error"><span style="color:grey;">Start date</span> {{errorStartDate}}</p>
+								</div>	
+							</div>	
+							<div class="column50-in-form-search-apartment">
+								<div class="container-form-input">
+										<vuejs-datepicker  input-class="form-input-vuejs" placeholder="Date to" format="dd.MM.yyyy" v-model="endDate" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;"></vuejs-datepicker>
+										<span class="focus-form-input"></span>
+										<p class="form-input-error"><span style="color:grey;">End date</span> {{errorEndDate}}</p>
+								</div>	
+							</div>
+						</div>
+						<div class="column50-in-form-search-apartment">
+							<div class="column50-in-form-search-apartment" style="padding-top:0px;">
+								<div class="container-form-input">
+										<input v-if="selectedApartment" type="time" class="form-input" format="dd:HH"  v-model="selectedApartment.checkInTime" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+										<span class="focus-form-input"></span>
+										<p class="form-input-error"><span style="color:grey;">Check in time</span> {{errorCheckInTime}}</p>
+								</div>	
+							</div>
+							<div class="column50-in-form-search-apartment" style="padding-top:0px;">
+								<div class="container-form-input">
+										<input v-if="selectedApartment" type="time" class="form-input" format="dd:HH"  v-model="selectedApartment.checkOutTime" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;">
+										<span class="focus-form-input"></span>
+										<p class="form-input-error"><span style="color:grey;">Check out time</span> {{errorCheckOutTime}}</p>
+								</div>	
+							</div>
+						</div>	
+						
+					</div>
+					
+					
+					<div class="row">
+						<div class="column25-in-form-search-apartment" style="padding-top:0px;margin-left:25%;">
+							<div class="container-btn-form m-t-30">
+								<button  class="form-btn" type="button" style="background:gray;" v-on:click="checkForm()" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">CONFIRM CHANGES</button>
+							</div>	
+						</div>
+						<div class="column25-in-form-search-apartment" style="padding-top:0px;">
+							<div class="container-btn-form m-t-30">
+								<button type="button" class="form-btn" v-on:click="cancel()"  style="background:gray;" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">CANCEL EDIT</button>
+							</div>	
+						</div>
+					</div>
+					
+					
+					
+					
+					
+					
+					<div class="row">
+						<div class="column50-in-form-search-apartment" style="margin-left:25.5%;">
+							<div class="container-btn-form">
+								<button type="button" class="form-btn"v-on:click="edit()" v-bind:disabled="(mode=='EDITING' || mode=='AMENITIES')">EDIT APARTMENT</button>
+							</div>
+						</div>
+					</div>
 		</div>
 		`,
 		mounted () {
-			//this.allPlaces();
-
-	        this.$root.$on('showEditForm',(text,text2) => {this.selectedApartment = text,this.showEditForm = text2,this.getStartEndDate()});
+			
+	        this.$root.$on('showEditForm',(text) => {this.loadData(),this.getStartEndDate()});
+	        this.loadData()
+	        this.allPlaces();
+	        
+	        
+	        
+	        
+	        
 		},
 
 		methods:{
-			allPlaces : function() {
 			
+			loadData : function(){
+				
+				axios
+	          	 .get('rest/apartments/currentSelectedApartment')
+	        		.then(response => (response.data ? this.selectedApartment = response.data : this.selectedApartment = null,this.getStartEndDate()))
+	        	
+	       
+			},
+			
+			allPlaces : function() {
+	            
+		
 				var placesAutocomplete = places({
 				    appId: 'plQ4P1ZY8JUZ',
 				    apiKey: 'bc14d56a6d158cbec4cdf98c18aced26',
@@ -81,6 +229,7 @@ Vue.component("editApartment", {
 				  }).configure({
 					  type: 'address',
 				  });
+
 				
 				placesAutocomplete.on('change',function(e){
 					//pravljenje adrese i lokacije za apartman
@@ -94,22 +243,35 @@ Vue.component("editApartment", {
 				});
 				
 				
+				
+			
+
+				
+				
+				
 		},
-			addImage : function(e){
+		inFocusLocation: function(){
+			this.showLocationInput = true;
+		},
+		lostFocusLocation: function(){
+			if(street != "" && city != ""){
+				this.locationOfApartment.longitude = longitude;
+				this.locationOfApartment.latitude = latitude;
+				this.address.postalCode = postalCode;
+				this.address.city = city;
+				this.address.street = street;
 				
-				let images = e.target.files;
-				
-				for(img of images){
-					this.imagesForApartment.push(URL.createObjectURL(img))
-					this.imagesForApartmentForConvert.push(img)
-				}
-			},
-			deleteImage : function(){
-				if(this.imagesForApartment.length>0){
-					this.imagesForApartment.splice(-1,1);
-					this.imagesForApartmentForConvert.splice(-1,1);					
-				}
-			},
+				this.address.streetNumber = this.streetNumber;
+				this.locationOfApartment.address = this.address;
+				this.selectedApartment.location = this.locationOfApartment;
+				this.currentLocation = street +',' + city;
+
+			}
+			
+			this.showLocationInput = false;
+
+		},
+			
 			isInApartmentList:function(amenitie){
 				let amenitieExist = this.selectedApartment.amenities.filter(function(a) {
 						return a.name == amenitie.name});
@@ -137,7 +299,7 @@ Vue.component("editApartment", {
 			         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
 			       		  {
 		 		        	headers: {
-		 		        		'Content-Type': 'application/json',
+		 		        		'Content-Type': 'application/json;charset=UTF-8',
 				        			}
 		        	  }).then(response=>{ this.selectedApartment = objApartment,this.$root.$emit('refreshTable','');
 })
@@ -159,11 +321,14 @@ Vue.component("editApartment", {
 			},
 			
 			getStartEndDate : function(){
-				if(this.showEditForm){
-					this.startDate = this.selectedApartment.dateOfIssue[0];
-					this.endDate = this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1];	
-					
-				}
+					if(this.selectedApartment){
+						this.currentLocation = this.selectedApartment.location.address.street + "," + this.selectedApartment.location.address.city;
+						this.startDate = this.selectedApartment.dateOfIssue[0];
+						this.endDate = this.selectedApartment.dateOfIssue[this.selectedApartment.dateOfIssue.length - 1];	
+						
+					}
+				
+				
 
 			},
 			
@@ -193,9 +358,6 @@ Vue.component("editApartment", {
 				  this.errorNumberOfRooms = "";
 				  this.errorNumberOfGuests = "";
 				  this.errorStreetNumber = "";
-				  //this.errorCity = "";
-				  //this.errorPostalCode = "";
-				  //this.errorDateOfIssue = "";
 				  this.errorPricePerNight = "";
 				  this.errorCheckInTime = "";
 				  this.errorCheckOutTime = "";
@@ -207,8 +369,12 @@ Vue.component("editApartment", {
 				  this.selectedApartment.typeOfApartment = this.backup[0];
 				  this.selectedApartment.numberOfRooms = this.backup[1];
 				  this.selectedApartment.numberOfGuests = this.backup[2];
+				  this.selectedApartment.location.longitude =  this.backup[3];
+				  this.selectedApartment.location.latitude =  this.backup[4];
+				  this.selectedApartment.location.address.street =  this.backup[5];
 				  this.selectedApartment.location.address.streetNumber  = this.backup[6];
-				  this.selectedApartment
+				  this.selectedApartment.location.address.city =  this.backup[7];
+				  this.selectedApartment.location.address.postalCode =  this.backup[8];
 			 	  this.startDate = this.backup[9];
 				  this.endDate = this.backup[10];
 				  this.selectedApartment.pricePerNight  = this.backup[11];
@@ -216,7 +382,7 @@ Vue.component("editApartment", {
 				  this.selectedApartment.checkOutTime  = this.backup[13];
 				  this.selectedApartment.statusOfApartment = this.backup[14];
 				  this.selectedApartment.name = this.backup[15];
-				
+				  this.currentLocation = this.backup[5]; +',' + this.backup[7];
 				  this.mode = "NOT_EDIT_YET";
 			},
 			
@@ -246,21 +412,17 @@ Vue.component("editApartment", {
 				}
 				if(!this.selectedApartment.numberOfRooms){
 					this.errorNumberOfRooms = "can't be empty"
-				}else if(!Number.isInteger(this.selectedApartment.numberOfRooms)){
-					this.errorNumberOfRooms = "must be an integer";
+				}else if(this.selectedApartment.numberOfRooms < 1){
+					this.errorNumberOfRooms = "must be > 0";
 				}
 				
 				if(!this.selectedApartment.numberOfGuests){
 					this.errorNumberOfGuests = "can't be empty"
-				}else if(!Number.isInteger(this.selectedApartment.numberOfGuests)){
-					this.errorNumberOfGuests = "must be an integer";
+				}else if(this.selectedApartment.numberOfGuests < 1){
+					this.errorNumberOfGuests = "must be > 0";
 				}
 
-				
-				if(!street || this.$el.querySelector("#address").value == ''){
-					this.errorLocation= "can't be empty"
-				}
-				if(!this.streetNumber){
+				if(!this.selectedApartment.location.address.streetNumber){
 					this.errorStreetNumber= "can't be empty"
 				}
 				if(!this.startDate){
@@ -273,9 +435,10 @@ Vue.component("editApartment", {
 				if(!this.selectedApartment.pricePerNight){
 					this.errorPricePerNight = "can't be empty"
 						
-				}else if(!Number.isInteger(this.selectedApartment.pricePerNight)){
-					this.errorPricePerNight = "must be an integer";
+				}else if(this.selectedApartment.pricePerNight < 1){
+					this.errorPricePerNight = "must be > 0";
 				}
+				
 				if(!this.selectedApartment.checkInTime){
 					this.errorCheckInTime = "can't be empty"
 				}
@@ -284,17 +447,22 @@ Vue.component("editApartment", {
 				}
 			
 			 if( this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorStartDate == "" && this.errorEndDate == "" && this.errorNameOfApartment == "" && this.errorLocation  == "" && this.errorStreetNumber == ""   && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
-					//za generisanje lokacije
-					this.locationOfApartment.longitude = longitude;
-					this.locationOfApartment.latitude = latitude;
-					this.address.postalCode = postalCode;
-					this.address.city = city;
-					this.address.street = street;
 					
-					this.address.streetNumber = this.streetNumber;
-					this.locationOfApartment.address = this.address;
-					this.apartment.location = this.locationOfApartment;
+					if(this.$el.querySelector("#address").value != ''){
+						this.locationOfApartment.longitude = longitude;
+						this.locationOfApartment.latitude = latitude;
+						this.address.postalCode = postalCode;
+						this.address.city = city;
+						this.address.street = street;
+						
+						this.address.streetNumber = this.selectedApartment.location.address.streetNumber;
+						this.locationOfApartment.address = this.address;
+						this.selectedApartment.location = this.locationOfApartment;
+						
+					}
 					this.generateDateOfIssue();
+				 //za generisanje lokacije
+					
 			 }
 			
 			},
@@ -329,45 +497,9 @@ Vue.component("editApartment", {
 				
 				this.confirm();
 				
-			},
-			uploadImage: function(e) {
-					 let img = e.target.files[0];
-					 //putanju slike cuvamo u aparmtnanu
-					 this.image = "images/" + img.name;
-					 //naziv slike za saveImage fju
-					 ImgName = img.name;
-					 //pretvaranje u base64 format
-					 var reader = new FileReader();
-					 reader.readAsDataURL(img); 
-					 reader.onloadend = function() {
-			 	     var base64data = reader.result;  
-				     base64Image = base64data;
-					 }
-					
-				
-				},
-			submit: function () {
-					
-					  var stringApartment = JSON.stringify(this.selectedApartment);
-					  var objApartment = JSON.parse(stringApartment);
-					  objApartment['images'].push(this.image);
-
-					  axios
-				         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
-				       		  {
-			 		        	headers: {
-			 		        		'Content-Type': 'application/json',
-					        			}
-			        	  });
-					  axios
-				         .post('rest/apartments/saveImage/'+ ImgName ,JSON.stringify(base64Image),
-					       		  {
-			 		        	headers: {
-			 		        		'Content-Type': 'application/json'
-					        			}
-			        	  });
-					  
-					}
+			}
+		
+			
 					
 	 
 

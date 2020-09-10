@@ -165,12 +165,12 @@ Vue.component("apartment", {
 						<div class="column25-in-form-search-apartment" style="padding-top:0px;margin-left:25%;">
 							<div class="container-btn-form m-t-30">
 								<label for="image_uploads" class="form-btn" type="button" style="background:gray;">ADD IMAGES</label>
-								<input type="file" style="opacity: 0;" @change="addImage" name="image_uploads" id="image_uploads"  accept="image/*" multiple>										<span class="focus-form-input"></span>
+								<input type="file" style="opacity: 0;" @change="addImage" name="image_uploads" id="image_uploads"  accept="image/*" multiple><span class="focus-form-input"></span>
 							</div>	
 						</div>
 						<div class="column25-in-form-search-apartment" style="padding-top:0px;">
 							<div class="container-btn-form m-t-30">
-								<button type="button" class="form-btn" v-bind:disabled="imagesForApartment.length>0" style="background:gray;" v-on:click="deleteImage">DELETE LAST IMAGE</button>
+								<button type="button" class="form-btn" v-bind:disabled="imagesForApartment.length<1" style="background:gray;" v-on:click="deleteImage">DELETE LAST IMAGE</button>
 							</div>	
 						</div>
 					</div>
