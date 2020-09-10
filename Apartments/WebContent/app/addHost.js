@@ -65,7 +65,7 @@ Vue.component("addHost",{
 						</div>
 						<div class="column50-in-form-search-apartment">
 							<div class="container-form-input">
-									<input class="form-input" type="text" placeholder="Password" v-model="user.password">
+									<input class="form-input" type="password" placeholder="Password" v-model="user.password">
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorPassword}}</p>
 							</div>
@@ -75,7 +75,7 @@ Vue.component("addHost",{
 					<div class="row">
 						<div class="column50-in-form-search-apartment">
 							<div class="container-form-input">
-									<input class="form-input" type="text" placeholder="Confirm password" v-model="confirmPassword">
+									<input class="form-input" type="password" placeholder="Confirm password" v-model="confirmPassword">
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorConfirmPassword}}</p>
 							</div>
@@ -125,7 +125,7 @@ Vue.component("addHost",{
 			if(!user.lastName){
 			    this.errorLastName = "Last name can't be empty";
 			}
-			if(!user.gender){
+			if(this.gender=='Choose gender'){
 		        this.errorGender = "Gender can't be empty";
 
 			}
@@ -177,21 +177,30 @@ Vue.component("addHost",{
 		},
 		
 		addUser : function(){
+
 			axios
 	          .post('rest/hosts/addHost', JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'HOST'}), {
 			        headers: {
 		            'Content-Type': 'application/json',
 		        }
-		    }).then()
-          
-		    axios
-	          .post('rest/users/addUser',JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'HOST'}), {
-			        headers: {
-		            'Content-Type': 'application/json',
-		        }
+		    }).then(response => {
+		    	alert('Success add host!'),
+		    	 axios
+		          .post('rest/users/addUser',JSON.stringify({"username":''+ this.user.username, "password":''+ this.user.password,"firstName":''+ this.user.firstName,"lastName":''+ this.user.lastName,"gender": this.user.gender,"typeOfUser":'HOST'}), {
+				        headers: {
+			            'Content-Type': 'application/json',
+			        }
+			    }).then(response => {
+			    		this.showAddHostPart = false,
+						this.user = {},
+						this.gender = 'Choose gender'
+			    })
 		    })
           
-		    this.showAddHostPart = false;
+		   
+          
+		    
+			this.confirmPassword = '';
 		}
 			
 	}

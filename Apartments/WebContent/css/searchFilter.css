@@ -9,7 +9,6 @@
 .container-filters-apartment {
   background-color: #fdef4a;
   position: fixed;
-  z-index: 999;
   width:20%;
   left: 90px;
   overflow: auto;

@@ -38,10 +38,10 @@ Vue.component("apartmentsForHost", {
 
 				<div class="row" style="margin-top: 225px;">
 					<div class="column30-in-apartments-view">
-						<div class="container-filters-apartment">
-							<button class="btn-filter" v-on:click="showFilters()">Click to show filters</button>
-							<div v-show="showFiltersForm" class="container-filters-content">
-								
+						<div class="column30-in-apartments-view">
+						<div class="container-filters-apartment" style="height:47%;">
+							<label class="txt4" style="margin-top:5%;font-size:22px;text-align:center;letter-spacing: 3px;">FILTERS</label><br><br>
+							<div class="container-filters-content">
 								<label class="txt4">TYPE OF APARTMENT</label><br>
 								<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
 								<label class="txt5">room</label><br> 
@@ -55,6 +55,7 @@ Vue.component("apartmentsForHost", {
 									</div>
 							</div>
 					 	</div>
+					</div>
 					 	<div class="container-filters-apartment" style="margin-top: 390px;height:10%;background:none;">
 							<button v-on:click="showInactiveForHost()" class="profile-form-btn">Show INACTIVE apartments</button>
 						</div>
@@ -137,7 +138,7 @@ Vue.component("apartmentsForHost", {
 									 			<div class="row">
 													<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 													<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
-										 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+										 			<button class="btn-filter" style="width:20%; margin-top:1%;" type="button" v-on:click="viewApartment(a)">View</button>
 									 			</div>
 										 	</div>
 										 </div>
@@ -291,7 +292,13 @@ Vue.component("apartmentsForHost", {
 		,
 		
 	mounted(){
-			this.changeBGImage();    
+			this.changeBGImage();
+			
+			axios
+	          .get('rest/amenities/all')
+	          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
+
+			
 	        this.$root.$on('apartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        
@@ -438,7 +445,7 @@ Vue.component("apartmentsForHost", {
 		     
 		   this.activeApartmentsForHost = [];
 		    for(apartment of allActiveApartments){
-		    	if(apartment.host.id == this.loggedUser.id ){
+		    	if(apartment.host.username == this.loggedUser.username ){
 		    		this.activeApartmentsForHost.push(apartment);
 		    	}
 		    }

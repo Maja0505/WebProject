@@ -35,7 +35,8 @@ Vue.component("searchApartments", {
 									Date to :
 								</div>
 								<div class="column50-in-form-search-apartment">
-									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchEndDate"></vuejs-datepicker>
+									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchEndDate">
+									</vuejs-datepicker>
 								</div>
 					  		</div>
 					  	</div>	

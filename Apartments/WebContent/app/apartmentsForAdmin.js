@@ -34,16 +34,9 @@ Vue.component("apartmentsForAdmin", {
 				
 				<div class="row" style="margin-top: 225px;">
 					<div class="column30-in-apartments-view">
-						<div class="container-filters-apartment">
-							<button class="btn-filter" v-on:click="showFilters()">Click to show filters</button>
-							<div v-show="showFiltersForm" class="container-filters-content">
-								 
-								<label class="txt4">STATUS OF APARTMENT</label><br>
-								<input type="checkbox" id="create" name="create" value="ACTIVE" v-model="isActive">
-								<label class="txt5">active</label><br>
-								<input type="checkbox" id="rejected" name="rejected" value="INACTIVE" v-model="isInactive" >
-								<label class="txt5">inactive</label><br>
-								
+						<div class="container-filters-apartment" style="height:50%;">
+							<label class="txt4" style="margin-top:5%;font-size:22px;text-align:center;letter-spacing: 3px;">FILTERS</label><br><br>
+							<div class="container-filters-content">
 								<label class="txt4">TYPE OF APARTMENT</label><br>
 								<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
 								<label class="txt5">room</label><br> 
@@ -56,7 +49,7 @@ Vue.component("apartmentsForAdmin", {
 										<label class="txt5">{{a.name}}</label><br>
 									</div>
 							</div>
-					 	</div>	
+					 	</div>
 					</div>
 					<div class="column70-in-apartments-view">
 						<div class="row">
@@ -192,15 +185,20 @@ Vue.component("apartmentsForAdmin", {
 		},
 		
 		showApartments : function(){
-			this.searchText = '';
-			this.commentsForSelectedApartment = [];
-				axios
-			        .get('rest/apartments/all')
-			        .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
-				   		 axios
+
+			 this.$nextTick(function(){
+				 axios    
+		          .get('rest/apartments/all')
+		          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,
+		        		  axios
 			     	        .get('rest/comments/all')
-			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null))))
-		},
+			     	        .then(response => (response.data ? this.allComments = response.data : this.allComments = null
+			     	        	,
+			     	        	axios
+						          .get('rest/amenities/all')
+						          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))))))
+				
+			 })		},
 		
 		updateApartment : function(newApartment){
 			axios
