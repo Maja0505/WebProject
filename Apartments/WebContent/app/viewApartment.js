@@ -16,6 +16,7 @@ Vue.component('viewApartment',{
 			apartmentImagesLength:0,
 			maxId:0,
      		sendRequest:false,
+     		allAmenities:null,
 
 		}
 	},
@@ -103,7 +104,7 @@ Vue.component('viewApartment',{
 				</div>
 					 
 				
-				<div v-if="currentUser && currentUser.typeOfUser=='ADMIN'">
+				<div v-if="currentUser && (currentUser.typeOfUser=='ADMIN' || currentUser.typeOfUser=='HOST')">
 					<div class="container-apartment-view"  style="background:none;">
 						<div class="row" style="margin-top:2%;">
 							<label class="txt3">Apartment {{selectedApartment.name}}</label><br>
@@ -152,12 +153,32 @@ Vue.component('viewApartment',{
 							<div class="column50-in-form-search-apartment">
 								<div class="amenitie-apartment">
 									<div class="row">
-										<label class="txt7">Amnenities</label>
+										<label class="txt7">Amnenities in apartment</label>
 									</div>
-									<div class="row" v-for="a in selectedApartment.amenities" v-if="a.flag==0">
+									<div class="row" v-for="a in selectedApartment.amenities" v-if="a.flag==0 && currentUser.typeOfUser=='ADMIN'">
 										<label class="txt8" style="margin-left:5%;">{{a.name}}</label><br>
 									</div>
-									<div class="row" v-if="selectedApartment.amenities.length == 0">
+									
+									<div class="row" v-for="a in allAmenities" v-if="(a.flag==0 && currentUser.typeOfUser=='HOST')" style="height:20%">
+										
+										<div class="column">
+											<input type="checkbox" :checked="isInApartmentList(a)" @click="onChange(a,$event)">
+										</div>
+										<div class="column">
+											<label class="txt8">{{a.name}}</label>
+										</div>
+										
+										
+									</div>
+									
+									
+									
+									
+									<div class="row" v-if="!allAmenities && currentUser.typeOfUser=='HOST'">
+										<label class="txt8" style="margin-left:5%;">Base doesn't have  amenities</label><br>
+									</div>
+									
+									<div class="row" v-if="selectedApartment.amenities.length == 0  && currentUser.typeOfUser=='ADMIN'">
 										<label class="txt8" style="margin-left:5%;">Apartment doesn't have any amenitie</label><br>
 									</div>
 								</div>
@@ -206,10 +227,6 @@ Vue.component('viewApartment',{
 							<button type="button" class="form-btn" v-on:click="getAllApartments_for_Admin()">DELETE APARTMENT</button>
 						</div>
 					</div>
-				
-					
-					
-					<commentForAdmin></commentForAdmin> 
 				</div>
 				
 			</div>
@@ -222,7 +239,7 @@ Vue.component('viewApartment',{
 		this.$root.$on('showReservationFormInView',(text)=>{this.showReservationForm = false})
 		axios
         	.get('rest/users/currentUser')
-         		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
+         		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.getAllAmenities()))
 		axios
           	.get('rest/apartments/currentSelectedApartment')
         		.then(response => (this.selectedApartment = response.data,this.showSlides(this.slideIndex),
@@ -235,7 +252,47 @@ Vue.component('viewApartment',{
 	},
 	
 	methods : {
-		getCommentForApartment(){
+		onChange:function(amenitie,event){
+			  if (event.target.checked){
+				  var stringApartment = JSON.stringify(this.selectedApartment);
+					 var objApartment = JSON.parse(stringApartment);
+					 objApartment['amenities'].push(amenitie);
+					
+			  }else{
+				  var stringApartment = JSON.stringify(this.selectedApartment);
+					 var objApartment = JSON.parse(stringApartment);
+					 let i = this.selectedApartment.amenities.map(item => item.id).indexOf(amenitie.id)
+					 objApartment['amenities'].splice(i, 1);
+
+			  }
+			  
+			
+			 axios
+		         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
+		       		  {
+	 		        	headers: {
+	 		        		'Content-Type': 'application/json;charset=UTF-8',
+			        			}
+	        	  }).then(response=>{ this.selectedApartment = objApartment})
+			
+		},
+		isInApartmentList:function(amenitie){
+			let amenitieExist = this.selectedApartment.amenities.filter(function(a) {
+					return a.name == amenitie.name});
+			if(amenitieExist.length != 0){
+				return true;
+			}
+			return false;
+		},
+		getAllAmenities: function(){
+			if(this.currentUser.typeOfUser === 'HOST'){
+				axios
+		          .get('rest/amenities/all')
+		          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
+			}
+		
+		},
+		getCommentForApartment: function(){
 			for(comment of this.selectedApartment.comments){
 				for(c of this.allComments ){
 					if(comment.id === c.id){
@@ -244,13 +301,13 @@ Vue.component('viewApartment',{
 				}
 			}
 		},
-		getAllApartments_for_Admin(){
+		getAllApartments_for_Admin: function(){
 			axios
 	    	  .get('rest/apartments/all')
 	          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.deleteApartment(),this.$router.push('/admin/allApartments')))
 
 		},
-		getAllApartments_for_Image(){
+		getAllApartments_for_Image: function(){
 			axios
 	    	  .get('rest/apartments/all')
 	          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.convertImagesFromBlobToBase64(),this.uploadImages()))

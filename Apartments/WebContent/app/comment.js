@@ -96,9 +96,7 @@ Vue.component("comment", {
 						this.selectedApartment = a;
 					}
 				}
-				console.log(this.user)
-				console.log(this.allApartments)
-				console.log(this.selectedApartment)
+			
 			},
 			getApartmentsOfMyReservations : function(){
 				
