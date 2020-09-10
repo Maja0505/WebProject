@@ -60,7 +60,7 @@ Vue.component("apartmentsForHost", {
 					</div>
 					<div class="column70-in-apartments-view">
 						<h1>Active apartments</h1>
-						<div class="row" v-for="a in searchActive">
+						<div class="row" v-for="a in searchActive" v-if="a.flag==0">
 							<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
 								<div class="row">
 								 	<div class="container-image-in-search-apartment">
@@ -69,7 +69,7 @@ Vue.component("apartmentsForHost", {
 								 	</div>
 								 	
 								 	<div class="container-infoOfApartment-in-search-apartment">
-							 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+							 			<h2 style="margin-top:3%;">{{a.name}}</h2>
 							 			<div class="row">
 											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
@@ -108,7 +108,7 @@ Vue.component("apartmentsForHost", {
 							
 							</div>
 							<div class="column">
-							    <button v-on:click="showActiveForHost()" style="width:50%;float:left;margin-left:28%;" class="addBtn">Show active apartments</button>
+							    <button type="button" v-on:click="showActiveForHost()" style="width:50%;float:left;margin-left:28%;" class="addBtn">Show active apartments</button>
 
 							</div>
 
@@ -281,7 +281,7 @@ Vue.component("apartmentsForHost", {
 		,
 		
 	mounted(){
-		        
+			this.changeBGImage();    
 	        this.$root.$on('apartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        
@@ -318,6 +318,10 @@ Vue.component("apartmentsForHost", {
 		        
 			}, 
 	methods:{
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+		},
 		
 		deleteApartment : function(){
 			this.$root.$emit('showEditForm',{},false);

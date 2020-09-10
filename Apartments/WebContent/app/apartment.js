@@ -54,7 +54,7 @@ Vue.component("apartment", {
 	},
 		template: ` 
 		<div>
-			<div class="content-profile" style="background-image: url('images/apartment3.png');">
+			<div class="content-profile">
 				<form class="container-profile" style="width:70%;">
 					
 					<div class="row m-t-50">
@@ -198,12 +198,17 @@ Vue.component("apartment", {
 
 		`	
 		, mounted () {
+			this.changeBGImage();
 			 this.allPlaces();
 	         axios
 		      .get('rest/users/currentUser')
 		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
 	    }
 		,methods: {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+			},
 			
 			addImage : function(e){
 				

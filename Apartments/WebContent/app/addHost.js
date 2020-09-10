@@ -20,7 +20,7 @@ Vue.component("addHost",{
 	
 	template : `
 			<div>
-				<div class="content-profile" style="background-image: url('images/apartment3.png');">
+				<div class="content-profile">
 					<form class="container-profile" style="height:70%;  position: fixed;">
 						
 					<div class="row m-t-50">
@@ -99,8 +99,15 @@ Vue.component("addHost",{
 				</div>
 			</div>
 	`,
-
+	mounted(){
+		this.changeBGImage();	
+	},
+	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
 		
 		checkForm : function (user, confirmPassword) {
 			user.gender = this.gender;

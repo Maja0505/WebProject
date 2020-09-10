@@ -48,6 +48,7 @@ Vue.component("homePage", {
 	
 </div>
 		`	,mounted () {
+				this.changeBGImage();
 				axios
 		          .get('rest/users/currentUser')
 		          .then(response => {response.data ? this.user = response.data : this.user = null ;		
@@ -56,6 +57,10 @@ Vue.component("homePage", {
 			},
 			methods: {
 
+				changeBGImage : function(){
+					document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+				},
+				
 				showProfile: function(){
 					if(this.showProfileInfo){
 						this.showProfileInfo = false;

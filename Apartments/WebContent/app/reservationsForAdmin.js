@@ -18,7 +18,7 @@ Vue.component("reservationsForAdmin",{
 	
 	template : `
 				<div>
-					<div class="content-profile" style="background-image: url('images/apartment3.png');">
+					<div class="content-profile">
 						<form class="container-amenities">
 						
 						
@@ -76,12 +76,16 @@ Vue.component("reservationsForAdmin",{
 				</div>
 			`,
 	mounted(){
-        
+		this.changeBGImage();
         this.$root.$on('reservationsForAdmin',(text) => {this.showAllReservations()});
         this.showAllReservations()    //PROVERITI
 	},
 	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
 		
 		showAllReservations : function(){
 			this.searchText = '';

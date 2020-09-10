@@ -85,7 +85,7 @@ Vue.component("searchApartments", {
 			</div>
 		`,	
 		mounted () {
-		
+		  this.changeBGImage();
 	      this.allPlaces();
           axios
 	         .get('rest/users/currentUser')
@@ -103,6 +103,11 @@ Vue.component("searchApartments", {
 		},
 	          	
 		methods:{
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+			},
+			
 			allPlaces : function() {
 				var placesAutocomplete = places({
 				    appId: 'plQ4P1ZY8JUZ',

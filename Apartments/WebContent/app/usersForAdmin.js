@@ -40,12 +40,18 @@ Vue.component("usersForAdmin",{
 	`,
 	
 	mounted(){
+		 this.changeBGImage();
 		 this.$root.$on('allUsersForAdmin',(text) => {this.getAllUsers()});
 	        this.getAllUsers()    //PROVERITI
 		
 	},
 	
 	methods : {
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+		},
+		
 		getAllUsers:function(){
 			 axios
 	         .get('rest/users/all')

@@ -67,7 +67,7 @@ Vue.component("apartmentsForAdmin", {
 								 	</div>
 								 	
 								 	<div class="container-infoOfApartment-in-search-apartment">
-							 			<h2 style="margin-top:3%;">Naziv apartmana koji mora da se doda</h2>
+							 			<h2 style="margin-top:3%;">{{a.name}}</h2>
 							 			<div class="row">
 											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
@@ -99,6 +99,7 @@ Vue.component("apartmentsForAdmin", {
 	`,
 	
 	mounted(){
+		this.changeBGImage();
 		  this.$root.$on('searchApartmentForAdmin',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        	
@@ -137,10 +138,14 @@ Vue.component("apartmentsForAdmin", {
 	
 	methods : {
 		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+		},
+		
 		viewApartment :  function(apartment){
 			axios
 	    	  .post('rest/apartments/changeSelectedApartment',apartment)
-	          	.then(this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id))
+	          	.then((response)=>{this.$root.$emit('viewApartment',apartment),this.$router.push('/viewApartment/' + apartment.id)})
 
 		},
 		

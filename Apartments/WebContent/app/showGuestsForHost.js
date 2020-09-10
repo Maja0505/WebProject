@@ -42,10 +42,16 @@ Vue.component("showGuestsForHost", {
 		</div>
 		`	
 		, mounted () {
+			this.changeBGImage();
 	        this.$root.$on('guestsForHost',() => {this. myGuests = [],this.getAllUser()})     
 	        this.getAllUser()
 	    }
 		,methods: {
+			
+			changeBGImage : function(){
+				document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+			},
+			
 			getMyGuests: function(){
 				//for(let apartment in loggedUser.apartmentsForRent){
 	

@@ -22,7 +22,7 @@ Vue.component("reservationsForGuest", {
 	
 	template: `
 <div>
-	<div class="content-profile" style="background-image: url('images/apartment3.png');">
+	<div class="content-profile">
 		 <form class="container-amenities" method="put">
 					
 			 	<h1 style="margin-left:15%;">RESERVATIONS</h1>
@@ -94,12 +94,17 @@ Vue.component("reservationsForGuest", {
 	`,
 	
 	mounted(){
-	        
+		this.changeBGImage();    
         this.$root.$on('reservationsForGuest',(text) => {this.showReservations()});
         this.showReservations()    //PROVERITI
 	},
 	
 	methods:{
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+		},
+		
 		openCommentForm: function(reservation){
 			
 			if(this.showCommentForm){
