@@ -59,26 +59,17 @@ Vue.component('viewApartment',{
 										<label class="txt8">City:  {{selectedApartment.location.address.city}}</label><br>
 										<label class="txt8">Street and number:  {{selectedApartment.location.address.street}} {{selectedApartment.location.address.streetNumber}}</label><br>
 										<label class="txt8">Host: {{selectedApartment.host.username}}</label><br>
+										<label class="txt8">Number of rooms:{{selectedApartment.numberOfRooms}}</label><br>
+										<label class="txt8">Number of guests:{{selectedApartment.numberOfGuests}}</label><br>
 										<label class="txt8">Price per night: {{selectedApartment.pricePerNight}} $</label><br>
 										<label class="txt8">Check in time: {{selectedApartment.checkInTime}}h   Check out time: {{selectedApartment.checkOutTime}}h</label>
+										
 									</div>
 							</div>
 						</div>
 						<div class="row" style="height:15%;">
 							<div class="column50-in-form-search-apartment" style="padding=0px;">
-								<div class="comments-apartment">
-									<div class="row">
-										<label class="txt7">Comments of aparmtnet</label>
-									</div>
-									<div class="row" v-for="c in commentForApartment" v-if="c.enable && c.guest">
-										<label class="txt8" style="margin-left:5%;">Guest : {{c.guest.username}}</label><br>
-										<label class="txt8" style="margin-left:5%;">Rate : {{c.rate}}</label><br>
-										<label class="txt8" style="margin-left:5%;">Comment : {{c.text}}</label><br><br>
-									</div>
-									<div class="row" v-if="selectedApartment.comments.length == 0">
-										<label class="txt8" style="margin-left:5%;">Apartment doesn't have any comment</label><br>
-									</div>
-								</div>
+								<commentApartmentForGuestOrUnregistredUser></commentApartmentForGuestOrUnregistredUser>
 							</div>
 							<div class="column50-in-form-search-apartment">
 								<div class="amenitie-apartment">
@@ -134,21 +125,8 @@ Vue.component('viewApartment',{
 						</div>
 						<div class="row" style="height:15%;">
 							<div class="column50-in-form-search-apartment" style="padding=0px;">
-								<div class="comments-apartment">
-									<div class="row">
-										<label class="txt7">Comments of aparmtnet</label>
-									</div>
-									<div class="row" v-for="c in commentForApartment" v-if="c.enable && c.guest">
-										
-										<label class="txt8" style="margin-left:5%;">Guest : {{c.guest.username}}</label><br>
-										<label class="txt8" style="margin-left:5%;">Rate : {{c.rate}}</label><br>
-										<label class="txt8" style="margin-left:5%;">Comment : {{c.text}}</label>
-										<hr>
-									</div>
-									<div class="row" v-if="selectedApartment.comments.length == 0">
-										<label class="txt8" style="margin-left:5%;">Apartment doesn't have any comment</label><br>
-									</div>
-								</div>
+								<commentForAdmin></commentForAdmin>
+								<commentApartmentForHost></commentApartmentForHost>
 							</div>
 							<div class="column50-in-form-search-apartment">
 								<div class="amenitie-apartment">
@@ -170,15 +148,12 @@ Vue.component('viewApartment',{
 										
 										
 									</div>
-									
-									
-									
-									
+						
 									<div class="row" v-if="!allAmenities && currentUser.typeOfUser=='HOST'">
 										<label class="txt8" style="margin-left:5%;">Base doesn't have  amenities</label><br>
 									</div>
 									
-									<div class="row" v-if="selectedApartment.amenities.length == 0  && currentUser.typeOfUser=='ADMIN'">
+									<div class="row" v-if="selectedApartment.amenities.length == 0  && (currentUser.typeOfUser=='ADMIN' || currentUser.typeOfUser=='HOST')">
 										<label class="txt8" style="margin-left:5%;">Apartment doesn't have any amenitie</label><br>
 									</div>
 								</div>
@@ -237,6 +212,7 @@ Vue.component('viewApartment',{
 	mounted(){
 		this.$root.$on('viewApartment',(text) => {this.selectedApartment = text});
 		this.$root.$on('showReservationFormInView',(text)=>{this.showReservationForm = false})
+		
 		axios
         	.get('rest/users/currentUser')
          		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.getAllAmenities()))
@@ -246,12 +222,29 @@ Vue.component('viewApartment',{
         			this.apartmentImagesLength = response.data.images.length,
         			 axios
         			  .get('rest/comments/all')
-        		         .then(response => (response.data ? this.allComments = response.data : this.allComments = null,this.getCommentForApartment()))))
+        		         .then(response => (response.data ? this.allComments = response.data : this.allComments = null,this.getCommentForApartment(),this.showCommentPart()))))
        
        this.changeBGImage();
 	},
 	
 	methods : {
+		showCommentPart:function(){
+			if(this.currentUser){
+				if(this.currentUser.typeOfUser=='ADMIN'){
+					this.$root.$emit('showCommentForAdmin',this.commentForApartment);
+				}else if(this.currentUser.typeOfUser=='HOST'){
+					this.$root.$emit('commentApartmentForHost',this.commentForApartment);
+				}else{
+					this.$root.$emit('commentApartmentForGuestAndUnregistred',this.commentForApartment);
+
+				}
+			}
+			else{
+				this.$root.$emit('commentApartmentForGuestAndUnregistred',this.commentForApartment);
+
+			}
+			
+		},
 		onChange:function(amenitie,event){
 			  if (event.target.checked){
 				  var stringApartment = JSON.stringify(this.selectedApartment);
@@ -285,11 +278,14 @@ Vue.component('viewApartment',{
 			return false;
 		},
 		getAllAmenities: function(){
+		if(this.currentUser){
 			if(this.currentUser.typeOfUser === 'HOST'){
 				axios
 		          .get('rest/amenities/all')
 		          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
 			}
+		}
+		
 		
 		},
 		getCommentForApartment: function(){

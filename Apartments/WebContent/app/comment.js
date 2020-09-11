@@ -178,7 +178,7 @@ Vue.component("comment", {
 		        	  headers: {
 				            'Content-Type': 'application/json',
 				        		}
-		        		  })		  
+		        		  }).then(response => {this.showCommentForm = false,this.comment = {}})		  
 		        		  
 		        //this.$router.push('/')
 	        	

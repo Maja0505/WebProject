@@ -27,7 +27,7 @@ Vue.component("login", {
 								<p class="form-input-error">{{wrong_password}}</p>
 							</div>
 							<div class="container-btn-form">
-								<button class="form-btn" v-on:click.prevent="login(username,password)">
+								<button class="form-btn" v-on:click.prevent="login(username,password)" type="button">
 									Sign in
 								</button>
 							</div>

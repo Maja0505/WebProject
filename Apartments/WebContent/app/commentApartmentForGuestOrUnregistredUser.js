@@ -5,36 +5,36 @@ Vue.component('commentApartmentForGuestOrUnregistredUser',{
 	data : function(){
 		return {
 			commentsShow : false,
-			commentsForSelectedApartment : null,
+			commentsForSelectedApartment : [],
 			selectedApartment : null,
-			allComments : null
+			allComments : null,
+			enableComments:[]
 		}
 	},
 	
 	template : `
+	<div>
 		<div v-show="commentsShow">
-			<div v-if="commentsForSelectedApartment">
-				<table v-for="comment in commentsForSelectedApartment">
-					<tr>
-						<td>Guest : </td>
-						<td>{{comment.guest.username}}</td>
-					</tr>
-					<tr>
-						<td>Comment : </td>
-						<td>{{comment.text}}</td>
-					</tr>
-					<tr>
-						<td>Rate : </td>
-						<td>{{comment.rate}}</td>
-					</tr>
-				</table>
-			</div>
-			<div v-if="commentsForSelectedApartment">
-				<div v-if="!commentsForSelectedApartment.length">
-					Selected apartment don't have any comment
-				</div>
+			<div class="comments-apartment">
+					<div class="row">
+						<label class="txt7">Comments of aparmtnet</label>
+					</div>
+					
+					<div class="row" v-for="c in enableComments" v-if="c.enable && c.guest">
+						<label class="txt8" style="margin-left:5%;">Guest : {{c.guest.username}}</label><br>
+						<label class="txt8" style="margin-left:5%;">Rate : {{c.rate}}</label><br>
+						<label class="txt8" style="margin-left:5%;">Comment : {{c.text}}</label><br><br>
+					</div>
+					
+					<div class="row" v-if="(enableComments.length == 0)" >
+						<label class="txt8" style="margin-left:5%;">Apartment doesn't have any comment</label><br>
+					</div>
 			</div>
 		</div>
+	</div>
+		
+		
+		
 	
 	`,
 	
@@ -42,6 +42,8 @@ Vue.component('commentApartmentForGuestOrUnregistredUser',{
 	     this.changeBGImage();	
 		this.$root.$on('showCommentsForGuestOrUnregistrateUser',(text1,text2,text3)=>{this.selectedApartment = text1,this.commentsShow = text2
 			this.allComments = text3,this.showCommentForSelectedApartment()})
+		this.$root.$on('commentApartmentForGuestAndUnregistred',(text) =>{this.commentsShow = true,this.commentsForSelectedApartment = text,this.getEnableComments()});
+
 	},
 	
 	methods : {
@@ -58,7 +60,14 @@ Vue.component('commentApartmentForGuestOrUnregistredUser',{
 				}
 			}
 	},
+	getEnableComments:function(){
+		for(let comment of this.commentsForSelectedApartment){
+			if(comment.enable == true){
+				this.enableComments.push(comment);
+			}
+		}
 	}
+}
 	
 	
 });

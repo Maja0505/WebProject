@@ -74,7 +74,7 @@ Vue.component("apartmentsForAdmin", {
 							 			<div class="row">
 											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
-								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)" type="button">View</button>
 							 			</div>
 								 	</div>
 								 </div>

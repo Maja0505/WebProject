@@ -77,7 +77,7 @@ Vue.component("searchApartments", {
 			  				</div>
 			  				<div class="row">
 			  					<div class="column50-in-form-search-apartment container-btn-form" style="text-align: center;margin-left: 100px;"> 
-									<button class="form-btn" style="background:blue;" v-on:click="searchApartment()">Search</button></td>
+									<button class="form-btn" style="background:blue;" v-on:click="searchApartment()" type="button">Search</button></td>
 								</div>
 			  				</div>
 					  	</div>	

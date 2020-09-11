@@ -14,7 +14,7 @@ Vue.component("homePage", {
 		  <img src="https://www.udr.com/globalassets/communities/the-kennedy-building/images/hr_mainheader_overview_1900x874_thekennedybuilding_2012_bdg1_el.jpg" alt="5 Terre" style="width:100%">
 		  
 		  <div class="container2">
-			<button class="btn" v-on:click="showApartments">View apartments</button>
+			<button class="btn" v-on:click="showApartments" type="button">View apartments</button>
 		  </div>
 		</div>
 		
