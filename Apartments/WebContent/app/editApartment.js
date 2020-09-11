@@ -412,13 +412,13 @@ Vue.component("editApartment", {
 				}
 				if(!this.selectedApartment.numberOfRooms){
 					this.errorNumberOfRooms = "can't be empty"
-				}else if(this.selectedApartment.numberOfRooms < 1){
+				}else if(this.selectedApartment.numberOfRooms.startsWith("0")){
 					this.errorNumberOfRooms = "must be > 0";
 				}
 				
 				if(!this.selectedApartment.numberOfGuests){
 					this.errorNumberOfGuests = "can't be empty"
-				}else if(this.selectedApartment.numberOfGuests < 1){
+				}else if(this.selectedApartment.numberOfGuests.startsWith("0")){
 					this.errorNumberOfGuests = "must be > 0";
 				}
 
@@ -435,7 +435,7 @@ Vue.component("editApartment", {
 				if(!this.selectedApartment.pricePerNight){
 					this.errorPricePerNight = "can't be empty"
 						
-				}else if(this.selectedApartment.pricePerNight < 1){
+				}else if(this.selectedApartment.pricePerNight.startsWith("0")){
 					this.errorPricePerNight = "must be > 0";
 				}
 				

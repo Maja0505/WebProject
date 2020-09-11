@@ -51,6 +51,9 @@ Vue.component("apartment", {
 		  imagesForApartment:[],
 		  imagesForApartmentForConvert:[],
 		  sendRequest:false,
+		  disableDatesStartDate:{},
+		  disableDatesEndDate:{},
+		
 	    }
 	},
 		template: ` 
@@ -71,7 +74,7 @@ Vue.component("apartment", {
 						</div>
 						<div class="column25-in-form-search-apartment">
 							<div class="container-form-input">
-									<input class="form-input" type="text" placeholder="Price per night" v-model="apartment.pricePerNight">
+									<input class="form-input" type="number" min="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" placeholder="Price per night" v-model="apartment.pricePerNight">
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorPricePerNight}}</p>
 							</div>
@@ -96,14 +99,14 @@ Vue.component("apartment", {
 						</div>
 						<div class="column25-in-form-search-apartment">
 							<div class="container-form-input">
-									<input class="form-input" type="text" placeholder="Number of rooms" v-model="apartment.numberOfRooms">
+									<input class="form-input" type="number" min="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" placeholder="Number of rooms" v-model="apartment.numberOfRooms">
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorNumberOfRooms}}</p>
 							</div>
 						</div>
 						<div class="column25-in-form-search-apartment">
 							<div class="container-form-input">
-									<input class="form-input" type="text" placeholder="Number of guest" v-model="apartment.numberOfGuests">
+									<input class="form-input" type="number" min="1" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" placeholder="Number of guest" v-model="apartment.numberOfGuests">
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorNumberOfGuests}}</p>
 							</div>
@@ -129,15 +132,13 @@ Vue.component("apartment", {
 					
 					<div class="row">
 						<div class="column33-in-form-search-apartment">
-							<div class="container-form-input">
-									<vuejs-datepicker input-class="form-input" placeholder="Date from" format="dd.MM.yyyy" v-model="startDate"></vuejs-datepicker>
+									<vuejs-datepicker input-class="form-input" @input="genereteDisableDateEndDate" placeholder="Date from" format="dd.MM.yyyy" v-model="startDate" :disabled-dates="disableDatesStartDate"></vuejs-datepicker>
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorStartDate}}</p>
-							</div>	
 						</div>	
 						<div class="column33-in-form-search-apartment">
 							<div class="container-form-input">
-									<vuejs-datepicker input-class="form-input" placeholder="Date to" format="dd.MM.yyyy" v-model="endDate"></vuejs-datepicker>
+									<vuejs-datepicker input-class="form-input" placeholder="Date to" format="dd.MM.yyyy" v-model="endDate" :disabled-dates="disableDatesEndDate"></vuejs-datepicker>
 									<span class="focus-form-input"></span>
 									<p class="form-input-error">{{errorEndDate}}</p>
 							</div>	
@@ -170,7 +171,7 @@ Vue.component("apartment", {
 						</div>
 						<div class="column25-in-form-search-apartment" style="padding-top:0px;">
 							<div class="container-btn-form m-t-30">
-								<button type="button" class="form-btn" v-bind:disabled="imagesForApartment.length<1" style="background:gray;" v-on:click="deleteImage">DELETE LAST IMAGE</button>
+								<button type="button" class="form-btn" v-show="imagesForApartment.length>0" style="background:gray;" v-on:click="deleteImage">DELETE LAST IMAGE</button>
 							</div>	
 						</div>
 					</div>
@@ -207,11 +208,60 @@ Vue.component("apartment", {
 	         axios
 		      .get('rest/users/currentUser')
 		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
+		      this.generateDisableDatesStartDate() 
 	    }
 		,methods: {
 			
 			changeBGImage : function(){
 				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
+			},
+			
+			reloadData : function(){
+				this.location = null
+				this.streetNumber = ""
+				this.$el.querySelector('#address').value = ''
+				this.address = {}
+				this.locationOfApartment = {}
+				this.typeOfApartment = 'Choose type of apartment'
+				this.apartment = {}
+				this.allApartments = null
+				this.maxId = 0
+				this.startDate = null
+				this.endDate = null
+				this.dateOfIssue = []
+				this.image = null
+				this.imagesForApartment = []
+				this.imagesForApartmentForConvert = []
+
+			},
+			
+			generateDisableDatesStartDate : function(){
+				this.disableDatesStartDate = {
+						to: new Date(),	
+					}
+				this.disableDatesEndDate = {
+						to: new Date(),	
+				}
+			},
+			
+			genereteDisableDateEndDate : function(){
+				this.endDate = null;
+				 let startYear = this.startDate.getYear() + 1900;
+				 let startMonth = this.startDate.getMonth();
+				 let startDay = this.startDate.getDate();
+				
+				this.disableDatesEndDate = {
+						to: new Date(),	
+						dates : [new Date(startYear,startMonth,startDay)],
+						ranges: [
+							{
+								from: new Date(),
+								to: new Date(startYear,startMonth,startDay),
+							}
+						]
+					}
+				
+				
 			},
 			
 			addImage : function(e){
@@ -320,6 +370,7 @@ Vue.component("apartment", {
 			
 			convertImagesFromBlobToBase64 : function(){
 				this.apartment.images = [];
+				arrayImageString = [];
 				var i = 1;
 				let promises = [];
 				for(image of this.imagesForApartmentForConvert){
@@ -373,6 +424,7 @@ Vue.component("apartment", {
 							 	     		alert('Success add apartment!');
 								    		this.sendRequest = false;
 								    		document.getElementById('navigationMenu').style.visibility='visible';
+								    		this.reloadData()
 							 	     	})
 							 	     	})
 							 		})
@@ -401,14 +453,14 @@ Vue.component("apartment", {
 			}
 			if(!this.apartment.numberOfRooms){
 				this.errorNumberOfRooms = "can't be empty"
-			}else if(Number.isInteger(this.apartment.numberOfRooms)){
-				this.errorNumberOfRooms = "must be an integer";
+			}else if(this.apartment.numberOfRooms.startsWith("0")){
+				this.errorNumberOfRooms = "must be value bigger then 0";
 			}
 			
 			if(!this.apartment.numberOfGuests){
 				this.errorNumberOfGuests = "can't be empty"
-			}else if(Number.isInteger(this.apartment.numberOfGuests)){
-				this.errorNumberOfGuests = "must be an integer";
+			}else if(this.apartment.numberOfGuests.startsWith("0")){
+				this.errorNumberOfGuests = "must be value bigger then 0";
 			}
 			if(!street || this.$el.querySelector("#address").value == ''){
 				this.errorLocation= "can't be empty"
@@ -425,8 +477,8 @@ Vue.component("apartment", {
 			if(!this.apartment.pricePerNight){
 				this.errorPricePerNight = "can't be empty"
 					
-			}else if(Number.isInteger(this.apartment.pricePerNight)){
-				this.errorPricePerNight = "must be an integer";
+			}else if(this.apartment.pricePerNight.startsWith("0")){
+				this.errorPricePerNight = "must be value bigger then 0";
 			}
 			if(!this.apartment.checkInTime){
 				this.errorCheckInTime = "can't be empty"
