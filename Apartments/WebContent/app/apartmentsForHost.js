@@ -62,7 +62,7 @@ Vue.component("apartmentsForHost", {
 					<h1>Active apartments</h1>
 						<div class="row">
 							<div class="container-btn-form" style="width:24%;margin-left:60%">
-								<button class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
+								<button v-if="searchActive.length != 0" class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
 									<span style="visibility:hidden">j</span>
 									<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
 									<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>								
@@ -87,6 +87,11 @@ Vue.component("apartmentsForHost", {
 								 </div>
 							</div>
 						</div>
+						<div v-if="searchActive.length == 0" class="row">
+						<div class="panel panel-default" style="width: 80%;margin-left:5%;margin-top:3%;">
+							<h2>Apartemnt doesn't exist</h2>
+						</div>
+					</div>		
 					</div>
 				</div>
 			</div>
@@ -130,6 +135,11 @@ Vue.component("apartmentsForHost", {
 								</div>
 							</div>
 						</div>
+					</div>
+					<div v-if="searchInactive.length == 0" class="row">
+						<div class="panel panel-default" style="width: 80%;margin-left:5%;margin-top:3%;">
+							<h2>INACTIVE Apartemnt doesn't exist</h2>
+						</div>
 					</div>		
 				</form>
 			 </div>
@@ -158,7 +168,7 @@ Vue.component("apartmentsForHost", {
 	          .then(response => (response.data ? this.allAmenities = response.data : this.allAmenities = null))
 
 			
-	        this.$root.$on('apartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
+	        this.$root.$on('searchApartmentForHost',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        
 	        this.searchStartDate='',
@@ -236,7 +246,7 @@ Vue.component("apartmentsForHost", {
 		},
 		showActiveForHost: function(){
 			this.showActive = true;	
-			this.ShowInactive = false;
+			this.showInactive = false;
 	        this.searchStartDate='';
 		    this.searchEndDate='';
 		   	this.searchPriceFrom='';
@@ -360,8 +370,12 @@ Vue.component("apartmentsForHost", {
 		 
 		
 		filterByPrice: function(a){
-			if(this.searchPriceFrom != '')
+			if(this.searchPriceFrom != '' && this.searchPriceTo != '')
 				return a.pricePerNight >= parseInt(this.searchPriceFrom) && a.pricePerNight<=parseInt(this.searchPriceTo)
+			else if(this.searchPriceFrom != '' && this.searchPriceTo == '')
+				return  a.pricePerNight >= parseInt(this.searchPriceFrom)
+			else if(this.searchPriceFrom == '' && this.searchPriceTo != '')
+				return a.pricePerNight<=parseInt(this.searchPriceTo)
 			else
 				return true
 		},
@@ -374,6 +388,10 @@ Vue.component("apartmentsForHost", {
 		filterByRooms: function(a){
 			if(this.searchNumberOfRoomsFrom != '' && this.searchNumberOfRoomsTo != '')
 				return a.numberOfRooms >= parseInt(this.searchNumberOfRoomsFrom) && a.numberOfRooms<=parseInt(this.searchNumberOfRoomsTo)
+			else if(this.searchNumberOfRoomsFrom != '' && this.searchNumberOfRoomsTo == '')
+				return a.numberOfRooms >= parseInt(this.searchNumberOfRoomsFrom)
+			else if(this.searchNumberOfRoomsFrom == '' && this.searchNumberOfRoomsTo != '')
+				return a.numberOfRooms<=parseInt(this.searchNumberOfRoomsTo)
 			else
 				return true
 		},
@@ -533,13 +551,13 @@ Vue.component("apartmentsForHost", {
 	},
 	computed:{
 		searchActive(){
-			if(this.activeApartmentsForHost)	
+			
 				return this.activeApartmentsForHost.filter(a => {
 				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 			},
 		
 		searchInactive(){
-			if(this.inactiveApartmentsForHost)	
+			
 				return this.inactiveApartmentsForHost.filter(a => {
 				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 			}

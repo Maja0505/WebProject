@@ -42,7 +42,7 @@ Vue.component("reservationsForHost", {
 									  <input style=" border-radius: 0;width: 80%; margin-top:10%; padding: 10px;margin-right:0%;margin-left:0%;" type="text" placeholder="Search reservation by username.." v-model = "searchText">							
 								</div>
 								<div class="column">
-									<button type="button" v-on:click="sort()" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:50%;height:20%;" class="addBtn">SORT BY PRICE
+									<button type="button" v-on:click="sort()" v-if="search.length != 0" style=" padding: 10px;margin-right:0%;margin-left:0%;margin-top:10%;float:right;width:50%;height:20%;" class="addBtn">SORT BY PRICE
 										<span style="visibility:hidden">j</span>
 									 	<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
 										<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>	
@@ -114,6 +114,9 @@ Vue.component("reservationsForHost", {
 								 </div>
 							  </div>
 				   		</div>
+				   		<div class="container-user-for-admin" v-if="search.length == 0">
+								<h3>Reservation doesn't exist</h3>
+						</div>
 					</div>
 						
 				</form>
@@ -334,7 +337,7 @@ Vue.component("reservationsForHost", {
 			computed : {
 
 				search(){
-				if(this.hostReservations)
+				
 					return this.hostReservations.filter(a => {
 					         return a.guest.username.toLowerCase().includes(this.searchText.toLowerCase()) && (this.filterByCreateStatus(a) || this.filterByRejectedStatus(a) || this.filterByWithdrawalStuatus(a) || this.filterByAcceptedStatus(a) || this.filterByCompletedStatus(a))  })
 				}

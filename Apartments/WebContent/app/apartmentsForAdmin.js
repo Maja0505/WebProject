@@ -5,7 +5,7 @@ Vue.component("apartmentsForAdmin", {
 	
 	data: function () {
 	    return {
-	    	allApartments:null,
+	    	allApartments:[],
 	    	allComments:null,
 	    	selectedApartment:null,
 	    	currentSortDir:'asc',
@@ -54,7 +54,7 @@ Vue.component("apartmentsForAdmin", {
 					<div class="column70-in-apartments-view">
 						<div class="row">
 							<div class="container-btn-form" style="width:24%;margin-left:60%">
-								<button class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
+								<button v-if="search.length != 0" class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
 									<span style="visibility:hidden">j</span>
 									<img src="images/down.png" class="icon" v-show="sorting=='asc'"></img>
 									<img src="images/up-arrow.png" class="icon" v-show="sorting=='desc'"></img>								
@@ -78,6 +78,11 @@ Vue.component("apartmentsForAdmin", {
 							 			</div>
 								 	</div>
 								 </div>
+							</div>
+						</div>
+						<div v-if="search.length == 0" class="row">
+							<div class="panel panel-default" style="width: 80%;margin-left:5%;margin-top:3%;">
+								<h2>Apartemnt doesn't exist</h2>
 							</div>
 						</div>
 					</div>	
@@ -226,8 +231,12 @@ Vue.component("apartmentsForAdmin", {
 		},
 
 		filterByPrice: function(a){
-			if(this.searchPriceFrom != '')
+			if(this.searchPriceFrom != '' && this.searchPriceTo != '')
 				return a.pricePerNight >= parseInt(this.searchPriceFrom) && a.pricePerNight<=parseInt(this.searchPriceTo)
+			else if(this.searchPriceFrom != '' && this.searchPriceTo == '')
+				return a.pricePerNight >= parseInt(this.searchPriceFrom)
+			else if(this.searchPriceFrom == '' && this.searchPriceTo != '')
+				return a.pricePerNight<=parseInt(this.searchPriceTo)
 			else
 				return true
 		},
@@ -240,6 +249,10 @@ Vue.component("apartmentsForAdmin", {
 		filterByRooms: function(a){
 			if(this.searchNumberOfRoomsFrom != '' && this.searchNumberOfRoomsTo != '')
 				return a.numberOfRooms >= parseInt(this.searchNumberOfRoomsFrom) && a.numberOfRooms<=parseInt(this.searchNumberOfRoomsTo)
+			else if(this.searchNumberOfRoomsFrom != '' && this.searchNumberOfRoomsTo == '')
+				return a.numberOfRooms >= parseInt(this.searchNumberOfRoomsFrom)
+			else if(this.searchNumberOfRoomsFrom == '' && this.searchNumberOfRoomsTo != '')
+				return a.numberOfRooms <= parseInt(this.searchNumberOfRoomsTo)
 			else
 				return true
 		},
@@ -401,9 +414,8 @@ Vue.component("apartmentsForAdmin", {
 	computed : {
 
 		search(){
-			
-			if(this.allApartments)	
-				return this.allApartments.filter(a => {
+
+			return this.allApartments.filter(a => {
 				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 	
 		}

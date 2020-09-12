@@ -4,7 +4,7 @@
 Vue.component("reservationsForAdmin",{
 	data : function(){
 		return {
-			allReservations:null,
+			allReservations:[],
 			searchText:'',
 			currentSortDir:'asc',
 	    	showFiltersForm:false,
@@ -72,6 +72,9 @@ Vue.component("reservationsForAdmin",{
 							  <P>Guest: {{r.guest.username }}</p>
 							  <p>Status: {{r.statusOfReservation }}</p>
 							  <p>Full price:{{r.fullPrice}}</p>
+							</div>
+							<div class="container-user-for-admin" v-if="search.length == 0">
+								<h3>Reservation doesn't exist</h3>
 							</div>
 					
 					</div>
@@ -222,7 +225,7 @@ Vue.component("reservationsForAdmin",{
 	computed : {
 		
 		search(){
-		if(this.allReservations)	
+			
 			return this.allReservations.filter(r => {
 			         return r.guest.username.toLowerCase().includes(this.searchText.toLowerCase()) && (this.filterByCreateStatus(r) || this.filterByRejectedStatus(r) || this.filterByWithdrawalStuatus(r) || this.filterByAcceptedStatus(r) || this.filterByCompletedStatus(r))})
 		}

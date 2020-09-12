@@ -33,6 +33,9 @@ Vue.component("showGuestsForHost", {
 							  <p>Gender: {{u.gender}}</p>
 							  <P>User type: {{u.typeOfUser}}</p>
 							</div>
+							<div class="container-user-for-admin" v-if="search.length == 0">
+								<h3>User for host doesn't exist</h3>
+							</div>
 						</div>
 					</div>
 					
