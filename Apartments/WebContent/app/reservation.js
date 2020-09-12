@@ -11,7 +11,8 @@ Vue.component("reservation", {
 		  disableDates:{},
 		  reservation:{},
 		  showReservationForm : false,
-		  error: ''
+		  error: '',
+		  fullPriceOfReservation:0,
 	    }
 	},
 	
@@ -28,7 +29,7 @@ Vue.component("reservation", {
 									<label class="txt8" style="margin-left:5%;">Date of start reservation: </label>
 								</div>
 								<div class="column50-in-form-search-apartment"  style="text-align:left;padding:0px;">	
-									<vuejs-datepicker input-class="reservation-input" style="width:70%;" v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates"></vuejs-datepicker>
+									<vuejs-datepicker @input="getFullPrice" input-class="reservation-input" style="width:70%;" v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates"></vuejs-datepicker>
 									<span class="focus-reservation-input"></span>
 								</div>
 							</div>
@@ -38,7 +39,7 @@ Vue.component("reservation", {
 								</div>
 								<div class="column33-in-form-search-apartment" style="padding:0px;text-align:left;">
 									<div class="container-reservation-input">
-										<input class="reservation-input" type="number" v-on:keydown = "stopKeydown" v-model="reservation.numberOfNIghts" min="1" max="15">
+										<input class="reservation-input" @input="getFullPrice" v-on:keydown = "getFullPrice" type="number" onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="reservation.numberOfNIghts" min="1" max="15">
 										<span class="focus-reservation-input"></span>
 									</div>
 								</div>	
@@ -70,13 +71,14 @@ Vue.component("reservation", {
 								<label class="txt8" style="margin-left:4%;">Full price for reservation: </label>
 							</div>
 							<div class="column50-in-form-search-apartment" style="text-align:left;padding:10px;">
-								<div v-show="reservation.numberOfNIghts" class="column25-in-form-search-apartment"  style="text-align:left;padding:0px;">
-									<label class="txt8">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</label>
+								<div  v-show="reservation.numberOfNIghts" class="column66-in-form-search-apartment"  style="text-align:left;padding:0px;">
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight !== fullPriceOfReservation"><span style="color:green;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:red;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight == fullPriceOfReservation">{{fullPriceOfReservation}}</label>
 								</div>
-								<div v-show="!reservation.numberOfNIghts" class="column25-in-form-search-apartment"  style="text-align:left;padding:0px;">	
+								<div v-show="!reservation.numberOfNIghts" class="column66-in-form-search-apartment"  style="text-align:left;padding:0px;">	
 									<label class="txt8">0 $</label>
 								</div>
-								<div class="column50-in-form-search-apartment" style="margin-left:12.5%;padding-top:0px;">
+								<div class="column33-in-form-search-apartment" style="margin-left:0%;padding-top:0px;">
 									<div class="container-btn-form">
 										<button type="button" class="form-btn" style="height:30%;" v-on:click="bookingApartment()">CONFIRM</button>
 									</div>
@@ -155,10 +157,6 @@ Vue.component("reservation", {
 				return disableDates;
 			},
 			
-	    	stopKeydown : function(event){
-	    		 event.preventDefault();
-	    	},
-	    	
 	    	bookingApartment: function(){
 	    		
 	    		this.error="";
@@ -167,13 +165,17 @@ Vue.component("reservation", {
 	    			this.error = "You need to choose start date and number of nights!";
 	    			return;
 	    		}
+	    	    if(this.reservation.numberOfNIghts.startsWith("0")){
+					this.error = "Number of nights must be bigger then 0";
+					return;
+				}
 	    		
-	    		
-	    		this.maxId++;
+	    	   this.maxId++;
 	    	     
 	    	   var objReservation = {"id":this.maxId, "apartment": this.selectedApartment,"startDateOfReservation":this.reservation.startDateOfReservation,
-	    		   "numberOfNights":this.reservation.numberOfNIghts,"fullPrice":this.reservation.numberOfNIghts * this.selectedApartment.pricePerNight,
-	    		   "reservationMessage":''+this.reservation.reservationMessage,"guest":this.loggedUser,"statusOfReservation":"CREATED"};
+		    		   "numberOfNights":this.reservation.numberOfNIghts,"fullPrice":this.fullPriceOfReservation,
+		    		   "reservationMessage":''+this.reservation.reservationMessage,"guest":this.loggedUser,"statusOfReservation":"CREATED"};
+
 	    	   
 	    	   var selectedDate = this.reservation.startDateOfReservation;
 	    	   var yyyy = selectedDate.getYear() + 1900;
@@ -225,6 +227,8 @@ Vue.component("reservation", {
 	 			        	headers: {
 	 			        		'Content-Type': 'application/json',
 	 			        			}
+		        	  }).then(response => {
+		        		  alert('Success booked apartment!')
 		        	  })
 	    	   //upadte apartmana
 		       axios
@@ -247,6 +251,30 @@ Vue.component("reservation", {
 	           this.$root.$emit('loadApartmentForGuest',false)
 	    	   this.showReservationForm = false;
 	    	   this.$root.$emit('showReservationFormInView');
+	    	},
+	    	
+	    	getFullPrice : function(){
+	    			
+    			this.fullPriceOfReservation = 0;
+    			if(!this.reservation.startDateOfReservation || !this.reservation.numberOfNIghts){
+    				this.fullPriceOfReservation = 0;
+    				return
+    			}
+    		
+    		   var selectedDate = this.reservation.startDateOfReservation;
+	    	   var yyyy = selectedDate.getYear() + 1900;
+	    	   var mm = selectedDate.getMonth();
+	    	   var dd = selectedDate.getDate();
+	    		
+	    		for(let i = 0;i < this.reservation.numberOfNIghts;i++){
+	    			   var selectedDateNew = new Date(yyyy,mm,dd,0,0,0,0);
+	    			   selectedDateNew.setDate(selectedDateNew.getDate() + i);
+	    			   if(selectedDateNew.getDay() >= 5){
+	    				   this.fullPriceOfReservation += this.selectedApartment.pricePerNight * 0.9
+	    			   }else{
+	    				   this.fullPriceOfReservation += this.selectedApartment.pricePerNight
+	    			   }
+	    		   }
 	    	}
 		},
 		
