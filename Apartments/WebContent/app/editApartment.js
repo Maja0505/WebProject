@@ -166,12 +166,12 @@ Vue.component("editApartment", {
 					<div class="row">
 						<div class="column25-in-form-search-apartment" style="padding-top:0px;margin-left:25%;">
 							<div class="container-btn-form m-t-30">
-								<button  class="form-btn" type="button" style="background:gray;" v-on:click="checkForm()" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">CONFIRM CHANGES</button>
+								<button class="form-btn" type="button" style="background:gray;" v-on:click="checkForm()" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')" v-show="!(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">CONFIRM CHANGES</button>
 							</div>	
 						</div>
 						<div class="column25-in-form-search-apartment" style="padding-top:0px;">
 							<div class="container-btn-form m-t-30">
-								<button type="button" class="form-btn" v-on:click="cancel()"  style="background:gray;" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">CANCEL EDIT</button>
+								<button type="button" class="form-btn" v-on:click="cancel()"  style="background:gray;" v-bind:disabled="(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')" v-show="!(mode=='NOT_EDIT_YET'|| mode=='AMENITIES')">CANCEL EDIT</button>
 							</div>	
 						</div>
 					</div>

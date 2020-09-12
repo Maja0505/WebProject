@@ -61,7 +61,7 @@ Vue.component("registration", {
 								<p class="form-input-error">{{errorConfirmPassword}}</p>
 							</div>
 							<div class="container-btn-form">
-								<button class="form-btn" v-on:click.prevent="checkForm(user, confirmPassword)">
+								<button class="form-btn" v-on:click.prevent="checkForm(user, confirmPassword)" type="button">
 									Register
 								</button>
 							</div>

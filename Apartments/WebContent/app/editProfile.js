@@ -33,17 +33,17 @@ Vue.component("editProfile", {
 						
 						
 						<div class="container-profile-form-btn">
-										<button class="cancel_edit_button" v-on:click="cancle()" v-bind:disabled="mode=='NOT_EDIT_YET'"  v-show="mode!='NOT_EDIT_YET'">
+										<button class="cancel_edit_button" type="button" v-on:click="cancle()" v-bind:disabled="mode=='NOT_EDIT_YET'"  v-show="mode!='NOT_EDIT_YET'">
 											CANCEL
 										</button>
 						</div>
 						<div class="container-profile-form-btn">
-										<button class="confirm_edit_button"  v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'" type="button">
+										<button class="confirm_edit_button" type="button" v-on:click="confirm()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'">
 											CONFIRM
 										</button>
 						</div>
 						<div class="container-profile-form-btn" style="margin-right: 40px;">
-										<button class="profile-form-btn" v-on:click="edit()" v-bind:disabled="mode=='EDITING'" >
+										<button class="profile-form-btn" type="button" v-on:click="edit()" v-bind:disabled="mode=='EDITING'" >
 											EDIT
 										</button>
 						</div>
@@ -69,7 +69,7 @@ Vue.component("editProfile", {
 								
 							</div>
 							<div class="container-profile-form-btn-change-password" style="  margin-bottom: 20px;margin-right: 10px;margin-left: 85px;">
-										<button class="profile-form-btn"  v-on:click="change()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'">
+										<button class="profile-form-btn" type="button" v-on:click="change()" v-bind:disabled="mode=='NOT_EDIT_YET'" v-show="mode!='NOT_EDIT_YET'">
 										CHANGE PASSWORD<img src="images/down.png" class="icon" v-show="!changePassword"></img><img src="images/up-arrow.png" class="icon" v-show="changePassword"></img>
 										</button>
 							</div>

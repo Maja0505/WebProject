@@ -8,35 +8,32 @@ Vue.component("commentApartmentForHost", {
 	    }
 },
 		template: ` 
-			<div>
-				<div v-show="showComment" v-if="selectedApartment">
-				<p>Comment for apartment {{selectedApartment.id}}</p>
-				<label v-show="commentsForSelectedApartment.length == 0">No comments on this apartment</label>
-				<table class="commentsForSelectedApartment" v-show="commentsForSelectedApartment.length != 0">
-					<tr bgcolor="lightgrey">
-						<th>Guest</th>
-						<th>Text</th>
-						<th>Rate</th>
-						<th>Enable</th>
-						<th>Show comment</th>
-					</tr>
-					
-					<tr v-for="c in commentsForSelectedApartment">
-						<td>{{c.guest.username }}</td>
-						<td>{{c.text }}</td>
-						<td>{{c.rate }}</td>
-						<td>{{c.enable}}</td>
-						<td> <input type="checkbox" id="enable" name="enable" v-model="c.enable" @change="update(c)"></td>
-
-					</tr>
-				</table>
+		<div>
+			<div v-show="showComment">
+				<div class="comments-apartment">
+					<div class="row">
+						<label class="txt7">Comments of aparmtnet</label>
+					</div>
+					<div class="row" v-for="c in commentsForSelectedApartment" v-if="c.guest">
+						
+						<label class="txt8" style="margin-left:5%;">Guest : {{c.guest.username}}</label><br>
+						<label class="txt8" style="margin-left:5%;">Rate : {{c.rate}}</label><br>
+						<label class="txt8" style="margin-left:5%;">Comment : {{c.text}}</label><br>
+						<label class="txt8" style="margin-left:5%;">Enable comment :</label> <input type="checkbox" id="enable" name="enable" v-model="c.enable" @change="update(c)">
+						<hr>
+					</div>
+					<div class="row" v-show="commentsForSelectedApartment.length == 0">
+						<label class="txt8" style="margin-left:5%;">Apartment doesn't have any comment</label><br>
+					</div>
 				</div>
-
 			</div>
+		</div>
 		  `
 		,		mounted () {
 			this.changeBGImage();
 	        this.$root.$on('showComment',(text,text2) => {this.selectedApartment = text,this.showComment = text2,this.getAllComment()});
+			this.$root.$on('commentApartmentForHost',(text) =>{this.showComment = true,this.commentsForSelectedApartment = text});
+
 		},methods:{
 			
 			changeBGImage : function(){

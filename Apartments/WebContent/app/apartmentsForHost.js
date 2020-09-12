@@ -31,14 +31,13 @@ Vue.component("apartmentsForHost", {
 	},
 	
 	template: `
-		<div>
-		
-			<div v-if="showActive">
-				<searchApartments ></searchApartments>
-
-				<div class="row" style="margin-top: 225px;">
+<div>
+	<div>
+		<div v-if="showActive">
+			<searchApartments ></searchApartments>
+			<div class="row" style="margin-top: 225px;">
+				<div class="column30-in-apartments-view">
 					<div class="column30-in-apartments-view">
-						<div class="column30-in-apartments-view">
 						<div class="container-filters-apartment" style="height:47%;">
 							<label class="txt4" style="margin-top:5%;font-size:22px;text-align:center;letter-spacing: 3px;">FILTERS</label><br><br>
 							<div class="container-filters-content">
@@ -47,21 +46,20 @@ Vue.component("apartmentsForHost", {
 								<label class="txt5">room</label><br> 
 								<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
 								<label class="txt5">whole apartment</label><br>
-								
 								<label class="txt4">AMENITIES</label><br>
-									<div  v-for="a in allAmenities" v-if="a.flag==0">
-										<input type="checkbox"  @click="onChange(a,$event)">
-										<label class="txt5">{{a.name}}</label><br>
-									</div>
+								<div  v-for="a in allAmenities" v-if="a.flag==0">
+									<input type="checkbox"  @click="onChange(a,$event)">
+									<label class="txt5">{{a.name}}</label><br>
+								</div>
 							</div>
 					 	</div>
 					</div>
-					 	<div class="container-filters-apartment" style="margin-top: 390px;height:10%;background:none;">
-							<button v-on:click="showInactiveForHost()" class="profile-form-btn">Show INACTIVE apartments</button>
-						</div>
+					<div class="container-filters-apartment" style="margin-top: 390px;height:10%;background:none;">
+						<button v-on:click="showInactiveForHost()" class="profile-form-btn" type="button">Show INACTIVE apartments</button>
 					</div>
-					<div class="column70-in-apartments-view">
-						<h1>Active apartments</h1>
+				</div>
+				<div class="column70-in-apartments-view">
+					<h1>Active apartments</h1>
 						<div class="row">
 							<div class="container-btn-form" style="width:24%;margin-left:60%">
 								<button class="form-btn" type="button" v-on:click="sort">SORT BY PRICE
@@ -78,13 +76,12 @@ Vue.component("apartmentsForHost", {
 								        <img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
 								 		<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
 								 	</div>
-								 	
 								 	<div class="container-infoOfApartment-in-search-apartment">
 							 			<h2 style="margin-top:3%;">{{a.name}}</h2>
 							 			<div class="row">
 											<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
 											<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
-								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)">View</button>
+								 			<button class="btn-filter" style="width:20%; margin-top:1%;" v-on:click="viewApartment(a)" type="button">View</button>
 							 			</div>
 								 	</div>
 								 </div>
@@ -93,201 +90,63 @@ Vue.component("apartmentsForHost", {
 					</div>
 				</div>
 			</div>
-
-				<div v-if="selectedApartment">
-					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
-						<button type="submit" v-on:click="moreInfo()">More info</button>
-						<button type="submit" v-on:click="deleteApartment()">Delete</button>
-						<button type="submit" v-on:click="showComments()">Comments of apartment</button>
-					</p>
+			<div v-if="selectedApartment">
+				<p>Selektovan je apartman sa id {{selectedApartment.id}} 
+				<button type="submit" v-on:click="moreInfo()">More info</button>
+				<button type="submit" v-on:click="deleteApartment()">Delete</button>
+				<button type="submit" v-on:click="showComments()">Comments of apartment</button>
+				</p>
 					
-					<editApartment></editApartment>
-					<commentForAdmin></commentForAdmin>
-				</div>
-			<div>
+				<editApartment></editApartment>
+				<commentApartmentForHost></commentApartmentForHost>
+			</div>
 		</div>
-		
-		
 		
 		<div v-if="showInactive">
 			<div class="content-profile" style="background-image: url('images/sea.png');">
-					<form class="container-amenities">
-						<div class="row" style="padding-left:5%;padding-right:5%;padding-bottom:5%;">
-							<div class="column">
-								<h1 style="width:100%;">Inactive apartments</h1>
-
-							
-							</div>
-							<div class="column">
-							    <button type="button" v-on:click="showActiveForHost()" style="width:50%;float:left;margin-left:28%;" class="addBtn">Show active apartments</button>
-
-							</div>
-
+				<form class="container-amenities">
+					<div class="row" style="padding-left:5%;padding-right:5%;padding-bottom:5%;">
+						<div class="column">
+							<h1 style="width:100%;">Inactive apartments</h1>
 						</div>
-
-								<div class="row" v-for="a in searchInactive" >
-									<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
-										<div class="row">
-										 	<div class="container-image-in-search-apartment">
-										        <img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
-										 		<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
-										 	</div>
-										 	
-										 	<div class="container-infoOfApartment-in-search-apartment">
-									 			<h2 style="margin-top:3%;">{{a.name}}</h2>
-									 			<div class="row">
-													<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
-													<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
-										 			<button class="btn-filter" style="width:20%; margin-top:1%;" type="button" v-on:click="viewApartment(a)">View</button>
-									 			</div>
-										 	</div>
-										 </div>
-									</div>
-								
-						</form>
+						<div class="column">
+							 <button type="button" v-on:click="showActiveForHost()" style="width:50%;float:left;margin-left:28%;" class="addBtn">Show active apartments</button>
+						</div>
 					</div>
-
-				<div v-if="selectedApartment">
-					<p>Selektovan je apartman sa id {{selectedApartment.id}} 
-						<button type="submit" v-on:click="moreInfo()">More info</button>
-						<button type="submit" v-on:click="deleteApartment()">Delete</button>
-						<button type="submit" v-on:click="showComments()">Comments of apartment</button>
-					</p>
-					
-					<editApartment></editApartment>
-					<commentForAdmin></commentForAdmin>
-				</div>
-			<div>
-		</div>
-		
-		
-		</div>
-	<!--	
-			<div v-show="showActive">
-					
-					<button v-on:click="showFilters()">Filters</button>
-					<div v-show="showFiltersForm">
-						<p>STATUS OF APARTMENT</p>
-						<input type="checkbox" id="create" name="create" value="ACTIVE" v-model="isActive">
-						<label>ACTIVE</label><br>
-						<input type="checkbox" id="rejected" name="rejected" value="INACTIVE" v-model="isInactive" >
-						<label>INACTIVE</label><br>
-						
-						<p>TYPE OF APARTMENT</p>
-						<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
-						<label>ROOM</label><br> 
-						<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
-						<label>WHOLE_APARTMENT</label><br>
-						
-						<p>AMENITIES</p>
-						<table class="allAmenities">
-							<tr><td>Name</td><td>Checked</td></tr>
-							
-							<tr  v-for="a in allAmenities">
-								<td><input type="checkbox"  @click="onChange(a,$event)"></td>
-								<td>{{a.name}}</td>
-							</tr>
-						</table>
-						
-					</div>
-					<h3>ACTIVE Apartments</h3>
-							
-					<label v-show="activeApartmentsForHost.length == 0">Apartments with status ACTIVE doesn't exist</label>
-
-					<table v-show="activeApartmentsForHost.length != 0" border = "1" class="table table-hover">
-					  <thead>
-						<tr bgcolor="lightgrey">
-							<th @click="sort('id')">ID</th>
-							<th @click="sort('location')">Location</th>
-							<th @click="sort('pricePerNight')">Price Per Night</th>
-							<th @click="sort('hostName')">Host</th>
-							<th @click="sort('status')">Status</th>
-						</tr>
-					</thead>
-					<tbody>  
-						<tr v-for="a in searchActive" v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'ACTIVE' && a.flag==0">
-							<td>{{a.id}}</td>
-							<td>{{a.location.address.city}}</td>
-							<td>{{a.pricePerNight }}</td>
-							<td>{{a.host.username }}</td>
-							<td>{{a.statusOfApartment}}</td>
-							
-						</tr>
-					</tbody>
-
-					</table>
-					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
-				    <button style="background-color:MediumSeaGreen;" v-on:click="deleteApartment()" v-show="selectedApartment">Delete</button>
-					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
-					<editApartment></editApartment>
-			    	<commentApartmentForHost></commentApartmentForHost>
-				</div>
-				<div v-show="showInactive">
-					
-					<button v-on:click="showFilters()">Filters</button>
-					<div v-show="showFiltersForm">
-						<p>STATUS OF APARTMENT</p>
-						<input type="checkbox" id="create" name="create" value="ACTIVE" v-model="isActive">
-						<label>ACTIVE</label><br>
-						<input type="checkbox" id="rejected" name="rejected" value="INACTIVE" v-model="isInactive" >
-						<label>INACTIVE</label><br>
-						
-						<p>TYPE OF APARTMENT</p>
-						<input type="checkbox" id="withdrawal" name="withdrawal" value="ROOM" v-model="isRoom">
-						<label>ROOM</label><br> 
-						<input type="checkbox" id="accepted" name="accepted" value="WHOLE_APARTMENT" v-model="isWholeApartment">
-						<label>WHOLE_APARTMENT</label><br>
-						
-						<p>AMENITIES</p>
-						<table class="allAmenities">
-							<tr><td>Name</td><td>Checked</td></tr>
-							
-							<tr  v-for="a in allAmenities">
-								<td><input type="checkbox"  @click="onChange(a,$event)"></td>
-								<td>{{a.name}}</td>
-							</tr>
-						</table>
-						
-					</div>
-					<h3>INACTIVE Apartments</h3>
-					<label v-show="inactiveApartmentsForHost.length == 0">Apartments with status INACTIVE doesn't exist</label>
-
-
-
-
-
-
-					<table v-show="inactiveApartmentsForHost.length != 0" border = "1" class="table table-hover">
-					<thead>
-						<tr bgcolor="lightgrey">
-							<th @click="sort('id')">ID</th>
-							<th @click="sort('location')">Location</th>
-							<th @click="sort('pricePerNight')">Price Per Night</th>
-							<th @click="sort('hostName')">Host</th>
-							<th @click="sort('status')">Status</th>
-						</tr>
-					</thead>
-					 <tbody>    
-						<tr v-for="a in searchInactive" v-on:click="selectApartment(a)" v-if="a.statusOfApartment == 'INACTIVE' && a.flag==0">
-							<td>{{a.id}}</td>
-							<td>{{a.location.address.city}}</td>
-							<td>{{a.pricePerNight }}</td>
-							<td>{{a.host.username }}</td>
-							<td>{{a.statusOfApartment}}</td>
-							
-						</tr>
-					 </tbody>
-
-					</table>
-					<button style="background-color:MediumSeaGreen;" v-on:click="openEditForm()" v-show="selectedApartment">Show details of apartment</button>
-					<button style="background-color:MediumSeaGreen;" v-on:click="deleteApartment()" v-show="selectedApartment">Delete</button>
-					<button style="background-color:MediumSeaGreen;"  v-on:click="showCommentForApartment()" v-show="selectedApartment">Show comment for apartment</button>
-					<editApartment></editApartment>
-			    	<commentApartmentForHost></commentApartmentForHost>
-				</div>
+					<div class="row" v-for="a in searchInactive" >
+						<div class="panel panel-default" style="width: 80%;margin-left:5%;" v-if="a!=null && a.flag==0">
+							<div class="row">
+								<div class="container-image-in-search-apartment">
+									<img :src="a.images[0]" style="width: 250px;height:150px;" v-if="a.images[0]">
+									<img src="images/no_image.jpg" style="width: 250px;height:150px;" v-if="!a.images[0]">
+								</div>
+								<div class="container-infoOfApartment-in-search-apartment">
+									 <h2 style="margin-top:3%;">{{a.name}}</h2>
+									 <div class="row">
+										<label class="txt6" style="margin-top:1%;">Location: {{a.location.address.city}}</label><br>
+										<label class="txt6" style="margin-top:1%;">Price per night: {{a.pricePerNight}}$</label>
+										<button class="btn-filter" style="width:20%; margin-top:1%;" type="button" v-on:click="viewApartment(a)">View</button>
+									 </div>
+								</div>
+							</div>
+						</div>
+					</div>		
+				</form>
+			 </div>
+			 <div v-if="selectedApartment">
+				<p>Selektovan je apartman sa id {{selectedApartment.id}} 
+				<button type="submit" v-on:click="moreInfo()">More info</button>
+				<button type="submit" v-on:click="deleteApartment()">Delete</button>
+				<button type="submit" v-on:click="showComments()">Comments of apartment</button>
+				</p>
+				<editApartment></editApartment>
+				<commentApartmentForHost></commentApartmentForHost>
 			</div>
-		</div>-->
-	 </div>
+		</div>
+	</div>
+</div>
+
+ 
 	`	
 		,
 		
