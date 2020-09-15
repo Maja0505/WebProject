@@ -74,7 +74,8 @@ Vue.component("reservation", {
 							</div>
 							<div class="column50-in-form-search-apartment" style="text-align:left;padding:10px;">
 								<div  v-show="reservation.numberOfNIghts" class="column66-in-form-search-apartment"  style="text-align:left;padding:0px;">
-									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight !== fullPriceOfReservation"><span style="color:green;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:red;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight > fullPriceOfReservation"><span style="color:green;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:red;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight < fullPriceOfReservation"><span style="color:red;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:black;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
 									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight == fullPriceOfReservation">{{fullPriceOfReservation}} $</label>
 								</div>
 								<div v-show="!reservation.numberOfNIghts" class="column66-in-form-search-apartment"  style="text-align:left;padding:0px;">	

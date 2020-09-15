@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -28,13 +29,22 @@ public class NotWorkingDatesDAO {
 		}
 	}
 	
+	public void save(List<Date> dates, String path) throws JsonGenerationException, JsonMappingException, IOException {
+		ArrayList<NotWorkingDates> notWorkingDatesList = new ArrayList<NotWorkingDates>();
+		notWorkingDates.add(new NotWorkingDates(dates));
+		notWorkingDatesList.addAll(notWorkingDates);
+		genericCRUD.saveAll(notWorkingDatesList, path);
+		
+	}
+	
 	public List<Date> getAllDates(){
 		ArrayList<Date> allDates = new ArrayList<Date>();
 		for (NotWorkingDates nwd : notWorkingDates) {
-			allDates.addAll(nwd.getNotWorknigDates());
+			allDates.addAll(nwd.getNotWorkingDates());
 		}
 		return allDates;
 	}
+
 	
 	
 	public Collection<NotWorkingDates> getNotWorkingDates() {
@@ -49,8 +59,6 @@ public class NotWorkingDatesDAO {
 	public void setGenericCRUD(GenericCRUD<NotWorkingDates> genericCRUD) {
 		this.genericCRUD = genericCRUD;
 	}
-	
-	
-	
+
 	
 }

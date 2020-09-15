@@ -14,7 +14,7 @@ public class NotWorkingDates {
 		this.notWorkingDates = notWorkngDates;
 	}
 	
-	public List<Date> getNotWorknigDates() {
+	public List<Date> getNotWorkingDates() {
 		return notWorkingDates;
 	}
 
