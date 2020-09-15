@@ -27,7 +27,7 @@ Vue.component("searchApartments", {
 									Date from :
 								</div>
 								<div class="column50-in-form-search-apartment">
-									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchStartDate"></vuejs-datepicker>
+									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchStartDate" :clear-button='true'></vuejs-datepicker>
 								</div>
 					  		</div>
 					  		<div class="row"> 
@@ -35,7 +35,7 @@ Vue.component("searchApartments", {
 									Date to :
 								</div>
 								<div class="column50-in-form-search-apartment">
-									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchEndDate">
+									<vuejs-datepicker input-class="datapicker-input-style" style="color:black" format="dd.MM.yyyy" v-model="searchEndDate" :clear-button='true'>
 									</vuejs-datepicker>
 								</div>
 					  		</div>
@@ -55,13 +55,13 @@ Vue.component("searchApartments", {
 									Price(EUR) :
 								</div>
 								<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 10px;color:black;"> 
-									<input class="small-input" type="text"  v-model="searchPriceFrom"/><label style="color:white;">--</label><input class="small-input" type="text" v-model="searchPriceTo"/>
+									<input class="small-input" type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="searchPriceFrom"/><label style="color:white;">--</label><input class="small-input" type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="searchPriceTo"/>
 								</div>
 								<div class="column25-in-form-search-apartment" style="width:150px;"> 
 									Number of rooms :
 								</div>
 								<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 5px;color:black;"> 
-									<input class="small-input" type="text"  v-model="searchNumberOfRoomsFrom"/><label style="color:white;">--</label><input class="small-input" type="text" v-model="searchNumberOfRoomsTo"/>
+									<input class="small-input" type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="searchNumberOfRoomsFrom"/><label style="color:white;">--</label><input class="small-input" type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="searchNumberOfRoomsTo"/>
 								</div>
 					  		</div>
 					  	</div>	
@@ -72,7 +72,7 @@ Vue.component("searchApartments", {
 									Number of guests :
 								</div>
 								<div class="column25-in-form-search-apartment" style="color:black;"> 
-									<input type="text" style="width:90px;" v-model="searchNumberOfGuests"/>
+									<input type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" style="width:90px;" v-model="searchNumberOfGuests"/>
 								</div>
 			  				</div>
 			  				<div class="row">

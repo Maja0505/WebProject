@@ -35,7 +35,7 @@ Vue.component('viewApartment',{
 						<div class="row" style="margin-top:2%;">
 							<label class="txt3">Apartment {{selectedApartment.name}}</label><br>
 						</div>
-						<div class="container" style="width:80%;height:27%;top:0px;padding:0;">
+						<div class="container" style="width:80%;height:27%;top:0px;padding:0;" v-if='selectedApartment.images.length != 0'>
 							<div class="mySlides" style="width:100%;height:100%;" v-for="image in selectedApartment.images">
 								<img :src="image"  style="width:100%;height:100%;">
 							</div>
@@ -100,7 +100,7 @@ Vue.component('viewApartment',{
 						<div class="row" style="margin-top:2%;">
 							<label class="txt3">Apartment {{selectedApartment.name}}</label><br>
 						</div>
-						<div class="container" style="width:80%;height:27%;top:0px;padding:0;">
+						<div class="container" style="width:80%;height:27%;top:0px;padding:0;"  v-if='selectedApartment.images.length != 0'>
 							<div class="mySlides" style="width:100%;height:100%;" v-for="image in selectedApartment.images">
 								<img :src="image"  style="width:100%;height:100%;">
 							</div>
@@ -225,6 +225,7 @@ Vue.component('viewApartment',{
         		         .then(response => (response.data ? this.allComments = response.data : this.allComments = null,this.getCommentForApartment(),this.showCommentPart()))))
        
        this.changeBGImage();
+	
 	},
 	
 	methods : {
@@ -366,26 +367,31 @@ Vue.component('viewApartment',{
 				},
 				
 		showSlides(n) {
-				  var i;
-				  var slides =this.$el.querySelectorAll(".mySlides");
-				  var dots = this.$el.querySelectorAll(".demo");
-				  var captionText = this.$el.querySelectorAll("#caption");
-				  if (n > slides.length) {this.slideIndex = 1}
-				  if (n < 1) {this.slideIndex = slides.length}
+				if(this.selectedApartment.images.length != 0){
+					 var i;
+					  var slides =this.$el.querySelectorAll(".mySlides");
+					  var dots = this.$el.querySelectorAll(".demo");
+					  var captionText = this.$el.querySelectorAll("#caption");
+					  if (n > slides.length) {this.slideIndex = 1}
+					  if (n < 1) {this.slideIndex = slides.length}
+					 
+					  this.$nextTick(function(){
+						  for (i = 0; i < slides.length; i++) {
+							    slides[i].style.display = "none";
+							  }
+					      for (i = 0; i < dots.length; i++) {
+							    dots[i].className = dots[i].className.replace(" active", "");
+						      }
+					      
+						  this.$el.querySelectorAll(".mySlides")[this.slideIndex-1].style.display = "block";
+						  this.$el.querySelectorAll(".demo")[this.slideIndex-1].className += " active";
+						  this.$el.querySelectorAll("#caption").innerHTML =  this.$el.querySelectorAll(".demo")[this.slideIndex-1].alt;	  
+						  
+					  })
+	
+				}
+				
 				 
-				  this.$nextTick(function(){
-					  for (i = 0; i < slides.length; i++) {
-						    slides[i].style.display = "none";
-						  }
-				      for (i = 0; i < dots.length; i++) {
-						    dots[i].className = dots[i].className.replace(" active", "");
-					      }
-				      
-					  this.$el.querySelectorAll(".mySlides")[this.slideIndex-1].style.display = "block";
-					  this.$el.querySelectorAll(".demo")[this.slideIndex-1].className += " active";
-					  this.$el.querySelectorAll("#caption").innerHTML =  this.$el.querySelectorAll(".demo")[this.slideIndex-1].alt;	  
-					  
-				  })
 				
 
 

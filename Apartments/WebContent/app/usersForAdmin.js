@@ -30,10 +30,12 @@ Vue.component("usersForAdmin",{
 							  <p><span >{{u.firstName}} {{u.lastName }}</span></p>
 							  <P>Username: {{u.username}}</p>
 							  <p>Gender: {{u.gender}}</p>
-							  <P>User type: {{u.typeOfUser }}</p>
+							  <p>User type: {{u.typeOfUser }}</p>
+							  <button class="cancel_edit_button" style="float:right;" v-if="u.typeOfUser != 'ADMIN' && u.isBlock == false" v-on:click="blockUser(u)" type='button'>Block user</button>
+							  <button class="cancel_edit_button" style="float:right;" v-if="u.typeOfUser != 'ADMIN' && u.isBlock == true" v-on:click="unblockUser(u)" type='button'>Unblock user</button>
 							</div>
 							<div class="container-user-for-admin" v-if="search.length == 0">
-								<h3>User for host doesn't exist<h3>
+								<h3>User for host doesn't exist</h3>
 							</div>
 						</div>
 					</div>
@@ -62,6 +64,36 @@ Vue.component("usersForAdmin",{
 	       axios
 	         .get('rest/users/currentUser')
 	         .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
+		},
+		blockUser:function(user){
+			user.isBlock = true;
+			axios
+	          .put('rest/users/updateUser',user);
+			
+			if(user.typeOfUser=='GUEST'){
+				axios
+		          .put('rest/guests/updateGuest',user);
+			}
+			
+			if(user.typeOfUser=='HOST'){
+				axios
+		          .put('rest/hosts/updateHost',user);
+			}
+		},
+		unblockUser:function(user){
+			user.isBlock = false;
+			axios
+	          .put('rest/users/updateUser',user);
+			
+			if(user.typeOfUser=='GUEST'){
+				axios
+		          .put('rest/guests/updateGuest',user);
+			}
+			
+			if(user.typeOfUser=='HOST'){
+				axios
+		          .put('rest/hosts/updateHost',user);
+			}
 		}
 	},
 	
@@ -73,7 +105,7 @@ Vue.component("usersForAdmin",{
 		        	   u.gender.toLowerCase().includes(this.searchText.toLowerCase()) ||
 		        	   u.typeOfUser.toLowerCase().includes(this.searchText.toLowerCase())})
 		}
-		}
+	}
 		
 	}
 

@@ -164,3 +164,7 @@
   right:0%;
   top: 0px;
 }
+
+svg {
+	display:none;
+}

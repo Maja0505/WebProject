@@ -12,6 +12,7 @@ public class User {
 	private Gender gender;
 	private TypeOfUser typeOfUser;
 	private int flag;
+	private Boolean isBlock;
 	
 	public User() {
 	}
@@ -27,8 +28,19 @@ public class User {
 		this.gender = gender;
 		this.typeOfUser = typeOfUser;
 		this.flag = 0;
+		this.isBlock = false;
 	}
 
+
+
+	public Boolean getIsBlock() {
+		return isBlock;
+	}
+
+
+	public void setIsBlock(Boolean isBlock) {
+		this.isBlock = isBlock;
+	}
 
 
 	public String getUsername() {
