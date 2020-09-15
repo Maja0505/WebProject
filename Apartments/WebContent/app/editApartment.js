@@ -192,6 +192,8 @@ Vue.component("editApartment", {
 		`,
 		mounted () {
 			
+		    document.querySelector('#address').style.visibility = 'hidden'; 	
+			
 	        this.$root.$on('showEditForm',(text) => {this.loadData(),this.getStartEndDate()});
 	        this.loadData()
 	        this.allPlaces();
@@ -267,7 +269,7 @@ Vue.component("editApartment", {
 				this.currentLocation = street +',' + city;
 
 			}
-			
+		
 			this.showLocationInput = false;
 
 		},

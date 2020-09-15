@@ -157,7 +157,7 @@ Vue.component("registration", {
 		          .then(response => ( 
 		        		  axios
 					      .get('rest/users/currentUser')
-					      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,this.$root.$emit('changeCurentUser',this.loggedUser))), this.$router.push('/')))
+					      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,this.$root.$emit('changeCurentUser',this.loggedUser))),alert('Hello ' + this.user.firstName + ', your account has been created  successfully' ) ,this.$router.push('/')))
 				},
 				
 			userExists : function(){

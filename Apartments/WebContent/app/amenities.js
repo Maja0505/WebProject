@@ -1,7 +1,7 @@
 Vue.component("amenities", {
 	data: function () {
 	    return {
-	    	allAmenitites:null,
+	    	allAmenitites:[],
 	    	name:null,
 	    	user:null,
 	    	maxId:0,
@@ -50,6 +50,8 @@ Vue.component("amenities", {
 			      <span v-if="mode !='NOT_EDIT_YET'"><button class="button-amenitie" v-on:click="cancel()" v-if="selectedAmenitie && selectedAmenitie.name == a.name" type="button">CANCEL</button></span>
 			      <label style="color:red" v-if="(selectedAmenitie && a.name == selectedAmenitie.name)">{{errorAmenitieEdit}}</label>
 			  </li>
+			  <li v-if="search.length == 0" style="pointer-events:none"><h3>Amenitie doesn't exist</h3></li>
+			  
 			</ul> 
 			</form>
 		</div>
@@ -229,7 +231,7 @@ Vue.component("amenities", {
 
 		search(){
 			
-			if(this.allAmenitites)	
+			
 				return this.allAmenitites.filter(a => {
 				         return a.name.toLowerCase().includes(this.searchText.toLowerCase())})
 		}

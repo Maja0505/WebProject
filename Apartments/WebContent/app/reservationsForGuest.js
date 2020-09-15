@@ -91,6 +91,9 @@ Vue.component("reservationsForGuest", {
 							</div>
 							 
 						</div>
+						<div class="container-user-for-admin" v-if="guestReservations.length == 0">
+								<h3>Reservation doesn't exist</h3>
+						</div>
 																
 		</form>
 	</div>
