@@ -53,7 +53,7 @@ Vue.component("apartment", {
 		  sendRequest:false,
 		  disableDatesStartDate:{},
 		  disableDatesEndDate:{},
-		  regexName:/^[a-zA-Z0-9_]{4,30}$/,
+		  regexName:/^[a-zA-Z0-9_ ]{4,30}$/,
 		  regexStreetNumber:/^[0-9a-zA-Z]{1,5}$/,
 		
 	    }
@@ -505,7 +505,7 @@ Vue.component("apartment", {
 			}
 		
 		
-		 if( this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorLocation == "" && this.errorStreetNumber == "" &&    this.errorEndDate == "" && this.errorStartDate == "" && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
+		 if(this.errorNameOfApartment == "" && this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorLocation == "" && this.errorStreetNumber == "" &&    this.errorEndDate == "" && this.errorStartDate == "" && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
 			 this.getAllApartments();
 		 }
 		

@@ -1,6 +1,9 @@
 /**
  * 
  */
+
+var arrayImageString = [];
+
 Vue.component('viewApartment',{
 	data : function(){
 		return {
@@ -174,13 +177,13 @@ Vue.component('viewApartment',{
 								 	</div>
 									<div class="column33-in-form-search-apartment">
 										<div class="container-form-input">
-												<button type="button" class="form-btn" v-on:click="deleteImage()" v-bind:disabled="imagesForApartment.length<1">DELETE LAST IMAGE</button>
+												<button type="button" class="form-btn" v-on:click="deleteImage()" v-show="imagesForApartment.length>0" v-bind:disabled="imagesForApartment.length<1">DELETE LAST IMAGE</button>
 
 										</div>
 								    </div>
 									<div class="column33-in-form-search-apartment">
 										<div class="container-form-input">
-												<button type="button" class="form-btn" v-on:click="getAllApartments_for_Image()">SUBMIT</button>
+												<button type="button" class="form-btn" v-show="imagesForApartment.length>0" v-on:click="getAllApartments_for_Image()">SUBMIT</button>
 										</div>
 									</div>
 							 </div>
@@ -199,7 +202,7 @@ Vue.component('viewApartment',{
 						</div>
 						
 						<div class="row"  style="width:50%;height:4%;margin-left:25%;margin-top:2%;">
-							<button type="button" class="form-btn" v-on:click="getAllApartments()">DELETE APARTMENT</button>
+							<button type="button"  class="form-btn" v-on:click="getAllApartments()">DELETE APARTMENT</button>
 						</div>
 					</div>
 				</div>
@@ -358,6 +361,9 @@ Vue.component('viewApartment',{
 			this.selectedApartment.flag = 1;
 			this.updateApartment(this.selectedApartment);
 			this.selectedApartment = null;
+			axios
+	          .post('rest/apartments/changeSelectedApartment',{})
+			
 		},
 		
 		showComments : function(){
@@ -432,6 +438,7 @@ Vue.component('viewApartment',{
 		convertImagesFromBlobToBase64 : function(){
 			
 			var i = this.apartmentImagesLength ;
+			arrayImageString = [];
 			let promises = [];
 			for(image of this.imagesForApartmentForConvert){
 				promises.push(new Promise((resolve,reject) => {
