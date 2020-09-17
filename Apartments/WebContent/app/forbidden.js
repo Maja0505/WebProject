@@ -39,11 +39,22 @@ Vue.component('forbidden',{
 			  
 			</div>
 			<h1 class="errorcode">ERROR 403</h1>
-			<div class="errortext" style="margin-top:100px;">This area is forbidden. Turn back now!</div>
+			<div class="errortext" style="margin-top:100px;">This area is forbidden. Turn back on <a style="color:blue;" href="#/" v-on:click="goToHome()">home page!<a></div>
 
 		</div>
 	`,
 	mounted(){
-		document.querySelector('body').style.background =  '#000121';
+		document.getElementById('navigationMenu').style.visibility='hidden';
+		this.changeBGImage();
+	},
+	
+	methods : {
+		goToHome : function(){
+			document.getElementById('navigationMenu').style.visibility='visible';
+		},
+		
+		changeBGImage : function(){
+			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
+		},
 	}
 })

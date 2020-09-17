@@ -94,7 +94,7 @@ Vue.component('notWorkingDates',{
 			axios
 	          .post('rest/notWorkingDates/add', this.notWorkingDates)
 	          .then(response => {
-	        	  alert('BRAVOOO')
+	        	  alert('Succsess add holiday days!')
 	          })
 	        	
 		}

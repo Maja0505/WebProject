@@ -207,10 +207,18 @@ Vue.component("apartment", {
 			 this.allPlaces();
 	         axios
 		      .get('rest/users/currentUser')
-		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null))
+		      .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,this.check()))
 		      this.generateDisableDatesStartDate() 
 	    }
 		,methods: {
+			
+			check : function(){
+				if(!this.loggedUser){
+					this.$router.push('/login');
+				}else if(this.loggedUser.typeOfUser != 'HOST'){
+					this.$router.push('/403');
+				}
+			},
 			
 			changeBGImage : function(){
 				document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';

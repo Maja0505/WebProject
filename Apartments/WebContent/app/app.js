@@ -28,7 +28,6 @@ const router = new VueRouter({
 	    { path: '/registration', component: Registation },
 	    { path: '/comment', component: Comment },
 	    { path: '/apartment' , component: Apartment},
-	    { path: '/location' , component: Location},
 	    { path: '/amenities' , component: amenities},
 	    { path: '/allApartments' , component: ApartmentsForGuestOrUnregistredUser},
 	    { path: '/guestsList' , component: showGuestsForHost},
@@ -42,7 +41,8 @@ const router = new VueRouter({
 	    { path:'/admin/addHost', component: AddHost},
 	    { path: '/host/allApartments' , component : AllApartmentsForHost},
 	    { path: '/403', component : Forbidden},
-	    { path: '/addNotWorkingDates', component: AddNotWorkingDates}
+	    { path: '/addNotWorkingDates', component: AddNotWorkingDates},
+	    { path: '/*',component: Forbidden}
 	  ],
 });
 
