@@ -42,6 +42,7 @@ Vue.component("navigationbar",{
 	    				<li><a href="#/admin/allReservations" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getReservationsForAdmin">All reservations</a></li>
 	    				<li><a href="#/amenities" v-if = "user" v-show="user.typeOfUser == 'ADMIN'" v-on:click="getAmnenitiesForAdmin">All amnenites</a></li>
 	    				<li><a href="#/admin/addHost" v-if = "user" v-show="user.typeOfUser == 'ADMIN'">Add host</a></li>
+	    				<li><a href="#/addNotWorkingDates" v-if = "user" v-show="user.typeOfUser == 'ADMIN'">Add holiday days</a></li>
 
 
 						<li><a href="#/login" v-show="!user">Login</a></li>

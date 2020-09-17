@@ -9,6 +9,8 @@ Vue.component("reservation", {
 		  selectedApartment: null,
 		  maxId:0,
 		  disableDates:{},
+		  highlightedDates:{},
+		  notWorkingDates:{},
 		  reservation:{},
 		  showReservationForm : false,
 		  error: '',
@@ -29,7 +31,7 @@ Vue.component("reservation", {
 									<label class="txt8" style="margin-left:5%;">Date of start reservation: </label>
 								</div>
 								<div class="column50-in-form-search-apartment"  style="text-align:left;padding:0px;">	
-									<vuejs-datepicker @input="getFullPrice" input-class="reservation-input" style="width:70%;" v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates"></vuejs-datepicker>
+									<vuejs-datepicker @input="getFullPrice" input-class="reservation-input" style="width:70%;" v-model="reservation.startDateOfReservation"  format="dd.MM.yyyy"  :disabled-dates="disableDates" :highlighted="highlightedDates"></vuejs-datepicker>
 									<span class="focus-reservation-input"></span>
 								</div>
 							</div>
@@ -72,8 +74,9 @@ Vue.component("reservation", {
 							</div>
 							<div class="column50-in-form-search-apartment" style="text-align:left;padding:10px;">
 								<div  v-show="reservation.numberOfNIghts" class="column66-in-form-search-apartment"  style="text-align:left;padding:0px;">
-									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight !== fullPriceOfReservation"><span style="color:green;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:red;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
-									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight == fullPriceOfReservation">{{fullPriceOfReservation}}</label>
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight > fullPriceOfReservation"><span style="color:green;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:red;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight < fullPriceOfReservation"><span style="color:red;">{{fullPriceOfReservation}}</span>$ <span style="text-decoration-line: line-through;color:black;">{{reservation.numberOfNIghts * selectedApartment.pricePerNight}} $</span></label>
+									<label class="txt8" v-show="reservation.numberOfNIghts * selectedApartment.pricePerNight == fullPriceOfReservation">{{fullPriceOfReservation}} $</label>
 								</div>
 								<div v-show="!reservation.numberOfNIghts" class="column66-in-form-search-apartment"  style="text-align:left;padding:0px;">	
 									<label class="txt8">0 $</label>
@@ -120,7 +123,11 @@ Vue.component("reservation", {
 		        axios
 		          .get('rest/reservations/all')
 		          .then(response =>  (response.data ? this.allReservations = response.data : this.allReservations = null))
-
+		        
+		        axios
+		          .get('rest/notWorkingDates/all')
+		          .then(response =>  (response.data ? this.notWorkingDates = response.data : this.notWorkingDates = null, this.generateHighlightedDates()))
+		          
 			},
 			
 			findMaxId : function(){
@@ -129,6 +136,20 @@ Vue.component("reservation", {
 	    				this.maxId = parseInt(res.id);
 	    			}
 	    		}
+			},
+			
+			generateHighlightedDates : function(){
+				this.highlightedDates = {
+						dates: this.getNotWorkingDates()
+				}
+			},
+			
+			getNotWorkingDates : function(){
+				let notWorkingDatesArray = []
+				for(let date of this.notWorkingDates){
+					notWorkingDatesArray.push(new Date(date))
+				}
+				return notWorkingDatesArray
 			},
 			
 			generateDisableDates : function(){
@@ -269,9 +290,12 @@ Vue.component("reservation", {
 	    		for(let i = 0;i < this.reservation.numberOfNIghts;i++){
 	    			   var selectedDateNew = new Date(yyyy,mm,dd,0,0,0,0);
 	    			   selectedDateNew.setDate(selectedDateNew.getDate() + i);
-	    			   if(selectedDateNew.getDay() >= 5){
+	    			   if(this.notWorkingDates.indexOf(selectedDateNew.getTime()) != -1){
+	    				   this.fullPriceOfReservation += this.selectedApartment.pricePerNight * 1.05	    				   
+	    			   }else if(selectedDateNew.getDay() >= 5){
 	    				   this.fullPriceOfReservation += this.selectedApartment.pricePerNight * 0.9
-	    			   }else{
+	    			   }
+	    			   else{
 	    				   this.fullPriceOfReservation += this.selectedApartment.pricePerNight
 	    			   }
 	    		   }

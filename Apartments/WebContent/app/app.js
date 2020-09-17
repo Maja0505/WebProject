@@ -14,7 +14,7 @@ const AllApartmentsForAdmin = {template: '<apartmentsForAdmin></apartmentsForAdm
 const AddHost = {template: '<addHost></addHost>'}
 const AllApartmentsForHost = {template: '<apartmentsForHost></apartmentsForHost>'}
 const Forbidden = {template: '<forbidden></forbidden>'}
-
+const AddNotWorkingDates = {template: '<notWorkingDates></notWorkingDates>'}
 
 const editProfile = {template: '<editProfile></editProfile>'}
 const usersForAdmin = {template: '<usersForAdmin></usersForAdmin>'}
@@ -42,6 +42,7 @@ const router = new VueRouter({
 	    { path:'/admin/addHost', component: AddHost},
 	    { path: '/host/allApartments' , component : AllApartmentsForHost},
 	    { path: '/403', component : Forbidden},
+	    { path: '/addNotWorkingDates', component: AddNotWorkingDates}
 	  ],
 });
 

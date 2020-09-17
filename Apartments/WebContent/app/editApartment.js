@@ -118,7 +118,7 @@ Vue.component("editApartment", {
 									<input v-if="selectedApartment && !showLocationInput" class="form-input" type="text" placeholder="Street number" v-model="currentLocation" v-bind:disabled="mode=='NOT_EDIT_YET'" style="border-color: black;color: #000;"  @focusin="inFocusLocation()">
 									<input class="form-input-vuejs" type="search" id="address" placeholder="Search street"  style="color: #000;" v-bind:disabled="mode=='NOT_EDIT_YET'"  @focusout="lostFocusLocation()" v-show="showLocationInput">
 									<span class="focus-form-input"></span>
-									<p class="form-input-error"><span style="color:grey;">Location</span> {{errorLocation}}</p>
+									<p class="form-input-error" style="bottom: 35%;margin-left: 45%;"><span style="color:grey;">Location</span> {{errorLocation}}</p>
 							</div>
 						</div>
 					</div>
