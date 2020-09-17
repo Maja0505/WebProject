@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,9 +13,12 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import beans.Apartment;
 import beans.Guest;
+import beans.Reservation;
 import beans.User;
 import dto.GuestDTO;
+import enums.TypeOfUser;
 
 
 
@@ -39,21 +43,21 @@ public class GuestDAO {
 					guests.put(guest.getUsername(), guest);
 					break;
 				}
-			
 			}
-		
-			
 		}
 
 	}
 	
-	public void save(Collection<Guest> allGuests,Guest newGuest,String path) throws JsonGenerationException, JsonMappingException, IOException {
+	public void save(User user,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		Guest newGuest = new Guest(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
+				user.getGender(), TypeOfUser.GUEST,new ArrayList<Apartment>(),new ArrayList<Reservation>());
+		guests.put(newGuest.getUsername(), newGuest);
 		Collection<GuestDTO> guestsDTO = new LinkedList<GuestDTO>();
-		for (Guest guest : allGuests) {
+		for (Guest guest : allGuests()) {
 			guestsDTO.add(new GuestDTO(guest.getUsername(),guest.getRentedApartments(),guest.getReservations()));
 		}
 		genericCRUD.saveAll(guestsDTO, path);
-		guests.put(newGuest.getUsername(), newGuest);
+		
 	}
 	
 	public void update(Guest guest,String path) throws JsonGenerationException, JsonMappingException, IOException {

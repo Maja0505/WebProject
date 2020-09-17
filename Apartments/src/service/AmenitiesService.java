@@ -1,9 +1,7 @@
 package service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -55,14 +53,9 @@ public class AmenitiesService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addAmenitie(Amenities amenitie) throws JsonParseException, JsonMappingException, IOException {
 		AmenitiesDAO amenitiesDAO = (AmenitiesDAO) ctx.getAttribute("amenities");
-		List<Amenities> amenities = new ArrayList<Amenities>();
-		for(Amenities a : getAllAmenities()) {
-			amenities.add(a);
-		}
-		Amenities newAmenitie = new Amenities(amenitie.getId(), amenitie.getName());
-		amenities.add(newAmenitie);
-		amenitiesDAO.save(amenities,newAmenitie,ctx.getRealPath("") + "json/amenitie.json");
+		amenitiesDAO.save(amenitie,ctx.getRealPath("") + "json/amenitie.json");
 	}
+	
 	@PUT
 	@Path("/updateAmenitie")
 	@Consumes(MediaType.APPLICATION_JSON)

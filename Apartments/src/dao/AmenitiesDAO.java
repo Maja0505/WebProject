@@ -32,9 +32,15 @@ public class AmenitiesDAO {
 		return amenities.values();
 	}
 	
-	public void save(Collection<Amenities> allAmenities,Amenities newAmenitie,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allAmenities, path);
+	public void save(Amenities newAmenitie,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		amenities.put(String.valueOf(newAmenitie.getId()), newAmenitie);
+		genericCRUD.saveAll(allAmenities(), path);
+	}
+	
+	public void update(Amenities amenitie, String path) throws JsonGenerationException, JsonMappingException, IOException {
+		genericCRUD.update(amenities, amenitie, path, amenitie.getId());
+		amenities.replace(amenitie.getId(), amenities.get(amenitie.getId()), amenitie);
+		
 	}
 	
 	public HashMap<String, Amenities> getAmenities() {
@@ -50,11 +56,5 @@ public class AmenitiesDAO {
 		this.genericCRUD = genericCRUD;
 	}
 
-	public void update(Amenities amenitie, String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.update(amenities, amenitie, path, amenitie.getId());
-		amenities.replace(amenitie.getId(), amenities.get(amenitie.getId()), amenitie);
-		
-	}
-	
 	
 }

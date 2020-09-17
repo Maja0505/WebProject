@@ -28,9 +28,10 @@ public class ReservationDAO {
 		}
 	}
 	
-	public void save(Collection<Reservation> allReservation,Reservation newReservation,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allReservation, path);
+	public void save(Reservation newReservation,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		reservations.put(newReservation.getId(), newReservation);
+		genericCRUD.saveAll(allReservations(), path);
+		
 	}
 	
 	public void update(Reservation newReservation,String path) throws JsonGenerationException, JsonMappingException, IOException {

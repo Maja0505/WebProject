@@ -1,9 +1,7 @@
 package service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -53,13 +51,7 @@ public class CommentService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addComment(Comment comment) throws JsonParseException, JsonMappingException, IOException {
 		CommentDAO commentDAO = (CommentDAO) ctx.getAttribute("comments");
-		List<Comment> comments = new ArrayList<Comment>();
-		for(Comment c : getAllComments()) {
-			comments.add(c);
-		}
-		comment.setEnable(true);
-		comments.add(comment);
-		commentDAO.save(comments,comment,ctx.getRealPath("") + "json/comment.json");
+		commentDAO.save(comment,ctx.getRealPath("") + "json/comment.json");
 	}
 	
 	@PUT

@@ -1,9 +1,7 @@
 package service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -21,11 +19,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import beans.Apartment;
 import beans.Host;
 import beans.User;
 import dao.HostDAO;
-import enums.TypeOfUser;
 
 @Path("/hosts")
 public class HostService {
@@ -58,15 +54,7 @@ public class HostService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addHost(User user) throws JsonParseException, JsonMappingException, IOException {
 		HostDAO hostDao = (HostDAO) ctx.getAttribute("hosts");
-		List<Host> hosts = new ArrayList<Host>();
-		for(Host h : getAllHosts()) {
-			hosts.add(h);
-		}
-		Host newHost = new Host(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
-				user.getGender(), TypeOfUser.HOST,new ArrayList<Apartment>());
-		hosts.add(newHost);
-		
-		hostDao.save(hosts,newHost,ctx.getRealPath("") + "json/host.json");
+		hostDao.save(user,ctx.getRealPath("") + "json/host.json");
 	}
 	
 
