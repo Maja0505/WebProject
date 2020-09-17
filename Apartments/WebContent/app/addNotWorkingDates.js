@@ -8,6 +8,7 @@ Vue.component('notWorkingDates',{
 			notWorkingDates:[],
 			date:null,
 			disableDates:{},
+			currentUser:null,
 		}
 	},
 	
@@ -44,10 +45,21 @@ Vue.component('notWorkingDates',{
 	mounted(){
 		this.changeBGImage();
 		this.generateDisableDates();
+		 axios
+	      .get('rest/users/currentUser')
+	      .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check()))
 	},
 	
 	
 	methods:{
+		
+		check : function(){
+			if(!this.currentUser){
+				this.$router.push('/login');
+			}else if(this.currentUser.typeOfUser != 'ADMIN'){
+				this.$router.push('/403');
+			}
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
