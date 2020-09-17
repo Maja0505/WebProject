@@ -53,6 +53,8 @@ Vue.component("apartment", {
 		  sendRequest:false,
 		  disableDatesStartDate:{},
 		  disableDatesEndDate:{},
+		  regexName:/^[a-zA-Z0-9_]{4,30}$/,
+		  regexStreetNumber:/^[0-9a-zA-Z]{1,5}$/,
 		
 	    }
 	},
@@ -447,7 +449,9 @@ Vue.component("apartment", {
 			
 			if(!this.apartment.name){
 				this.errorNameOfApartment = "can't be empty"
-			}  
+			}else if(!this.regexName.exec(this.apartment.name)){
+				this.errorNameOfApartment = "can't contain special character, min 4 caracters"
+			}
 			if(this.typeOfApartment == 'Choose type of apartment'){
 				this.errorTypeOfApartment = "can't be empty"
 			}
@@ -467,6 +471,8 @@ Vue.component("apartment", {
 			}
 			if(!this.streetNumber){
 				this.errorStreetNumber= "can't be empty"
+			}else if(!this.regexStreetNumber.exec(this.streetNumber)){
+				this.errorStreetNumber= "can't contain special character"
 			}
 			if(!this.startDate){
 				this.errorStartDate = "can't be empty"
@@ -486,6 +492,10 @@ Vue.component("apartment", {
 			if(!this.apartment.checkOutTime){
 				this.errorCheckOutTime = "can't be empty"
 			}
+			if(!(postalCode || city  || street  || latitude || longitude)){
+				this.errorLocation= "you must select an address"
+			}
+		
 		
 		 if( this.errorTypeOfApartment == "" && this.errorNumberOfRooms == "" && this.errorNumberOfGuests == "" && this.errorLocation == "" && this.errorStreetNumber == "" &&    this.errorEndDate == "" && this.errorStartDate == "" && this.errorPricePerNight == "" && this.errorCheckInTime == "" && this.errorCheckOutTime == ""){
 			 this.getAllApartments();

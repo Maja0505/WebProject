@@ -11,7 +11,9 @@ Vue.component("registration", {
 	      errorPassword:"",
 	      errorConfirmPassword:"",
 	      loggedUser : null,
-	      gender:'Choose gender'
+	      gender:'Choose gender',
+	      regexUsername:/^[a-zA-Z0-9_]{4,15}$/,
+	      regexName:/[a-zA-Z]/
 	    }
 },
 		template: ` 
@@ -103,9 +105,15 @@ Vue.component("registration", {
 						this.confirmPassword = confirmPassword;
 						if(!user.firstName){
 							this.errorFirstName = "First name can't be empty";
+						}else if(!this.regexName.exec(this.user.firstName)){
+							this.errorFirstName = "First name can't contain numbers and special character";
+
 						}
 						if(!user.lastName){
 						    this.errorLastName = "Last name can't be empty";
+						}else if(!this.regexName.exec(this.user.lastName)){
+						    this.errorLastName = "Last name  can't contain numbers and special character";
+
 						}
 						if(user.gender == 'Choose gender'){
 					        this.errorGender = "Gender can't be empty";
@@ -114,7 +122,10 @@ Vue.component("registration", {
 						if(!user.username){
 					        this.errorUsername = "Username can't be empty";
 
+						}else if(!this.regexUsername.exec(this.user.username)){
+							 this.errorUsername = "Username can't contain special character and must have at least 4 character";
 						}
+						
 						if(!user.password){
 							this.errorPassword = "Password can't be empty";
 

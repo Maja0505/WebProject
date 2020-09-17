@@ -199,7 +199,7 @@ Vue.component('viewApartment',{
 						</div>
 						
 						<div class="row"  style="width:50%;height:4%;margin-left:25%;margin-top:2%;">
-							<button type="button" class="form-btn" v-on:click="getAllApartments_for_Admin()">DELETE APARTMENT</button>
+							<button type="button" class="form-btn" v-on:click="getAllApartments()">DELETE APARTMENT</button>
 						</div>
 					</div>
 				</div>
@@ -298,11 +298,21 @@ Vue.component('viewApartment',{
 				}
 			}
 		},
-		getAllApartments_for_Admin: function(){
-			axios
-	    	  .get('rest/apartments/all')
-	          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.deleteApartment(),this.$router.push('/admin/allApartments')))
+		getAllApartments: function(){
+			if(this.currentUser){
+				if(this.currentUser.typeOfUser == "ADMIN"){
+					axios
+			    	  .get('rest/apartments/all')
+			          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.deleteApartment(),this.$router.push('/admin/allApartments')))
 
+				}else if(this.currentUser.typeOfUser == "HOST"){
+					axios
+			    	  .get('rest/apartments/all')
+			          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.deleteApartment(),this.$router.push('/host/allApartments')))
+
+				}
+			}
+		
 		},
 		getAllApartments_for_Image: function(){
 			axios

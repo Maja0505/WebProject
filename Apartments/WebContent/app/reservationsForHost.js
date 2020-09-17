@@ -6,9 +6,10 @@ function fixDate(reservations){
 	}
 	return reservations;
 }
-function fixOneDate(date){
+function f(date){
 	 return new Date(parseInt(date));
 }
+var startDate = null;
 Vue.component("reservationsForHost", {
 	data: function () {
 	    return {
@@ -27,6 +28,8 @@ Vue.component("reservationsForHost", {
 	    	isAccepted:false,
 	    	isCompleted:false,
 	    	sorting:'',
+	    	allApartments:null,
+	    	apartmentForUpdate :null,
 	    }
 },
 		template: ` 
@@ -108,7 +111,7 @@ Vue.component("reservationsForHost", {
 								           <button class="confirm_edit_button" v-show = "g.statusOfReservation == 'CREATED'" v-on:click ="accepteReservation(g)" type="button" style="padding: 0px;">Accept reservation</button>
 								 	   </div>
 								 	   <div class="column" >
-								 	   			<button class="cancel_edit_button" v-show = "(g.statusOfReservation == 'ACCEPTED' || g.statusOfReservation == 'CREATED')" v-on:click = "cancelReservation(g)" type="button" style="padding: 0px;">Reject reservation</button>
+								 	   			<button class="cancel_edit_button" v-show = "(g.statusOfReservation == 'ACCEPTED' || g.statusOfReservation == 'CREATED')" v-on:click = "cancelReservation(g,g.startDateOfReservation)" type="button" style="padding: 0px;">Reject reservation</button>
 								       			<button class="cancel_edit_button"  v-show = "(g.statusOfReservation == 'ACCEPTED' && isFinished(g))" v-on:click = "completeReservation(g)" type="button" style="padding: 0px;">Complete reservation</button>
 								 	   </div>
 								 </div>
@@ -174,7 +177,9 @@ Vue.component("reservationsForHost", {
 			        	.put('rest/reservations/updateReservation',this.selectedReservation)
 					
 				},
-				cancelReservation: function(reservation){
+				cancelReservation: function(reservation,s){
+					var d = s;
+					console.log(d);
 					this.selectedReservation = reservation;
 					this.selectedReservation.statusOfReservation = 'REJECTED';
 					
@@ -184,7 +189,39 @@ Vue.component("reservationsForHost", {
 					}
 					axios
 		        	.put('rest/reservations/updateReservation',this.selectedReservation)
+		        	 
+		        	this.getAllApartments()
 		        	
+				},
+				getAllApartments:function(){
+					 axios
+			          .get('rest/apartments/all')
+			          .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,this.findApartment()))
+				},
+				findApartment:function(){
+					let doUpdate = false;
+					for(a of this.allApartments){
+						if(a.id == this.selectedReservation.apartment.id){
+							var startYear = this.selectedReservation.startDateOfReservation.getYear() + 1900;
+							 var startMonth = this.selectedReservation.startDateOfReservation.getMonth();
+							 var startDay = this.selectedReservation.startDateOfReservation.getDate();
+							for(let i = 0; i < this.selectedReservation.numberOfNights;i++){
+								startDate = new Date(startYear,startMonth,startDay,0,0,0,0);
+								startDate.setDate(startDate.getDate() + i);
+								a.availabilityByDates.push(startDate)
+								doUpdate = true;
+							}
+							if(doUpdate){
+								this.updateApartment(a)
+							}
+							break;
+						}
+					}
+					
+				},
+				updateApartment: function(a){
+					 axios
+			          .put('rest/apartments/updateApartment',a)
 				},
 				completeReservation: function(reservation){
 					this.selectedReservation = reservation;
@@ -196,14 +233,16 @@ Vue.component("reservationsForHost", {
 					}
 					axios
 		        	.put('rest/reservations/updateReservation',this.selectedReservation)
-				},isFinished: function(reservation){
-					let date = reservation.startDateOfReservation;
-
-					date.setDate(date.getDate() + reservation.numberOfNights);
-					if(date < fixOneDate(this.now) ){
+				},
+				isFinished: function(reservation){
+					var startYear = reservation.startDateOfReservation.getYear() + 1900;
+					 var startMonth = reservation.startDateOfReservation.getMonth();
+					 var startDay = reservation.startDateOfReservation.getDate();
+					 var d =  new Date(startYear,startMonth,startDay,0,0,0,0);
+					 d.setDate(d.getDate() + reservation.numberOfNights - 1)
+					if(d < fixOneDate(this.now) ){
 						return true;
 					}else{
-
 						return false;
 					}
 				},
