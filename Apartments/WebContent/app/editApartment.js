@@ -350,7 +350,7 @@ Vue.component("editApartment", {
 				this.mode = "NOT_EDIT_YET";
 				 axios
 			          .put('rest/apartments/updateApartment',this.selectedApartment)
-		            .then(response => (toast('Apartment is successful update')))
+		            .then(response => (alert('Success edit')))
 			},
 			
 			cancel: function(){
