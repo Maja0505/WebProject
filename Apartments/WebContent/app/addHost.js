@@ -28,7 +28,7 @@ Vue.component("addHost",{
 							<div class="container-form-input">
 									<input class="form-input" type="text" placeholder="First name" v-model="user.firstName">
 									<span class="focus-form-input"></span>
-									<p class="form-input-error">{{errorFirstName}}</p>
+									<p class="form-input-error">{{errorFirstName}}</p> 
 							</div>
 						</div>
 						<div class="column25-in-form-search-apartment">
