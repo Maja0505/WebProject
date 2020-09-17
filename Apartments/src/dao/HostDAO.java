@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,9 +13,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import beans.Apartment;
 import beans.Host;
 import beans.User;
 import dto.HostDTO;
+import enums.TypeOfUser;
 
 public class HostDAO {
 
@@ -52,6 +55,37 @@ public class HostDAO {
 		hosts.replace(host.getUsername(), hosts.get(host.getUsername()), host);
 	}
 	
+	public Host find(String username, String password) {
+		if (!hosts.containsKey(username)) {
+			return null;
+		}
+		Host host = hosts.get(username);
+		if (!host.getPassword().equals(password)) {
+			return null;
+		}
+		return host;
+	}
+	
+	public void save(User user,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		Host newHost = new Host(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(),
+				user.getGender(), TypeOfUser.HOST,new ArrayList<Apartment>());
+		hosts.put(newHost.getUsername(), newHost);
+		Collection<HostDTO> HostsDTO = new LinkedList<HostDTO>();
+		for (Host host : allHosts()) {
+			HostsDTO.add(new HostDTO(host.getUsername(),host.getApartmentsForRent()));
+		}
+		genericCRUD.saveAll(HostsDTO, path);
+		
+	}
+	
+	public void update(Collection<Host> allHosts,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		Collection<HostDTO> HostsDTO = new LinkedList<HostDTO>();
+		for (Host host : allHosts) {
+			HostsDTO.add(new HostDTO(host.getUsername(),host.getApartmentsForRent()));
+		}
+		genericCRUD.saveAll(HostsDTO, path);
+	}
+	
 	public Collection<Host> allHosts(){
 		return hosts.values();
 	}
@@ -65,31 +99,6 @@ public class HostDAO {
 		this.hosts = hosts;
 	}
 
-	public Host find(String username, String password) {
-		if (!hosts.containsKey(username)) {
-			return null;
-		}
-		Host host = hosts.get(username);
-		if (!host.getPassword().equals(password)) {
-			return null;
-		}
-		return host;
-	}
-	public void save(Collection<Host> allHosts,Host newHost,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		Collection<HostDTO> HostsDTO = new LinkedList<HostDTO>();
-		for (Host host : allHosts) {
-			HostsDTO.add(new HostDTO(host.getUsername(),host.getApartmentsForRent()));
-		}
-		genericCRUD.saveAll(HostsDTO, path);
-		hosts.put(newHost.getUsername(), newHost);
-	}
-	
-	public void update(Collection<Host> allHosts,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		Collection<HostDTO> HostsDTO = new LinkedList<HostDTO>();
-		for (Host host : allHosts) {
-			HostsDTO.add(new HostDTO(host.getUsername(),host.getApartmentsForRent()));
-		}
-		genericCRUD.saveAll(HostsDTO, path);
-	}
+
 	
 }

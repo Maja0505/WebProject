@@ -1,9 +1,7 @@
 package service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -54,12 +52,7 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addReservation(Reservation reservation) throws JsonParseException, JsonMappingException, IOException {
 		ReservationDAO reservationDAO = (ReservationDAO) ctx.getAttribute("reservations");
-		List<Reservation> reservations = new ArrayList<Reservation>();
-		for(Reservation r : getAllReservations()) {
-			reservations.add(r);
-		}
-		reservations.add(reservation);
-		reservationDAO.save(reservations,reservation,ctx.getRealPath("") + "json/reservation.json");
+		reservationDAO.save(reservation,ctx.getRealPath("") + "json/reservation.json");
 	}
 	
 	@PUT

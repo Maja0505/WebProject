@@ -29,9 +29,10 @@ public class UserDAO{
 		
 	}
 	
-	public void save(Collection<User> allUsers,User newUser,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allUsers,path);
+	public void save(User newUser,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		newUser.setIsBlock(false);
 		users.put(newUser.getUsername(), newUser);
+		genericCRUD.saveAll(allUsers(),path);
 	}
 	
 	public void update(User user,String path) throws JsonGenerationException, JsonMappingException, IOException {

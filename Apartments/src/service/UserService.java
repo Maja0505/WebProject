@@ -1,9 +1,7 @@
 package service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -104,13 +102,7 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public void addUser(User user) throws JsonParseException, JsonMappingException, IOException {
 		UserDAO userDao = (UserDAO) ctx.getAttribute("users");
-		List<User> users = new ArrayList<User>();
-		for(User u : getAllUsers()) {
-			users.add(u);
-		}
-		User newUser = new User(user.getUsername(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getGender(), user.getTypeOfUser());
-		users.add(newUser);
-		userDao.save(users,newUser,ctx.getRealPath("")+"json/user.json");
+		userDao.save(user,ctx.getRealPath("")+"json/user.json");
 	}
 	
 	@PUT

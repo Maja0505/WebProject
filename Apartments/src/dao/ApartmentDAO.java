@@ -27,9 +27,9 @@ public class ApartmentDAO {
 		}
 	}
 	
-	public void save(Collection<Apartment> allAparmtents,Apartment newAparmtnet,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allAparmtents,path);
+	public void save(Apartment newAparmtnet,String path) throws JsonGenerationException, JsonMappingException, IOException {
 		apartments.put(String.valueOf(newAparmtnet.getId()),newAparmtnet);
+		genericCRUD.saveAll(allAparmtents(),path);
 	}
 	
 	public void update(Apartment apartment,String path) throws JsonGenerationException, JsonMappingException, IOException {

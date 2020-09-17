@@ -26,9 +26,11 @@ public class CommentDAO {
 		}
 	}
 	
-	public void save(Collection<Comment> allComments,Comment newComment,String path) throws JsonGenerationException, JsonMappingException, IOException {
-		genericCRUD.saveAll(allComments,path);
+	public void save(Comment newComment,String path) throws JsonGenerationException, JsonMappingException, IOException {
+		newComment.setEnable(true);
 		comments.put(newComment.getId(),newComment);
+		genericCRUD.saveAll(allComments(),path);
+		
 	}
 	
 	public void update(Comment comment,String path) throws JsonGenerationException, JsonMappingException, IOException {
