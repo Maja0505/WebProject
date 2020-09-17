@@ -1,6 +1,5 @@
 const Login = { template: '<login></login>' }
 const Registation = { template: '<registration></registration>' }
-const Comment = { template: '<comment></comment>' }
 const HomePage = { template: '<homePage></homePage>' }
 const Apartment = { template: '<apartment></apartment>' }
 const amenities = { template: '<amenities></amenities>' }
@@ -26,7 +25,6 @@ const router = new VueRouter({
 		{ path: '/', component: HomePage },
 	    { path: '/login', component: Login },
 	    { path: '/registration', component: Registation },
-	    { path: '/comment', component: Comment },
 	    { path: '/apartment' , component: Apartment},
 	    { path: '/amenities' , component: amenities},
 	    { path: '/allApartments' , component: ApartmentsForGuestOrUnregistredUser},

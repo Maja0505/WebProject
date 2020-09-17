@@ -39,7 +39,7 @@ Vue.component('forbidden',{
 			  
 			</div>
 			<h1 class="errorcode">ERROR 403</h1>
-			<div class="errortext" style="margin-top:100px;">This area is forbidden. Turn back on <a style="color:blue;" href="#/" v-on:click="goToHome()">home page!<a></div>
+			<div class="errortext" style="margin-top:100px;">This area is forbidden. Turn back on <a style="color:blue;" href="#/" v-on:click="goToHome()">home page!</a></div>
 
 		</div>
 	`,

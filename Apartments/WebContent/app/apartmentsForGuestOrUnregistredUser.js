@@ -95,7 +95,7 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 		this.changeBGImage();
           axios
 	         .get('rest/users/currentUser')
-	          	.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
+	          	.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check()))
 	      this.$root.$on('loadApartmentForGuest',(text)=>{this.showAllApartments = text, this.selectedApartment = null})
 	      this.$root.$on('searchApartmentForGuestOrUnregistredUser',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
@@ -128,6 +128,9 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 
 	
 	methods : {
+		check : function(){
+			
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';

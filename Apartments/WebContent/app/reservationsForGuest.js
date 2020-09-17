@@ -15,7 +15,7 @@ Vue.component("reservationsForGuest", {
 		  allReservations:null,
 		  user:null,
 		  guestReservations:[],
-		  selectedReservation:null,
+		  selectedReservation:{},
 		  showCommentForm:false,
 		  sorting:'',
 	    }
@@ -85,12 +85,13 @@ Vue.component("reservationsForGuest", {
 								       	<button class="cancel_edit_button"  v-on:click="openCommentForm(g)" v-show ="(g.statusOfReservation == 'REJECTED' || g.statusOfReservation == 'COMPLETED')"  type="button" style="padding: 0px;">Comment apartment</button>
 							 		</div>
 							  </div>
-							
+							  
+							  <div v-show="selectedReservation.id == g.id">
 								<comment></comment>
-							
+							  </div>
 							</div>
 							 
-						</div>
+					</div>
 						<div class="container-user-for-admin" v-if="guestReservations.length == 0">
 								<h3>Reservation doesn't exist</h3>
 						</div>
@@ -114,7 +115,7 @@ Vue.component("reservationsForGuest", {
 		},
 		
 		openCommentForm: function(reservation){
-			
+			this.selectedReservation = reservation;
 			if(this.showCommentForm){
 				this.$root.$emit('comment',reservation.apartment.id,false);
 				this.showCommentForm = false;
@@ -146,10 +147,6 @@ Vue.component("reservationsForGuest", {
 					}
 				}
 			}
-		},
-		
-		selectReservation : function(reservation){
-			this.selectedReservation = reservation;
 		},
 		
 		changeState : function(r){

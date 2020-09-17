@@ -14,7 +14,8 @@ Vue.component("addHost",{
 		    errorUsername:"",
 		    errorPassword:"",
 		    errorConfirmPassword:"",
-		    gender:'Choose gender'
+		    gender:'Choose gender',
+		    currentUser:null
 		}
 	},
 	
@@ -100,10 +101,21 @@ Vue.component("addHost",{
 			</div>
 	`,
 	mounted(){
-		this.changeBGImage();	
+		this.changeBGImage();
+		  axios
+	      .get('rest/users/currentUser')
+	      .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check()))
 	},
 	
 	methods : {
+		
+		check : function(){
+			if(!this.currentUser){
+				this.$router.push('/login');
+			}else if(this.currentUser.typeOfUser != 'ADMIN'){
+				this.$router.push('/403');
+			}
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
