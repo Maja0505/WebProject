@@ -333,14 +333,21 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 					}
 				}
 				return false 
-			}
+			},
+			filterByFlag:function(a){
+				if(a.flag == '0')
+				{
+					return true
+				}
+				return false
+			},
 		
 	},
 	computed:{
 		searchActive(){
 				
 				return this.activeApartments.filter(a => {
-				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
+				         return this.filterByFlag(a) && this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 			}
 		}
 })

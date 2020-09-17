@@ -400,6 +400,13 @@ Vue.component("apartmentsForAdmin", {
 			}
 
 		},
+		filterByFlag:function(a){
+			if(a.flag == '0')
+			{
+				return true
+			}
+			return false
+		},
 		isInAmenitieList:function(amenitie,amenitiesList){
 			for(a of amenitiesList){
 				if(a.name == amenitie){
@@ -416,7 +423,7 @@ Vue.component("apartmentsForAdmin", {
 		search(){
 
 			return this.allApartments.filter(a => {
-				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
+				         return this.filterByFlag(a) && this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 	
 		}
 	}

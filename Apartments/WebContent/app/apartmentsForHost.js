@@ -88,10 +88,10 @@ Vue.component("apartmentsForHost", {
 							</div>
 						</div>
 						<div v-if="searchActive.length == 0" class="row">
-						<div class="panel panel-default" style="width: 80%;margin-left:5%;margin-top:3%;">
-							<h2>Apartemnt doesn't exist</h2>
-						</div>
-					</div>		
+							<div class="panel panel-default" style="width: 80%;margin-left:5%;margin-top:3%;">
+								<h2>Apartemnt doesn't exist</h2>
+							</div>
+						</div>		
 					</div>
 				</div>
 			</div>
@@ -481,6 +481,13 @@ Vue.component("apartmentsForHost", {
 				return true
 			}
 		},
+		filterByFlag:function(a){
+			if(a.flag == '0')
+			{
+				return true
+			}
+			return false
+		},
 		filterByWholeApartmentType:function(a){
 			if(this.isRoom || this.isWholeApartment || this.isActive || this.isInactive)
 			{
@@ -553,13 +560,13 @@ Vue.component("apartmentsForHost", {
 		searchActive(){
 			
 				return this.activeApartmentsForHost.filter(a => {
-				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
+				         return this.filterByFlag(a) && this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 			},
 		
 		searchInactive(){
 			
 				return this.inactiveApartmentsForHost.filter(a => {
-				         return this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
+				         return this.filterByFlag(a) && this.filterByLocation(a) && this.filterByPrice(a) && this.filterByRooms(a) && this.filterByGuests(a) && this.filterByDates(a) && this.filterByAmenites(a.amenities) && (this.filterByActiveStatus(a) || this.filterByInactiveStatus(a) || this.filterByRoomType(a) || this.filterByWholeApartmentType(a))})
 			}
 	}
 });
