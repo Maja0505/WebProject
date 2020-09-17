@@ -8,7 +8,8 @@ Vue.component("showGuestsForHost", {
 	      searchField: "",
 	      reservations:null,
 	      showAllMyGuests:false,
-	  	  searchText:''
+	  	  searchText:'',
+	  	currentUser:null	  
 	    }
 },
 		template: ` 
@@ -48,8 +49,21 @@ Vue.component("showGuestsForHost", {
 			this.changeBGImage();
 	        this.$root.$on('guestsForHost',() => {this. myGuests = [],this.getAllUser()})     
 	        this.getAllUser()
+	        axios
+		      .get('rest/users/currentUser')
+		      .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check()))
+
 	    }
 		,methods: {
+			
+			check : function(){
+				if(!this.currentUser){
+					this.$router.push('/login');
+				}else if(this.currentUser.typeOfUser != 'HOST'){
+					this.$router.push('/403');
+				}
+									
+			},
 			
 			changeBGImage : function(){
 				document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';

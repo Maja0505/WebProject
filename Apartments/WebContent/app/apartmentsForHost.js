@@ -204,6 +204,16 @@ Vue.component("apartmentsForHost", {
 		        
 			}, 
 	methods:{
+		
+		check : function(){
+			if(!this.loggedUser){
+				this.$router.push('/login');
+			}else if(this.loggedUser.typeOfUser != 'HOST'){
+				this.$router.push('/403');
+			}
+								
+		},
+		
 		viewApartment :  function(apartment){
 			axios
 	    	  .post('rest/apartments/changeSelectedApartment',apartment)
@@ -271,7 +281,7 @@ Vue.component("apartmentsForHost", {
 
 			axios
 	        .get('rest/users/currentUser')
-	        .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,
+	        .then(response => (response.data ? this.loggedUser = response.data : this.loggedUser = null,this.check(),
 	        axios
 	    	     .get('rest/apartments/all')
 	    	     .then(response => (response.data ? this.allApartments = response.data : this.allApartments = null,

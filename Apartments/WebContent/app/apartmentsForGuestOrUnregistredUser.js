@@ -129,7 +129,11 @@ Vue.component("apartmentsForGuestOrUnregistredUser",{
 	
 	methods : {
 		check : function(){
-			
+			if(this.currentUser){
+				if(this.currentUser.typeOfUser != 'GUEST'){
+					this.$router.push('/403');
+				}
+			}
 		},
 		
 		changeBGImage : function(){

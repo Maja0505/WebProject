@@ -215,7 +215,7 @@ Vue.component('viewApartment',{
 		
 		axios
         	.get('rest/users/currentUser')
-         		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.getAllAmenities()))
+         		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check(),this.getAllAmenities()))
 		axios
           	.get('rest/apartments/currentSelectedApartment')
         		.then(response => (this.selectedApartment = response.data,this.showSlides(this.slideIndex),
@@ -229,6 +229,13 @@ Vue.component('viewApartment',{
 	},
 	
 	methods : {
+		
+		check : function(){
+			if(!this.currentUser)
+				this.$router.push('/login')
+								
+		},
+		
 		showCommentPart:function(){
 			if(this.currentUser){
 				if(this.currentUser.typeOfUser=='ADMIN'){

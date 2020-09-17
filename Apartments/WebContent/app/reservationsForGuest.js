@@ -106,9 +106,19 @@ Vue.component("reservationsForGuest", {
 		this.changeBGImage();    
         this.$root.$on('reservationsForGuest',(text) => {this.showReservations()});
         this.showReservations()    //PROVERITI
+
 	},
 	
 	methods:{
+		
+		check : function(){
+			if(!this.user){
+				this.$router.push('/login');
+			}else if(this.user.typeOfUser != 'GUEST'){
+				this.$router.push('/403');
+			}
+								
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';
@@ -129,7 +139,7 @@ Vue.component("reservationsForGuest", {
 		
 			axios
 		        .get('rest/users/currentUser')
-		        .then(response => (response.data ? this.user = response.data : this.user = null,
+		        .then(response => (response.data ? this.user = response.data : this.user = null,this.check(),
 	        		axios
 	    	        .get('rest/reservations/all')
 	    	        .then(response => (response.data ? this.allReservations = fixDate(response.data) : this.allReservations = null,

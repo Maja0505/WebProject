@@ -14,6 +14,7 @@ Vue.component("reservationsForAdmin",{
 	    	isAccepted:false,
 	    	isCompleted:false,
 	    	sorting:'',
+	    	currentUser:null
 		}
 	},
 	
@@ -86,10 +87,23 @@ Vue.component("reservationsForAdmin",{
 	mounted(){
 		this.changeBGImage();
         this.$root.$on('reservationsForAdmin',(text) => {this.showAllReservations()});
-        this.showAllReservations()    //PROVERITI
+        axios
+        .get('rest/users/currentUser')
+        .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,
+        		this.check(),this.showAllReservations()))
+
 	},
 	
 	methods : {
+		
+		check : function(){
+			if(!this.currentUser){
+				this.$router.push('/login');
+			}else if(this.currentUser.typeOfUser != 'ADMIN'){
+				this.$router.push('/403');
+			}
+								
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment3.png" + ')';

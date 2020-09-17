@@ -18,11 +18,6 @@ Vue.component("homePage", {
 		  </div>
 		</div>
 		
-		<!--Apartments Form-->
-		 <div v-show="!user && showApartmentsForm"  class="container polaroid">
-			<apartmentsForGuestOrUnregistredUser></apartmentsForGuestOrUnregistredUser>
-		</div>
-		
 		
 		
 		<!--ABOUT US-->

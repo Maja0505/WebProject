@@ -25,6 +25,7 @@ Vue.component("apartmentsForAdmin", {
 	    	isWholeApartment:false,
 	    	checkedAmenities:[],
 	    	sorting:'',
+	    	currentUser:null,
 	    }
 	},
 	
@@ -108,6 +109,9 @@ Vue.component("apartmentsForAdmin", {
 	
 	mounted(){
 		this.changeBGImage();
+		axios
+    	.get('rest/users/currentUser')
+     		.then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check(),this.getAllAmenities()))
 		  this.$root.$on('searchApartmentForAdmin',(searchStartDate,searchEndDate,searchPriceFrom,searchPriceTo,searchLocation,searchNumberOfRoomsFrom,searchNumberOfRoomsTo,searchNumberOfGuests)=>
 	        {
 	        	
@@ -145,6 +149,15 @@ Vue.component("apartmentsForAdmin", {
 	 
 	
 	methods : {
+		
+		check : function(){
+			if(!this.currentUser){
+				this.$router.push('/login');
+			}else if(this.currentUser.typeOfUser != 'ADMIN'){
+				this.$router.push('/403');
+			}
+								
+		},
 		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';

@@ -14,7 +14,7 @@ Vue.component("usersForAdmin",{
 	template: `
 			<div>
 					
-				<div class="content-profile" style="background-image: url('images/apartment3.png');">
+				<div class="content-profile">
 					<form class="container-amenities">
 					<h1 style="margin-left:15%;">USERS</h1>
 					<div>
@@ -53,6 +53,15 @@ Vue.component("usersForAdmin",{
 	
 	methods : {
 		
+		check : function(){
+			if(!this.currentUser){
+				this.$router.push('/login');
+			}else if(this.currentUser.typeOfUser != 'ADMIN'){
+				this.$router.push('/403');
+			}
+								
+		},
+		
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/sea.png" + ')';
 		},
@@ -63,7 +72,7 @@ Vue.component("usersForAdmin",{
 	         .then(response => (response.data ? this.users = response.data : this.users = null))
 	       axios
 	         .get('rest/users/currentUser')
-	         .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null))
+	         .then(response => (response.data ? this.currentUser = response.data : this.currentUser = null,this.check()))
 		},
 		blockUser:function(user){
 			user.isBlock = true;

@@ -160,13 +160,19 @@ Vue.component("editProfile", {
 			this.changeBGImage();	
         axios
           .get('rest/users/currentUser')
-          .then(response => (this.user = response.data))
+          .then(response => (response.data ? this.user = response.data : this.user={},this.check()))
         
         this.$root.$on('show',(text)=>{this.showProfileInfo()});  
           
 		},
 		methods: {
 		
+		check : function(){
+			if(Object.keys(this.user).length === 0 && this.user.constructor === Object)
+				this.$router.push('/login');
+								
+		},	
+			
 		changeBGImage : function(){
 			document.querySelector('body').style.backgroundImage = 'url(' + "images/apartment1.png" + ')';
 		},
