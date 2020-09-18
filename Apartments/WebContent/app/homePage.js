@@ -9,27 +9,13 @@ Vue.component("homePage", {
 },
 		template: ` 
 		<div>
-		<!--DEO SA SLIKOM-->
-		<div class="polaroid" v-show="!user || user.typeOfUser === 'GUEST' || user.typeOfUser === 'HOST' || user.typeOfUser === 'ADMIN' ">
-		  <img src="https://www.udr.com/globalassets/communities/the-kennedy-building/images/hr_mainheader_overview_1900x874_thekennedybuilding_2012_bdg1_el.jpg" alt="5 Terre" style="width:100%">
-		  
-		  <div class="container2">
-			<button class="btn" v-on:click="showApartments" type="button">View apartments</button>
-		  </div>
+			<div class="polaroid" v-show="!user || user.typeOfUser === 'GUEST' || user.typeOfUser === 'HOST' || user.typeOfUser === 'ADMIN' ">
+			  <img src="https://www.udr.com/globalassets/communities/the-kennedy-building/images/hr_mainheader_overview_1900x874_thekennedybuilding_2012_bdg1_el.jpg" alt="5 Terre" style="width:100%">
+			  <div class="container2">
+				<button class="btn" v-on:click="showApartments" type="button">View apartments</button>
+			  </div>
+			</div>
 		</div>
-		
-		
-		
-		<!--ABOUT US-->
-		<div id="band" class="container text-center">
-		  <h3>ABOUT US</h3>
-		  <p><em>We love music!</em></p>
-		  <p>We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-		  <br>
-		 
-		</div>
-
-</div>
 		`	,mounted () {
 				this.changeBGImage();
 				axios

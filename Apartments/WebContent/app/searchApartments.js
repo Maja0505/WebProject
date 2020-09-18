@@ -52,7 +52,7 @@ Vue.component("searchApartments", {
 					  		</div>
 					  		<div class="row">
 					  			<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 15px;"> 
-									Price(EUR) :
+									Price($) :
 								</div>
 								<div class="column25-in-form-search-apartment" style="width:150px;margin-left: 10px;color:black;"> 
 									<input class="small-input" type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="searchPriceFrom"/><label style="color:white;">--</label><input class="small-input" type="number" min='0' onkeydown="javascript: return event.keyCode === 8 || event.keyCode === 46 ? true : !isNaN(Number(event.key))" v-model="searchPriceTo"/>

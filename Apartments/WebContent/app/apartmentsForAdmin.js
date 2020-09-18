@@ -83,7 +83,7 @@ Vue.component("apartmentsForAdmin", {
 						</div>
 						<div v-if="search.length == 0" class="row">
 							<div class="panel panel-default" style="width: 80%;margin-left:5%;margin-top:3%;">
-								<h2>Apartemnt doesn't exist</h2>
+								<h2>Apartments don't exist</h2>
 							</div>
 						</div>
 					</div>	

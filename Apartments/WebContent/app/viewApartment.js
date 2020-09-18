@@ -156,7 +156,7 @@ Vue.component('viewApartment',{
 										<label class="txt8" style="margin-left:5%;">Base doesn't have  amenities</label><br>
 									</div>
 									
-									<div class="row" v-if="selectedApartment.amenities.length == 0  && (currentUser.typeOfUser=='ADMIN' || currentUser.typeOfUser=='HOST')">
+									<div class="row" v-if="(!(selectedApartment.amenities.length > 0)  && (currentUser.typeOfUser=='ADMIN' || currentUser.typeOfUser=='HOST'))">
 										<label class="txt8" style="margin-left:5%;">Apartment doesn't have any amenitie</label><br>
 									</div>
 								</div>
