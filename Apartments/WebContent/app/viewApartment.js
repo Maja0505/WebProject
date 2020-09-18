@@ -461,37 +461,31 @@ Vue.component('viewApartment',{
 		
 		uploadImages: function(){
 			
-			
-			  objApartment = {"id":''+ this.selectedApartment.id, "name":''+ this.selectedApartment.name,"typeOfApartment": this.selectedApartment.typeOfApartment,"numberOfRooms":''+ this.selectedApartment.numberOfRooms,"numberOfGuests":''+ this.selectedApartment.numberOfGuests,"location":this.selectedApartment.location,"dateOfIssue":this.dateOfIssue,"availabilityByDates":this.dateOfIssue,"host":this.loggedUser,"comments": [],"images":this.selectedApartment.images,"pricePerNight":this.selectedApartment.pricePerNight,"checkInTime":''+this.selectedApartment.checkInTime,"checkOutTime":''+this.selectedApartment.checkOutTime,"statusOfApartment":'INACTIVE',"amenities":[],"reservations":[]}
-			  
-
-			  
 			 //dodajemo u listu svih apartmana
 			  axios
-		         .put('rest/apartments/updateApartment',JSON.stringify(objApartment),
-		       		  {
-	 		        	headers: {
-	 		        		'Content-Type': 'application/json;charset=UTF-8',
-			        			}
-		       		  }
-		         )
-		    this.sendRequest = true;
-			document.getElementById('navigationMenu').style.visibility='hidden';
-		         
-	 	     axios
-	 	     	.post('rest/apartments/saveUpdatedImages/' + this.selectedApartment.id + '/'+ this.apartmentImagesLength,JSON.stringify(arrayImageString),
-		       		  {
-		        	headers: {
-		        		'Content-Type': 'application/json'
-		        			}
-		       		  })
-		       	.then(response => {
-		       		alert('Success update apartment!');
-		    		this.sendRequest = false;
-		    		document.getElementById('navigationMenu').style.visibility='visible';
-
-	         });	
-	}
+		         .put('rest/apartments/updateApartment',this.selectedApartment)
+		         .then(response =>{
+		 			
+			        	  	this.sendRequest = true,
+				 			document.getElementById('navigationMenu').style.visibility='hidden',
+				 			axios
+				 	 	     	.post('rest/apartments/saveUpdatedImages/' + this.selectedApartment.id + '/'+ this.apartmentImagesLength,JSON.stringify(arrayImageString),
+				 		       		  {
+				 		        	headers: {
+				 		        		'Content-Type': 'application/json'
+				 		        			}
+				 		       		  })
+				 		       	.then(response => {
+				 		       		alert('Success update apartment!'),
+				 		    		this.sendRequest = false,
+				 		    		document.getElementById('navigationMenu').style.visibility='visible'
+				 		    			 window.location.reload();	
+				 		       	})
+				        	 
+				         })
+				 			
+		    	
+		}
 		
 	}
 })
